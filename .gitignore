@@ -1,0 +1,28 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+*.env
+
+# Angular / Node
+node_modules/
+.angular/
+dist/
+.DS_Store
+
+# Secrets / tokens
+*.key
+*.pem
+secrets.py
+
+# IDE
+.vscode/
+.idea/
+
+# Claude
+.claude/

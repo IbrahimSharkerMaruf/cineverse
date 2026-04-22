@@ -1,0 +1,41 @@
+<nav class="navbar navbar-expand-md navbar-custom fixed-top">
+  <div class="container-xl">
+    <a class="navbar-brand-custom" [routerLink]="'/'">CINE<span>VERSE</span></a>
+
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu"
+      style="color:#aaa; box-shadow:none;">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav me-auto ms-3 gap-1">
+        <li class="nav-item">
+          <a class="nav-link-custom" [routerLink]="''" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link-custom" [routerLink]="'/movies'" routerLinkActive="active">Movies</a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav ms-auto align-items-center gap-2">
+        @if (authService.isLoggedIn()) {
+          <li class="nav-item">
+            <span style="color:#888; font-size:0.85rem;">
+              Welcome, <strong style="color:#fff;">{{ authService.getUsername() }}</strong>
+            </span>
+          </li>
+          <li class="nav-item">
+            <button class="btn-nav-logout" (click)="logout()">Logout</button>
+          </li>
+        } @else {
+          <li class="nav-item">
+            <a class="btn-nav-login" [routerLink]="'/login'">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="btn-nav-register" [routerLink]="'/register'">Register</a>
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+</nav>

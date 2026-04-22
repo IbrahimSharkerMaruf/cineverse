@@ -1,0 +1,42 @@
+.btn-delete-movie {
+  background: #c0392b;
+  color: #fff;
+  border: none;
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s;
+}
+.btn-delete-movie:hover { background: #a93226; }
+
+.btn-delete-review {
+  background: transparent;
+  border: none;
+  color: #c0392b;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0 0.3rem;
+  line-height: 1;
+  transition: color 0.2s;
+}
+.btn-delete-review:hover { color: #e74c3c; }
+
+.alert-dark-success {
+  background: #1a3a2a;
+  border: 1px solid #27ae60;
+  color: #2ecc71;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+.alert-dark-danger {
+  background: #3a1a1a;
+  border: 1px solid #e74c3c;
+  color: #e74c3c;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}

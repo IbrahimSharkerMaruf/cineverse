@@ -1,16 +1,111 @@
-.search-card .form-select {
-  background-color: #111;
-  border: 1px solid #333;
-  color: #eee;
-  border-radius: 6px;
+/* ── Hero search bar ── */
+.search-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
 }
-.search-card .form-select:focus {
-  background-color: #111;
-  border-color: #555;
-  color: #eee;
+.search-hero-inner {
+  display: flex;
+  align-items: center;
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  border-radius: 50px;
+  padding: 0.35rem 0.35rem 0.35rem 1.1rem;
+  gap: 0.5rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.search-hero-inner:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent);
+}
+.search-icon {
+  font-size: 1rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+.search-hero-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-size: 1rem;
+  min-width: 0;
+}
+.search-hero-input::placeholder { color: var(--text-muted); }
+.search-clear-x {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 0 0.25rem;
+  line-height: 1;
+}
+.search-clear-x:hover { color: var(--text); }
+.search-hero-btn {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 40px;
+  padding: 0.5rem 1.4rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  flex-shrink: 0;
+}
+.search-hero-btn:hover { opacity: 0.85; }
+
+.btn-filters-toggle {
+  align-self: flex-start;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  border-radius: 20px;
+  padding: 0.3rem 0.9rem;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-filters-toggle:hover { border-color: var(--primary); color: var(--primary); }
+
+/* ── Filters panel ── */
+.filters-panel {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  animation: slide-down 0.18s ease;
+}
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.filter-label {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin-bottom: 0.3rem;
+}
+.filters-panel .form-control,
+.filters-panel .form-select {
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 6px;
+  font-size: 0.88rem;
+}
+.filters-panel .form-control:focus,
+.filters-panel .form-select:focus {
+  background: var(--input-bg);
+  border-color: var(--primary);
+  color: var(--text);
   box-shadow: none;
 }
-.search-card .form-select option { background: #1a1a1a; }
+.filters-panel .form-select option { background: var(--card-bg); color: var(--text); }
 
 .btn-add-movie {
   background: #27ae60;
@@ -26,30 +121,31 @@
 .btn-add-movie:hover { background: #219150; }
 
 .add-movie-card {
-  background: #1a1a1a;
-  border: 1px solid #2a2a2a;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 1.5rem;
+  transition: background 0.3s ease;
 }
 .add-movie-title {
   font-size: 1.1rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-strong);
   margin-bottom: 1.2rem;
 }
 .add-movie-card .form-control {
-  background: #111;
-  border: 1px solid #333;
-  color: #eee;
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  color: var(--text);
   border-radius: 6px;
 }
 .add-movie-card .form-control:focus {
-  background: #111;
-  border-color: #555;
-  color: #eee;
+  background: var(--input-bg);
+  border-color: var(--primary);
+  color: var(--text);
   box-shadow: none;
 }
-.add-movie-card .form-label { color: #aaa; font-size: 0.85rem; }
+.add-movie-card .form-label { color: var(--text-muted); font-size: 0.85rem; }
 
 .btn-submit-add {
   background: #27ae60;
@@ -66,28 +162,11 @@
 
 .btn-cancel-add {
   background: transparent;
-  color: #aaa;
-  border: 1px solid #444;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
   padding: 0.5rem 1.2rem;
   border-radius: 6px;
   cursor: pointer;
   transition: border-color 0.2s;
 }
-.btn-cancel-add:hover { border-color: #888; color: #fff; }
-
-.alert-dark-success {
-  background: #1a3a2a;
-  border: 1px solid #27ae60;
-  color: #2ecc71;
-  padding: 0.6rem 1rem;
-  border-radius: 6px;
-  font-size: 0.9rem;
-}
-.alert-dark-danger {
-  background: #3a1a1a;
-  border: 1px solid #e74c3c;
-  color: #e74c3c;
-  padding: 0.6rem 1rem;
-  border-radius: 6px;
-  font-size: 0.9rem;
-}
+.btn-cancel-add:hover { border-color: var(--text-muted); color: var(--text-strong); }

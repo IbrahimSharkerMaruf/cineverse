@@ -12,7 +12,8 @@ import { WebServices } from '../../services/web-services';
 export class Register {
   registerForm: any;
   errorMessage = '';
-  successMessage = '';
+  selectedAvatar = 'profile.png';
+  avatarList = ['profile.png', 'man.png', 'woman.png', 'boy.png', 'cat.png', 'panda.png', 'rabbit.png', 'hacker.png'];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -27,10 +28,14 @@ export class Register {
     });
   }
 
+  selectAvatar(avatar: string) {
+    this.selectedAvatar = avatar;
+  }
+
   onSubmit() {
     this.errorMessage = '';
     this.webService
-      .register(this.registerForm.value.username, this.registerForm.value.password)
+      .register(this.registerForm.value.username, this.registerForm.value.password, this.selectedAvatar)
       .subscribe({
         next: () => {
           this.router.navigate(['/login']);

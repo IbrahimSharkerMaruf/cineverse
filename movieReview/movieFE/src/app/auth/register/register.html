@@ -9,6 +9,26 @@
         <div class="alert-dark-danger mb-3">{{ errorMessage }}</div>
       }
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+        <!-- Avatar picker -->
+        <div class="mb-4">
+          <label class="form-label">Choose Your Avatar</label>
+          <div class="avatar-picker">
+            <div class="avatar-preview-wrap">
+              <img [src]="'/assets/images/avatar/' + selectedAvatar" class="avatar-preview-img" alt="Selected avatar" />
+            </div>
+            <div class="avatar-dropdown-wrap">
+              <div class="avatar-grid">
+                @for (avatar of avatarList; track avatar) {
+                  <div class="avatar-grid-item" [class.avatar-grid-item--selected]="selectedAvatar === avatar" (click)="selectAvatar(avatar)">
+                    <img [src]="'/assets/images/avatar/' + avatar" [alt]="avatar" />
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="mb-3">
           <label class="form-label">Username</label>
           <input type="text" class="form-control" formControlName="username"

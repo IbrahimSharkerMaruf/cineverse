@@ -37,7 +37,10 @@ export class Login {
       .login(this.loginForm.value.username, this.loginForm.value.password)
       .subscribe({
         next: (response) => {
-          this.authService.setSession(response.token, this.loginForm.value.username);
+          this.authService.setSession(response.token, response.username || this.loginForm.value.username, response.avatar);
+          this.webService.getWatchlistIds().subscribe(ids => {
+            this.authService.setWatchlist(ids);
+          });
           this.router.navigate(['/movies']);
         },
         error: () => {

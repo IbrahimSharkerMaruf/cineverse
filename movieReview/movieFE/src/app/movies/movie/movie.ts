@@ -21,6 +21,14 @@ export class Movie {
   hoveredStar = 0;
   deleteMovieError = '';
 
+  isInWatchlist = false;
+
+  editingReviewId: string | null = null;
+  editForm: any;
+  editError = '';
+  deleteReviewError = '';
+  confirmDeleteReviewId: string | null = null;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -40,10 +48,23 @@ export class Movie {
     });
 
     const id = this.route.snapshot.paramMap.get('id');
+
     this.webService.getMovie(id).subscribe((response) => {
       this.movie = response;
     });
+
     this.loadReviews();
+
+    if (this.authService.isLoggedIn()) {
+      if (this.authService.watchlistLoaded) {
+        this.isInWatchlist = this.authService.isInWatchlist(id!);
+      } else {
+        this.webService.getWatchlistIds().subscribe(ids => {
+          this.authService.setWatchlist(ids);
+          this.isInWatchlist = this.authService.isInWatchlist(id!);
+        });
+      }
+    }
   }
 
   loadReviews() {
@@ -53,15 +74,68 @@ export class Movie {
     });
   }
 
+  get communityRating(): number | null {
+    if (!this.reviews_list.length) return null;
+    const avg = this.reviews_list.reduce((s: number, r: any) => s + r.star, 0) / this.reviews_list.length;
+    return Math.round(avg * 10) / 10;
+  }
+
+  get officialRating5(): number {
+    return this.movie ? Math.round((this.movie.vote_average / 2) * 10) / 10 : 0;
+  }
+
+  toggleWatchlist() {
+    const id = this.route.snapshot.paramMap.get('id')!;
+    if (this.isInWatchlist) {
+      this.webService.removeFromWatchlist(id).subscribe(() => {
+        this.isInWatchlist = false;
+        this.authService.removeFromWatchlistLocal(id);
+      });
+    } else {
+      this.webService.addToWatchlist(id).subscribe(() => {
+        this.isInWatchlist = true;
+        this.authService.addToWatchlistLocal(id);
+      });
+    }
+  }
+
+  startEdit(review: any) {
+    this.editingReviewId = review._id;
+    this.editError = '';
+    this.editForm = this.formBuilder.group({
+      comment: [review.comment, Validators.required],
+      stars: [review.star],
+    });
+  }
+
+  cancelEdit() {
+    this.editingReviewId = null;
+    this.editError = '';
+  }
+
+  submitEdit(reviewId: string) {
+    const movieId = this.route.snapshot.paramMap.get('id')!;
+    this.webService.editReview(movieId, reviewId, this.editForm.value).subscribe({
+      next: () => {
+        this.editingReviewId = null;
+        this.loadReviews();
+      },
+      error: () => { this.editError = 'Failed to update review.'; }
+    });
+  }
+
   onSubmit() {
     this.submitError = '';
     this.submitSuccess = false;
     const id = this.route.snapshot.paramMap.get('id');
+    const rawPath = this.authService.getAvatar();
+    const avatarFile = rawPath.split('/').pop() || 'profile.png';
     const formValue = {
       ...this.reviewForm.getRawValue(),
       username: this.authService.isLoggedIn()
         ? this.authService.getUsername()
         : this.reviewForm.value.username,
+      avatar: avatarFile,
     };
     this.webService.postReview(id, formValue).subscribe({
       next: () => {
@@ -76,10 +150,24 @@ export class Movie {
     });
   }
 
+  confirmDelete(reviewId: string) {
+    this.confirmDeleteReviewId = reviewId;
+  }
+
+  cancelDelete() {
+    this.confirmDeleteReviewId = null;
+  }
+
   deleteReview(reviewId: string) {
     const movieId = this.route.snapshot.paramMap.get('id')!;
+    this.deleteReviewError = '';
+    this.confirmDeleteReviewId = null;
     this.webService.deleteReview(movieId, reviewId).subscribe({
       next: () => this.loadReviews(),
+      error: (err) => {
+        this.deleteReviewError = err?.error?.error || 'Failed to delete review.';
+        setTimeout(() => this.deleteReviewError = '', 4000);
+      }
     });
   }
 
@@ -87,9 +175,7 @@ export class Movie {
     const id = this.route.snapshot.paramMap.get('id')!;
     this.webService.deleteMovie(id).subscribe({
       next: () => this.router.navigate(['/movies']),
-      error: () => {
-        this.deleteMovieError = 'Failed to delete movie.';
-      },
+      error: () => { this.deleteMovieError = 'Failed to delete movie.'; },
     });
   }
 
@@ -98,6 +184,10 @@ export class Movie {
       this.reviewForm.controls[control].invalid &&
       this.reviewForm.controls[control].touched
     );
+  }
+
+  posterUrl(filename: string): string {
+    return `/assets/images/posters/${encodeURIComponent(filename)}`;
   }
 
   parseJson(jsonStr: string): any[] {

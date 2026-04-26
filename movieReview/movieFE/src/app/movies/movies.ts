@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule, FormBuilder, Validators } from '@angular/forms';
 import { WebServices } from '../services/web-services';
 import { AuthService } from '../services/auth-service';
 
 @Component({
   selector: 'app-movies',
-  imports: [RouterModule, CommonModule, ReactiveFormsModule],
+  imports: [RouterModule, CommonModule, ReactiveFormsModule, FormsModule],
   providers: [WebServices],
   templateUrl: './movies.html',
   styleUrl: './movies.css',
@@ -20,24 +20,40 @@ export class Movies {
   filterForm: any;
 
   showAddForm = false;
+  showFilters = false;
+  jumpPage: number | null = null;
   addMovieForm: any;
   addSuccess = false;
   addError = '';
 
+  get activeFilterCount(): number {
+    const v = this.filterForm?.value || {};
+    return [v.genre, v.year, v.min_rating, v.max_rating, v.sort].filter(x => x !== '' && x != null).length;
+  }
+
   constructor(
     public webService: WebServices,
     public authService: AuthService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
+    if (this.authService.isLoggedIn() && !this.authService.watchlistLoaded) {
+      this.webService.getWatchlistIds().subscribe(ids => {
+        this.authService.setWatchlist(ids);
+      });
+    }
+
+    const genreParam = this.route.snapshot.queryParamMap.get('genre') || '';
+
     if (sessionStorage['page']) {
       this.page = Number(sessionStorage['page']);
     }
 
     this.filterForm = this.formBuilder.group({
       title:      [''],
-      genre:      [''],
+      genre:      [genreParam],
       year:       [''],
       min_rating: [''],
       max_rating: [''],
@@ -97,12 +113,43 @@ export class Movies {
     });
   }
 
+  posterUrl(filename: string): string {
+    return `/assets/images/posters/${encodeURIComponent(filename)}`;
+  }
+
   parseNames(jsonStr: string): string {
     try {
-      const arr = JSON.parse(jsonStr);
-      return arr.map((item: any) => item.name).join(', ');
+      return JSON.parse(jsonStr).map((item: any) => item.name).join(', ');
     } catch {
       return jsonStr || '';
+    }
+  }
+
+  genreList(jsonStr: string): string[] {
+    try {
+      return JSON.parse(jsonStr).map((i: any) => i.name);
+    } catch { return []; }
+  }
+
+  filterByGenre(genre: string, event: Event) {
+    event.stopPropagation();
+    this.filterForm.patchValue({ genre });
+    this.page = 1;
+    sessionStorage['page'] = 1;
+    this.loadMovies();
+  }
+
+  toggleWatchlist(movieId: string, event: Event) {
+    event.stopPropagation();
+    if (!this.authService.isLoggedIn()) return;
+    if (this.authService.isInWatchlist(movieId)) {
+      this.webService.removeFromWatchlist(movieId).subscribe(() => {
+        this.authService.removeFromWatchlistLocal(movieId);
+      });
+    } else {
+      this.webService.addToWatchlist(movieId).subscribe(() => {
+        this.authService.addToWatchlistLocal(movieId);
+      });
     }
   }
 
@@ -133,5 +180,13 @@ export class Movies {
       sessionStorage['page'] = this.page;
       this.loadMovies();
     }
+  }
+
+  goToPage() {
+    if (!this.jumpPage || this.jumpPage < 1) return;
+    this.page = Math.floor(this.jumpPage);
+    this.jumpPage = null;
+    sessionStorage['page'] = this.page;
+    this.loadMovies();
   }
 }

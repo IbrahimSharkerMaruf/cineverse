@@ -7,9 +7,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class WebServices {
 
   baseUrl = 'http://127.0.0.1:5001';
-  pageSize: number = 6;
+  pageSize: number = 8;
 
   constructor(private http: HttpClient) { }
+
+  private authHeaders(): HttpHeaders {
+    return new HttpHeaders({ 'x-access-token': sessionStorage.getItem('token') || '' });
+  }
 
   getMovies(page: number, filters: any = {}) {
     let url = `${this.baseUrl}/movies?pn=${page}&ps=${this.pageSize}`;
@@ -20,14 +24,6 @@ export class WebServices {
     if (filters.max_rating) url += `&max_rating=${filters.max_rating}`;
     if (filters.sort)       url += `&sort=${filters.sort}&order=${filters.order || 'desc'}`;
     return this.http.get<any>(url);
-  }
-
-  getStatsByYear() {
-    return this.http.get<any>(`${this.baseUrl}/movies/stats/by-year`);
-  }
-
-  getTopMovies(by: string, n: number = 10) {
-    return this.http.get<any>(`${this.baseUrl}/movies/stats/top?by=${by}&n=${n}`);
   }
 
   getMovie(id: any) {
@@ -43,7 +39,19 @@ export class WebServices {
     postData.append('username', review.username);
     postData.append('comment', review.comment);
     postData.append('star', review.stars);
+    postData.append('avatar', review.avatar || 'profile.png');
     return this.http.post<any>(`${this.baseUrl}/movies/${id}/reviews`, postData);
+  }
+
+  editReview(movieId: string, reviewId: string, data: any) {
+    const postData = new FormData();
+    postData.append('comment', data.comment);
+    postData.append('star', String(data.stars));
+    return this.http.put<any>(`${this.baseUrl}/movies/${movieId}/reviews/${reviewId}`, postData, { headers: this.authHeaders() });
+  }
+
+  deleteReview(movieId: string, reviewId: string) {
+    return this.http.delete<any>(`${this.baseUrl}/movies/${movieId}/reviews/${reviewId}`, { headers: this.authHeaders() });
   }
 
   login(username: string, password: string) {
@@ -53,10 +61,11 @@ export class WebServices {
     return this.http.post<any>(`${this.baseUrl}/login`, postData);
   }
 
-  register(username: string, password: string) {
+  register(username: string, password: string, avatar: string = 'profile.png') {
     const postData = new FormData();
     postData.append('username', username);
     postData.append('password', password);
+    postData.append('avatar', avatar);
     return this.http.post<any>(`${this.baseUrl}/register`, postData);
   }
 
@@ -65,27 +74,65 @@ export class WebServices {
     return this.http.get<any>(`${this.baseUrl}/logout`, { headers });
   }
 
-  private adminHeaders(): HttpHeaders {
-    return new HttpHeaders({ 'x-access-token': sessionStorage.getItem('token') || '' });
-  }
-
   addMovie(formData: FormData) {
-    return this.http.post<any>(`${this.baseUrl}/movies`, formData, { headers: this.adminHeaders() });
-  }
-
-  updateMovie(id: string, formData: FormData) {
-    return this.http.put<any>(`${this.baseUrl}/movies/${id}`, formData, { headers: this.adminHeaders() });
+    return this.http.post<any>(`${this.baseUrl}/movies`, formData, { headers: this.authHeaders() });
   }
 
   deleteMovie(id: string) {
-    return this.http.delete<any>(`${this.baseUrl}/movies/${id}`, { headers: this.adminHeaders() });
+    return this.http.delete<any>(`${this.baseUrl}/movies/${id}`, { headers: this.authHeaders() });
   }
 
-  deleteReview(movieId: string, reviewId: string) {
-    return this.http.delete<any>(`${this.baseUrl}/movies/${movieId}/reviews/${reviewId}`, { headers: this.adminHeaders() });
+  getProfile() {
+    return this.http.get<any>(`${this.baseUrl}/profile`, { headers: this.authHeaders() });
   }
 
-  getStats() {
-    return this.http.get<any>(`${this.baseUrl}/movies/stats/ratings`);
+  updateProfile(data: { current_password: string; new_username?: string; new_password?: string }) {
+    const fd = new FormData();
+    fd.append('current_password', data.current_password);
+    if (data.new_username) fd.append('new_username', data.new_username);
+    if (data.new_password) fd.append('new_password', data.new_password);
+    return this.http.put<any>(`${this.baseUrl}/profile`, fd, { headers: this.authHeaders() });
+  }
+
+  getMyReviews() {
+    return this.http.get<any[]>(`${this.baseUrl}/my-reviews`, { headers: this.authHeaders() });
+  }
+
+  getWatchlistIds() {
+    return this.http.get<string[]>(`${this.baseUrl}/watchlist`, { headers: this.authHeaders() });
+  }
+
+  getWatchlistMovies() {
+    return this.http.get<any[]>(`${this.baseUrl}/watchlist/movies`, { headers: this.authHeaders() });
+  }
+
+  addToWatchlist(movieId: string) {
+    return this.http.post<any>(`${this.baseUrl}/watchlist/${movieId}`, null, { headers: this.authHeaders() });
+  }
+
+  removeFromWatchlist(movieId: string) {
+    return this.http.delete<any>(`${this.baseUrl}/watchlist/${movieId}`, { headers: this.authHeaders() });
+  }
+
+  getAllUsers() {
+    return this.http.get<any[]>(`${this.baseUrl}/admin/users`, { headers: this.authHeaders() });
+  }
+
+  getUserReviews(username: string) {
+    return this.http.get<any[]>(`${this.baseUrl}/admin/users/${encodeURIComponent(username)}/reviews`, { headers: this.authHeaders() });
+  }
+
+  setModerator(username: string, value: boolean) {
+    const data = new FormData();
+    data.append('moderator', String(value));
+    return this.http.put<any>(`${this.baseUrl}/admin/users/${encodeURIComponent(username)}/moderator`, data, { headers: this.authHeaders() });
+  }
+
+  adminDeleteUser(username: string) {
+    return this.http.delete<any>(`${this.baseUrl}/admin/users/${encodeURIComponent(username)}`, { headers: this.authHeaders() });
+  }
+
+  deleteMyAccount() {
+    return this.http.delete<any>(`${this.baseUrl}/delete-account`, { headers: this.authHeaders() });
   }
 }

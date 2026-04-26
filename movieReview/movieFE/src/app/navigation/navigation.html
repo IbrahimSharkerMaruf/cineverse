@@ -15,13 +15,33 @@
         <li class="nav-item">
           <a class="nav-link-custom" [routerLink]="'/movies'" routerLinkActive="active">Movies</a>
         </li>
+        @if (authService.isLoggedIn()) {
+          <li class="nav-item">
+            <a class="nav-link-custom" [routerLink]="'/watchlist'" routerLinkActive="active">
+              Watchlist
+              @if (authService.watchlistIds.length > 0) {
+                <span class="nav-badge">{{ authService.watchlistIds.length }}</span>
+              }
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link-custom" [routerLink]="'/profile'" routerLinkActive="active">Profile</a>
+          </li>
+        }
       </ul>
 
       <ul class="navbar-nav ms-auto align-items-center gap-2">
+        <li class="nav-item">
+          <button class="btn-theme-toggle" (click)="toggleTheme()" [title]="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'">
+            {{ isDarkMode ? '&#9728; Light' : '&#9790; Dark' }}
+          </button>
+        </li>
+
         @if (authService.isLoggedIn()) {
-          <li class="nav-item">
-            <span style="color:#888; font-size:0.85rem;">
-              Welcome, <strong style="color:#fff;">{{ authService.getUsername() }}</strong>
+          <li class="nav-item d-flex align-items-center gap-2">
+            <img [src]="authService.getAvatar()" class="nav-avatar" alt="avatar" />
+            <span class="nav-welcome">
+              Welcome, <strong>{{ authService.getUsername() }}</strong>
             </span>
           </li>
           <li class="nav-item">

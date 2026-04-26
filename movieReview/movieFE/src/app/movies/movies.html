@@ -72,64 +72,69 @@
       }
     }
 
-    <!-- Search & Filter Panel -->
-    <div class="search-card">
-      <form [formGroup]="filterForm" (ngSubmit)="applyFilters()">
-        <div class="row g-3">
-
-          <!-- Row 1: text filters -->
-          <div class="col-md-4">
-            <label>Search Title</label>
-            <input type="text" class="form-control" formControlName="title" placeholder="e.g. Avatar, Inception..." />
-          </div>
-          <div class="col-md-4">
-            <label>Genre</label>
-            <input type="text" class="form-control" formControlName="genre" placeholder="e.g. Action, Drama..." />
-          </div>
-          <div class="col-md-4">
-            <label>Release Year</label>
-            <input type="number" class="form-control" formControlName="year" placeholder="e.g. 2020" />
-          </div>
-
-          <!-- Row 2: rating range + sort -->
-          <div class="col-md-3">
-            <label>Min Rating</label>
-            <input type="number" class="form-control" formControlName="min_rating" placeholder="0" min="0" max="10" step="0.1" />
-          </div>
-          <div class="col-md-3">
-            <label>Max Rating</label>
-            <input type="number" class="form-control" formControlName="max_rating" placeholder="10" min="0" max="10" step="0.1" />
-          </div>
-          <div class="col-md-3">
-            <label>Sort By</label>
-            <select class="form-select" formControlName="sort">
-              <option value="">— None —</option>
-              <option value="vote_average">Rating</option>
-              <option value="popularity">Popularity</option>
-              <option value="revenue">Revenue</option>
-              <option value="runtime">Runtime</option>
-              <option value="release_date">Release Date</option>
-              <option value="vote_count">Vote Count</option>
-              <option value="budget">Budget</option>
-            </select>
-          </div>
-          <div class="col-md-3">
-            <label>Order</label>
-            <select class="form-select" formControlName="order">
-              <option value="desc">Descending</option>
-              <option value="asc">Ascending</option>
-            </select>
-          </div>
-
-          <!-- Buttons -->
-          <div class="col-12 d-flex gap-2">
-            <button type="submit" class="btn-search">Search</button>
-            <button type="button" class="btn-clear" (click)="clearFilters()">Clear</button>
-          </div>
-
+    <!-- Search Bar -->
+    <form [formGroup]="filterForm" (ngSubmit)="applyFilters()">
+      <div class="search-hero">
+        <div class="search-hero-inner">
+          <span class="search-icon">&#128269;</span>
+          <input type="text" class="search-hero-input" formControlName="title" placeholder="Search movies, genres, titles..." (keydown.enter)="applyFilters()" />
+          @if (filterForm.get('title')?.value) {
+            <button type="button" class="search-clear-x" (click)="filterForm.patchValue({title:''}); applyFilters()">&#10005;</button>
+          }
+          <button type="submit" class="search-hero-btn">Search</button>
         </div>
-      </form>
-    </div>
+        <button type="button" class="btn-filters-toggle" (click)="showFilters = !showFilters">
+          &#9776; Filters {{ activeFilterCount > 0 ? '(' + activeFilterCount + ')' : '' }}
+        </button>
+      </div>
+
+      @if (showFilters) {
+        <div class="filters-panel">
+          <div class="row g-3">
+            <div class="col-md-4 col-6">
+              <label class="filter-label">Genre</label>
+              <input type="text" class="form-control" formControlName="genre" placeholder="e.g. Action, Drama..." />
+            </div>
+            <div class="col-md-4 col-6">
+              <label class="filter-label">Release Year</label>
+              <input type="number" class="form-control" formControlName="year" placeholder="e.g. 2020" />
+            </div>
+            <div class="col-md-4 col-6">
+              <label class="filter-label">Sort By</label>
+              <select class="form-select" formControlName="sort">
+                <option value="">— None —</option>
+                <option value="vote_average">Rating</option>
+                <option value="popularity">Popularity</option>
+                <option value="revenue">Revenue</option>
+                <option value="runtime">Runtime</option>
+                <option value="release_date">Release Date</option>
+                <option value="vote_count">Vote Count</option>
+                <option value="budget">Budget</option>
+              </select>
+            </div>
+            <div class="col-md-3 col-6">
+              <label class="filter-label">Min Rating</label>
+              <input type="number" class="form-control" formControlName="min_rating" placeholder="0" min="0" max="10" step="0.1" />
+            </div>
+            <div class="col-md-3 col-6">
+              <label class="filter-label">Max Rating</label>
+              <input type="number" class="form-control" formControlName="max_rating" placeholder="10" min="0" max="10" step="0.1" />
+            </div>
+            <div class="col-md-3 col-6">
+              <label class="filter-label">Order</label>
+              <select class="form-select" formControlName="order">
+                <option value="desc">Descending</option>
+                <option value="asc">Ascending</option>
+              </select>
+            </div>
+            <div class="col-12 d-flex gap-2 pt-1">
+              <button type="submit" class="btn-search">Apply</button>
+              <button type="button" class="btn-clear" (click)="clearFilters()">Reset</button>
+            </div>
+          </div>
+        </div>
+      }
+    </form>
 
     <!-- Loading -->
     @if (isLoading) {
@@ -143,25 +148,59 @@
     @if (!isLoading) {
       @if (movie_list.length === 0) {
         <div class="empty-state">
-          <div class="empty-icon">🎬</div>
+          <div class="empty-icon">&#127916;</div>
           <h4 style="color:#555;">No movies found</h4>
           <p style="color:#444; font-size:0.9rem;">Try adjusting your search filters.</p>
         </div>
       }
 
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
         @for (movie of movie_list; track movie._id) {
           <div class="col">
             <div class="movie-card" [routerLink]="['./', movie._id]">
-              <div class="movie-card-body">
-                <div class="movie-card-genres">{{ parseNames(movie.genres) }}</div>
-                <div class="movie-card-title">{{ movie.title }}</div>
-                <div class="movie-card-overview">{{ movie.overview }}</div>
-              </div>
-              <div class="movie-card-footer">
-                <span class="movie-year">{{ movie.release_date?.slice(0,4) }}</span>
-                <span class="movie-rating">★ {{ movie.vote_average }}</span>
-              </div>
+
+              @if (authService.isLoggedIn()) {
+                <button class="btn-bookmark"
+                  [class.bookmarked]="authService.isInWatchlist(movie._id)"
+                  (click)="toggleWatchlist(movie._id, $event)"
+                  [title]="authService.isInWatchlist(movie._id) ? 'Remove from watchlist' : 'Add to watchlist'">
+                  {{ authService.isInWatchlist(movie._id) ? '&#9733;' : '&#9734;' }}
+                </button>
+              }
+
+              @if (movie.poster) {
+                <div class="mc-poster">
+                  <img [src]="posterUrl(movie.poster)" [alt]="movie.title" loading="lazy" />
+                  <div class="mc-info">
+                    <div class="mc-genre">
+                      @for (g of genreList(movie.genres).slice(0,2); track g; let last = $last) {
+                        <span class="mc-genre-tag" (click)="filterByGenre(g, $event)">{{ g }}</span>{{ !last ? ' · ' : '' }}
+                      }
+                    </div>
+                    <div class="mc-title">{{ movie.title }}</div>
+                    <div class="mc-meta">
+                      <span class="mc-year">{{ movie.release_date?.slice(0,4) }}</span>
+                      <span class="mc-rating">&#9733; {{ movie.vote_average }}</span>
+                    </div>
+                  </div>
+                </div>
+              } @else {
+                <div class="mc-blank">
+                  <span class="mc-blank-letter">{{ movie.title?.charAt(0) }}</span>
+                  <div class="mc-info">
+                    <div class="mc-genre">
+                      @for (g of genreList(movie.genres).slice(0,2); track g; let last = $last) {
+                        <span class="mc-genre-tag" (click)="filterByGenre(g, $event)">{{ g }}</span>{{ !last ? ' · ' : '' }}
+                      }
+                    </div>
+                    <div class="mc-title">{{ movie.title }}</div>
+                    <div class="mc-meta">
+                      <span class="mc-year">{{ movie.release_date?.slice(0,4) }}</span>
+                      <span class="mc-rating">&#9733; {{ movie.vote_average }}</span>
+                    </div>
+                  </div>
+                </div>
+              }
             </div>
           </div>
         }
@@ -177,6 +216,19 @@
           <button class="btn-page" (click)="nextPage()" [disabled]="isLastPage">
             Next &raquo;
           </button>
+        </div>
+        <div class="page-jump-wrapper">
+          <span class="page-jump-label">Jump to page</span>
+          <input
+            type="number"
+            class="page-jump-input"
+            [(ngModel)]="jumpPage"
+            [ngModelOptions]="{standalone: true}"
+            min="1"
+            placeholder="{{ page }}"
+            (keydown.enter)="goToPage()"
+          />
+          <button class="page-jump-btn" (click)="goToPage()">Go</button>
         </div>
       }
     }

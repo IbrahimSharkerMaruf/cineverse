@@ -20,6 +20,7 @@ def jwt_required(func):
             data = jwt.decode(token, globals.SECRET_KEY, algorithms=['HS256'])
             request.user = data['user']
             request.admin = data['admin']
+            request.moderator = data.get('moderator', False)
         except:
             return make_response(jsonify({"message":"invalid token"}), 401)
 

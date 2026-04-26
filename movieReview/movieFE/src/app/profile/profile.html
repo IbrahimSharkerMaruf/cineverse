@@ -1,0 +1,321 @@
+<div class="page-wrapper">
+  <div class="container-xl px-4">
+
+    @if (isLoading) {
+      <div class="text-center py-5">
+        <div class="spinner-border" style="width:3rem;height:3rem;" role="status"></div>
+      </div>
+    }
+
+    @if (!isLoading && user) {
+
+      <!-- Profile Header -->
+      <div class="profile-header">
+        <img [src]="'/assets/images/avatar/' + (user.avatar || 'profile.png')" class="profile-avatar-lg" alt="avatar" />
+        <div class="profile-header-info">
+          <div class="profile-username">
+            {{ user.username }}
+            @if (user.admin) { <span class="profile-admin-badge">Admin</span> }
+            @if (user.moderator && !user.admin) { <span class="profile-mod-badge">Moderator</span> }
+          </div>
+          <div class="profile-stats">
+            <span>{{ myReviews.length }} review{{ myReviews.length !== 1 ? 's' : '' }}</span>
+            <span>{{ authService.watchlistIds.length }} in watchlist</span>
+          </div>
+          <div class="mt-3 d-flex gap-2 flex-wrap">
+            <a class="btn-hero" style="padding:0.5rem 1.2rem; font-size:0.9rem;" [routerLink]="'/watchlist'">View Watchlist</a>
+            @if (!user.admin) {
+              <button class="btn-danger-outline" (click)="showDeleteConfirm = !showDeleteConfirm">
+                &#128465; Delete Account
+              </button>
+            }
+          </div>
+          @if (showDeleteConfirm) {
+            <div class="delete-confirm-box mt-3">
+              <p class="delete-confirm-text">This will permanently delete your account and all your reviews. This cannot be undone.</p>
+              @if (deleteAccountError) {
+                <div class="alert-dark-danger mb-2" style="font-size:0.82rem;">{{ deleteAccountError }}</div>
+              }
+              <div class="d-flex gap-2">
+                <button class="btn-danger-solid" (click)="confirmDeleteAccount()">Yes, delete my account</button>
+                <button class="btn-cancel-edit" (click)="showDeleteConfirm = false; deleteAccountError = ''">Cancel</button>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Tab Bar -->
+      <div class="profile-tab-bar">
+        <button class="profile-tab" [class.active]="activeTab === 'reviews'" (click)="activeTab = 'reviews'">
+          My Reviews <span class="review-count-badge">{{ myReviews.length }}</span>
+        </button>
+        <button class="profile-tab" [class.active]="activeTab === 'settings'" (click)="activeTab = 'settings'">
+          &#9881; Settings
+        </button>
+        @if (user.admin) {
+          <button class="profile-tab" [class.active]="activeTab === 'users'" (click)="activeTab = 'users'">
+            &#128100; Manage Users <span class="review-count-badge">{{ allUsers.length }}</span>
+          </button>
+        }
+      </div>
+
+      <!-- ── My Reviews Tab ─────────────────────────────────────────── -->
+      @if (activeTab === 'reviews') {
+        @if (myReviews.length === 0) {
+          <div class="empty-state" style="padding:2rem;">
+            <div class="empty-icon">&#128172;</div>
+            <p>You haven't written any reviews yet.</p>
+            <a class="btn-hero" style="padding:0.5rem 1.4rem; font-size:0.9rem;" [routerLink]="'/movies'">Browse Movies</a>
+          </div>
+        }
+
+        @for (r of myReviews; track r.review_id) {
+          <div class="review-history-card" [class.rhc-editing]="editingReviewId === r.review_id">
+
+            <!-- Header row: poster + movie title + edit/cancel button -->
+            <div class="rhc-poster" [routerLink]="editingReviewId !== r.review_id ? ['/movies', r.movie_id] : null"
+                 [style.cursor]="editingReviewId !== r.review_id ? 'pointer' : 'default'">
+              @if (r.poster) {
+                <img [src]="posterUrl(r.poster)" [alt]="r.movie_title" />
+              } @else {
+                <div class="rhc-poster-blank">{{ r.movie_title?.charAt(0) }}</div>
+              }
+            </div>
+
+            <div class="rhc-body">
+              <div class="rhc-top-row">
+                <div class="rhc-movie-title" [routerLink]="editingReviewId !== r.review_id ? ['/movies', r.movie_id] : null"
+                     [style.cursor]="editingReviewId !== r.review_id ? 'pointer' : 'default'">
+                  {{ r.movie_title }}
+                </div>
+                @if (editingReviewId !== r.review_id) {
+                  <button class="btn-edit-review" (click)="startEditReview(r)" title="Edit review">&#9998;</button>
+                } @else {
+                  <button class="btn-cancel-edit" style="font-size:0.78rem; padding:0.2rem 0.6rem;" (click)="cancelEditReview()">Cancel</button>
+                }
+              </div>
+
+              @if (editingReviewId === r.review_id) {
+                <!-- Inline edit form -->
+                <form [formGroup]="editReviewForm" (ngSubmit)="submitEditReview(r)" class="mt-2">
+                  <textarea class="form-control mb-2" rows="3" formControlName="comment" placeholder="Edit your review..."></textarea>
+                  <div class="d-flex align-items-center gap-2 mb-2">
+                    @for (star of [1,2,3,4,5]; track star) {
+                      <button type="button" class="btn border-0 p-0"
+                        style="font-size:1.3rem; background:transparent; transition:transform 0.1s;"
+                        [style.color]="editReviewForm.get('stars')?.value >= star ? '#f5c518' : '#555'"
+                        (click)="editReviewForm.patchValue({stars: star})">&#9733;</button>
+                    }
+                    <span style="color:#888; font-size:0.8rem;">{{ editReviewForm.get('stars')?.value }}/5</span>
+                  </div>
+                  @if (editReviewError) {
+                    <div class="alert-dark-danger mb-2" style="font-size:0.82rem;">{{ editReviewError }}</div>
+                  }
+                  <button type="submit" class="btn-submit-review" style="padding:0.35rem 1.1rem; font-size:0.82rem;" [disabled]="editReviewForm.invalid">Save</button>
+                </form>
+              } @else {
+                <div class="review-stars" style="font-size:0.9rem;">{{ starString(r.star) }} <small style="color:#888; font-size:0.75rem;">({{ r.star }}/5)</small></div>
+                <div class="rhc-comment">{{ r.comment }}</div>
+              }
+            </div>
+          </div>
+        }
+      }
+
+      <!-- ── Settings Tab ───────────────────────────────────────────── -->
+      @if (activeTab === 'settings') {
+        <div class="settings-grid">
+
+          <!-- Change Username -->
+          <div class="settings-card">
+            <div class="settings-title">&#9998; Change Username</div>
+            <p class="settings-hint">Pick a new display name. Your current password is required to confirm.</p>
+
+            @if (usernameSuccess) {
+              <div class="alert-dark-success mb-3">&#10003; {{ usernameSuccess }}</div>
+            }
+            @if (usernameError) {
+              <div class="alert-dark-danger mb-3">{{ usernameError }}</div>
+            }
+
+            <form [formGroup]="usernameForm" (ngSubmit)="submitUsername()">
+              <div class="mb-3">
+                <label class="form-label">New Username</label>
+                <input type="text" class="form-control" formControlName="new_username"
+                  placeholder="Enter new username"
+                  [ngClass]="{'is-invalid': unameInvalid('new_username')}" />
+                <div class="form-text">Current: <strong>{{ user.username }}</strong></div>
+                @if (unameInvalid('new_username')) {
+                  <div class="invalid-feedback">Username is required.</div>
+                }
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Current Password</label>
+                <input type="password" class="form-control" formControlName="current_password"
+                  placeholder="Confirm with your password"
+                  [ngClass]="{'is-invalid': unameInvalid('current_password')}" />
+                @if (unameInvalid('current_password')) {
+                  <div class="invalid-feedback">Current password is required.</div>
+                }
+              </div>
+              <button type="submit" class="btn-submit-review" style="width:100%;"
+                [disabled]="usernameForm.invalid || usernameLoading">
+                {{ usernameLoading ? 'Saving…' : 'Update Username' }}
+              </button>
+            </form>
+          </div>
+
+          <!-- Change Password -->
+          <div class="settings-card">
+            <div class="settings-title">&#128274; Change Password</div>
+            <p class="settings-hint">Choose a strong password at least 6 characters long.</p>
+
+            @if (passwordSuccess) {
+              <div class="alert-dark-success mb-3">&#10003; {{ passwordSuccess }}</div>
+            }
+            @if (passwordError) {
+              <div class="alert-dark-danger mb-3">{{ passwordError }}</div>
+            }
+
+            <form [formGroup]="passwordForm" (ngSubmit)="submitPassword()">
+              <div class="mb-3">
+                <label class="form-label">Current Password</label>
+                <input type="password" class="form-control" formControlName="current_password"
+                  placeholder="Your current password"
+                  [ngClass]="{'is-invalid': pwInvalid('current_password')}" />
+                @if (pwInvalid('current_password')) {
+                  <div class="invalid-feedback">Current password is required.</div>
+                }
+              </div>
+              <div class="mb-3">
+                <label class="form-label">New Password</label>
+                <input type="password" class="form-control" formControlName="new_password"
+                  placeholder="At least 6 characters"
+                  [ngClass]="{'is-invalid': pwInvalid('new_password')}" />
+                @if (pwInvalid('new_password')) {
+                  <div class="invalid-feedback">Password must be at least 6 characters.</div>
+                }
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Confirm New Password</label>
+                <input type="password" class="form-control" formControlName="confirm_password"
+                  placeholder="Repeat new password"
+                  [ngClass]="{'is-invalid': passwordMismatch}" />
+                @if (passwordMismatch) {
+                  <div class="invalid-feedback">Passwords do not match.</div>
+                }
+              </div>
+              <button type="submit" class="btn-submit-review" style="width:100%;"
+                [disabled]="passwordForm.invalid || passwordLoading">
+                {{ passwordLoading ? 'Saving…' : 'Update Password' }}
+              </button>
+            </form>
+          </div>
+
+        </div>
+      }
+
+      <!-- ── Manage Users Tab ───────────────────────────────────────── -->
+      @if (activeTab === 'users' && user.admin) {
+
+        <div class="user-search-bar">
+          <span class="user-search-icon">&#128269;</span>
+          <input type="text" class="user-search-input" [(ngModel)]="userSearch" placeholder="Search users by name..." />
+          @if (userSearch) {
+            <button class="search-clear-x" (click)="userSearch = ''">&#10005;</button>
+          }
+        </div>
+
+        @if (deleteUserError) {
+          <div class="alert-dark-danger mb-3" style="font-size:0.85rem;">{{ deleteUserError }}</div>
+        }
+
+        @if (usersLoading) {
+          <div class="text-center py-4">
+            <div class="spinner-border spinner-border-sm" role="status"></div>
+          </div>
+        }
+
+        @if (!usersLoading && filteredUsers.length === 0) {
+          <div class="empty-state" style="padding:2rem;">
+            <div class="empty-icon">&#128100;</div>
+            <p>No users found.</p>
+          </div>
+        }
+
+        @for (u of filteredUsers; track u._id) {
+          <div class="user-manage-card">
+            <div class="umc-header">
+              <div class="umc-left">
+                <img [src]="'/assets/images/avatar/' + (u.avatar || 'profile.png')" class="umc-avatar" alt="avatar" />
+                <div class="umc-info">
+                  <div class="umc-username-row">
+                    <span class="umc-username">{{ u.username }}</span>
+                    @if (u.admin) { <span class="profile-admin-badge" style="font-size:0.65rem;">Admin</span> }
+                    @if (u.moderator && !u.admin) { <span class="profile-mod-badge" style="font-size:0.65rem;">Mod</span> }
+                  </div>
+                  <div class="umc-meta-row">
+                    <span class="umc-stat">&#128172; {{ u.review_count }} comment{{ u.review_count !== 1 ? 's' : '' }}</span>
+                    <span class="umc-stat-sep">·</span>
+                    <span class="umc-stat">&#9733; {{ u.watchlist_count }} watchlist</span>
+                  </div>
+                </div>
+              </div>
+              <div class="umc-actions">
+                <button class="umc-btn-reviews" (click)="toggleUserReviews(u.username)">
+                  {{ expandedUsername === u.username ? '&#9650; Hide' : '&#9654; Reviews' }}
+                </button>
+                @if (!u.admin && u.username !== user.username) {
+                  <button class="umc-btn-mod" [class.is-mod]="u.moderator" (click)="setModerator(u.username, !u.moderator)"
+                    [title]="u.moderator ? 'Remove moderator' : 'Make moderator'">
+                    {{ u.moderator ? '&#128737; Mod' : '+ Mod' }}
+                  </button>
+                }
+                @if (u.username !== user.username) {
+                  @if (confirmDeleteUsername === u.username) {
+                    <span class="inline-confirm">
+                      <span class="inline-confirm-text">Sure?</span>
+                      <button class="inline-confirm-yes" (click)="deleteUser(u.username)">Yes</button>
+                      <button class="inline-confirm-no" (click)="confirmDeleteUsername = null">No</button>
+                    </span>
+                  } @else {
+                    <button class="umc-btn-delete" (click)="confirmDeleteUsername = u.username">&#128465;</button>
+                  }
+                }
+              </div>
+            </div>
+
+            @if (expandedUsername === u.username) {
+              <div class="umc-reviews-panel">
+                @if (expandedReviewsLoading) {
+                  <div class="text-center py-3"><div class="spinner-border spinner-border-sm" role="status"></div></div>
+                }
+                @if (!expandedReviewsLoading && expandedReviews.length === 0) {
+                  <p class="umc-no-reviews">No reviews yet.</p>
+                }
+                @for (r of expandedReviews; track r.review_id) {
+                  <div class="umc-review-row" [routerLink]="['/movies', r.movie_id]">
+                    <div class="umc-review-poster">
+                      @if (r.poster) {
+                        <img [src]="posterUrl(r.poster)" [alt]="r.movie_title" />
+                      } @else {
+                        <div class="rhc-poster-blank" style="width:40px;height:56px;font-size:1rem;">{{ r.movie_title?.charAt(0) }}</div>
+                      }
+                    </div>
+                    <div class="umc-review-body">
+                      <div class="umc-review-movie">{{ r.movie_title }}</div>
+                      <div style="font-size:0.8rem; color:#f5c518;">{{ starString(r.star) }} <span style="color:#888;">({{ r.star }}/5)</span></div>
+                      <div class="umc-review-comment">{{ r.comment }}</div>
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
+      }
+
+    }
+  </div>
+</div>

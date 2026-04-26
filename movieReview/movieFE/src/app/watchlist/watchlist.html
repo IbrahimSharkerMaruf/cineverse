@@ -1,0 +1,63 @@
+<div class="page-wrapper">
+  <div class="container-xl px-4">
+
+    <div class="d-flex align-items-center mb-4">
+      <h1 class="watchlist-title">My Watchlist</h1>
+      <span class="review-count-badge ms-3">{{ movies.length }}</span>
+    </div>
+
+    @if (isLoading) {
+      <div class="text-center py-5">
+        <div class="spinner-border" style="width:3rem;height:3rem;" role="status"></div>
+        <p class="mt-3" style="color:#666;">Loading watchlist...</p>
+      </div>
+    }
+
+    @if (!isLoading && movies.length === 0) {
+      <div class="empty-state">
+        <div class="empty-icon">&#9733;</div>
+        <h4>Your watchlist is empty</h4>
+        <p>Browse movies and click the bookmark to save them here.</p>
+        <a class="btn-hero" style="text-decoration:none;" [routerLink]="'/movies'">Browse Movies</a>
+      </div>
+    }
+
+    @if (!isLoading && movies.length > 0) {
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        @for (movie of movies; track movie._id) {
+          <div class="col">
+            <div class="movie-card" [routerLink]="['/movies', movie._id]">
+              <button class="btn-bookmark bookmarked" (click)="remove(movie._id, $event)" title="Remove from watchlist">&#9733;</button>
+              @if (movie.poster) {
+                <div class="mc-poster">
+                  <img [src]="posterUrl(movie.poster)" [alt]="movie.title" loading="lazy" />
+                  <div class="mc-info">
+                    <div class="mc-genre">{{ parseNames(movie.genres) }}</div>
+                    <div class="mc-title">{{ movie.title }}</div>
+                    <div class="mc-meta">
+                      <span class="mc-year">{{ movie.release_date?.slice(0,4) }}</span>
+                      <span class="mc-rating">&#9733; {{ movie.vote_average }}</span>
+                    </div>
+                  </div>
+                </div>
+              } @else {
+                <div class="mc-blank">
+                  <span class="mc-blank-letter">{{ movie.title?.charAt(0) }}</span>
+                  <div class="mc-info">
+                    <div class="mc-genre">{{ parseNames(movie.genres) }}</div>
+                    <div class="mc-title">{{ movie.title }}</div>
+                    <div class="mc-meta">
+                      <span class="mc-year">{{ movie.release_date?.slice(0,4) }}</span>
+                      <span class="mc-rating">&#9733; {{ movie.vote_average }}</span>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+  </div>
+</div>

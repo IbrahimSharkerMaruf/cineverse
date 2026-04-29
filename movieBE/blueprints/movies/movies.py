@@ -1,6 +1,7 @@
 from flask import Blueprint, request, make_response, jsonify
 from bson import ObjectId, json_util
 import json
+import datetime
 from decorators import jwt_required, admin_required
 
 import globals
@@ -43,7 +44,9 @@ def getAllMovies():
     title = request.args.get('title')
     genre = request.args.get('genre')
     if title:
-        query["title"] = {"$regex": title, "$options": "i"}
+        words = [w.strip() for w in title.strip().split() if w.strip()]
+        word_patterns = [{"title": {"$regex": w, "$options": "i"}} for w in words]
+        query["$or"] = [{"title": {"$regex": title, "$options": "i"}}] + word_patterns
     if genre:
         query["genres"] = {"$regex": genre, "$options": "i"}
 
@@ -96,13 +99,30 @@ def getAllMovies():
         return make_response(jsonify({"error": "sort order must be 'asc' or 'desc'"}), 400)
 
     try:
-        movies_cursor = movies.find(query)
+        total = movies.count_documents(query)
 
-        if sort_field:
-            direction = 1 if sort_order == 'asc' else -1
-            movies_cursor = movies_cursor.sort(sort_field, direction)
-
-        movies_cursor = movies_cursor.skip(page_start).limit(page_size)
+        if title and not sort_field:
+            pipeline = [
+                {"$match": query},
+                {"$addFields": {
+                    "_score": {"$switch": {"branches": [
+                        {"case": {"$eq": [{"$toLower": "$title"}, title.lower()]}, "then": 0},
+                        {"case": {"$eq": [{"$indexOfCP": [{"$toLower": "$title"}, title.lower()]}, 0]}, "then": 1},
+                        {"case": {"$gte": [{"$indexOfCP": [{"$toLower": "$title"}, title.lower()]}, 0]}, "then": 2},
+                    ], "default": 3}}
+                }},
+                {"$sort": {"_score": 1, "title": 1}},
+                {"$skip": page_start},
+                {"$limit": page_size},
+                {"$project": {"_score": 0}}
+            ]
+            movies_cursor = movies.aggregate(pipeline)
+        else:
+            movies_cursor = movies.find(query)
+            if sort_field:
+                direction = 1 if sort_order == 'asc' else -1
+                movies_cursor = movies_cursor.sort(sort_field, direction)
+            movies_cursor = movies_cursor.skip(page_start).limit(page_size)
 
         for movie in movies_cursor:
             movie['_id'] = str(movie['_id'])
@@ -110,9 +130,16 @@ def getAllMovies():
                 movie["reviews"] = []
             for review in movie["reviews"]:
                 review["_id"] = str(review["_id"])
+                for reply in review.get("replies", []):
+                    reply["_id"] = str(reply["_id"])
             data_to_return.append(movie)
 
-        return make_response(json.loads(json_util.dumps(data_to_return)), 200)
+        return make_response(json.loads(json_util.dumps({
+            "movies": data_to_return,
+            "total": total,
+            "page": page_num,
+            "page_size": page_size
+        })), 200)
 
     except ConnectionError:
         return make_response(jsonify({"error": "Database connection failed"}), 500)
@@ -138,6 +165,8 @@ def getOneMovie(movie_id):
         movie["reviews"] = []
     for review in movie["reviews"]:
         review["_id"] = str(review["_id"])
+        for reply in review.get("replies", []):
+            reply["_id"] = str(reply["_id"])
 
     return make_response(jsonify(movie), 200)
 
@@ -151,6 +180,11 @@ def addMovie():
 
     if not data.get("title") or not data.get("release_date"):
         return make_response(jsonify({"error": "title and release_date are required"}), 400)
+
+    try:
+        datetime.datetime.strptime(data.get("release_date").strip(), "%Y-%m-%d")
+    except ValueError:
+        return make_response(jsonify({"error": "release_date must be a valid date in YYYY-MM-DD format"}), 422)
 
     # Type and range validation
     try:

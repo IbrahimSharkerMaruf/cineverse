@@ -30,6 +30,8 @@ def fetch_all_reviews(movie_id):
     data_to_return = []
     for review in movie.get("reviews", []):
         review['_id'] = str(review['_id'])
+        for reply in review.get("replies", []):
+            reply['_id'] = str(reply['_id'])
         data_to_return.append(review)
 
     return make_response(jsonify(data_to_return), 200)
@@ -178,3 +180,72 @@ def deleteReview(movie_id, review_id):
     if result.modified_count == 1:
         return make_response(jsonify({"message": "Review deleted"}), 200)
     return make_response(jsonify({"error": "Review not found"}), 404)
+
+
+@reviews_bp.route('/movies/<string:movie_id>/reviews/<string:review_id>/replies', methods=['POST'])
+@jwt_required
+def addReply(movie_id, review_id):
+    movie_oid = valid_oid(movie_id)
+    review_oid = valid_oid(review_id)
+    if not movie_oid or not review_oid:
+        return make_response(jsonify({"error": "Invalid ID format"}), 400)
+
+    comment = request.form.get("comment", "").strip()
+    if not comment:
+        return make_response(jsonify({"error": "comment is required"}), 400)
+    if len(comment) > 500:
+        return make_response(jsonify({"error": "Reply must be 500 characters or fewer"}), 422)
+
+    avatar = request.form.get("avatar", "profile.png")
+    allowed_avatars = {"profile.png", "man.png", "woman.png", "boy.png", "cat.png", "panda.png", "rabbit.png", "hacker.png"}
+    if avatar not in allowed_avatars:
+        avatar = "profile.png"
+
+    reply_id = ObjectId()
+    new_reply = {
+        "_id": reply_id,
+        "username": request.user,
+        "comment": comment,
+        "avatar": avatar
+    }
+
+    result = movies.update_one(
+        {"_id": movie_oid, "reviews._id": review_oid},
+        {"$push": {"reviews.$.replies": new_reply}}
+    )
+
+    if result.matched_count == 0:
+        return make_response(jsonify({"error": "Review not found"}), 404)
+    return make_response(jsonify({"message": "Reply added", "reply_id": str(reply_id)}), 201)
+
+
+@reviews_bp.route('/movies/<string:movie_id>/reviews/<string:review_id>/replies/<string:reply_id>', methods=['DELETE'])
+@jwt_required
+def deleteReply(movie_id, review_id, reply_id):
+    movie_oid = valid_oid(movie_id)
+    review_oid = valid_oid(review_id)
+    reply_oid = valid_oid(reply_id)
+    if not movie_oid or not review_oid or not reply_oid:
+        return make_response(jsonify({"error": "Invalid ID format"}), 400)
+
+    movie_doc = movies.find_one(
+        {"_id": movie_oid, "reviews._id": review_oid},
+        {"reviews.$": 1}
+    )
+    if not movie_doc or not movie_doc.get("reviews"):
+        return make_response(jsonify({"error": "Review not found"}), 404)
+
+    review = movie_doc["reviews"][0]
+    reply = next((r for r in review.get("replies", []) if r["_id"] == reply_oid), None)
+    if not reply:
+        return make_response(jsonify({"error": "Reply not found"}), 404)
+
+    is_mod = getattr(request, 'moderator', False)
+    if not request.admin and reply["username"] != request.user and not is_mod:
+        return make_response(jsonify({"error": "Not authorized to delete this reply"}), 403)
+
+    movies.update_one(
+        {"_id": movie_oid, "reviews._id": review_oid},
+        {"$pull": {"reviews.$.replies": {"_id": reply_oid}}}
+    )
+    return make_response(jsonify({"message": "Reply deleted"}), 200)

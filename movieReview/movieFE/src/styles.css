@@ -515,15 +515,26 @@ body.light-mode .keyword-badge {
 .review-card {
   background: var(--card-bg);
   border: 1px solid var(--border-subtle);
+  border-left: 3px solid var(--primary);
   border-radius: 10px;
-  padding: 1rem 1.25rem;
-  margin-bottom: 0.75rem;
-  transition: border-color 0.2s, background 0.3s ease;
+  padding: 1.1rem 1.25rem 0.85rem;
+  margin-bottom: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.3s ease;
 }
-.review-card:hover { border-color: var(--border); }
+.review-card:hover {
+  border-color: var(--border);
+  border-left-color: var(--primary);
+  box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+}
 .review-username { font-weight: 700; color: var(--text-strong); font-size: 0.95rem; }
-.review-stars { color: var(--gold); font-size: 1rem; letter-spacing: 1px; }
-.review-comment { color: var(--text-muted); margin-top: 0.4rem; font-size: 0.9rem; line-height: 1.6; }
+.review-stars { color: var(--gold); font-size: 0.95rem; letter-spacing: 2px; }
+.review-comment {
+  color: var(--text-muted);
+  margin-top: 0.6rem;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  padding-left: 0.1rem;
+}
 .review-count-badge {
   background: rgba(229,9,20,0.12);
   color: var(--primary);
@@ -540,11 +551,13 @@ body.light-mode .review-count-badge {
 /* ── Review form ── */
 .review-form-card {
   background: var(--card-bg);
-  border: 1px solid var(--border-faint);
-  border-radius: 14px;
+  border: 1px solid var(--border-subtle);
+  border-top: 3px solid var(--primary);
+  border-radius: 12px;
   overflow: hidden;
-  margin-top: 1.5rem;
+  margin-top: 2rem;
   margin-bottom: 3rem;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
   transition: background 0.3s ease;
 }
 .review-form-header {
@@ -554,6 +567,9 @@ body.light-mode .review-count-badge {
   font-weight: 700;
   font-size: 1rem;
   color: var(--text-strong);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 .review-form-body { padding: 1.5rem; }
 .review-form-body label { color: var(--text-muted); font-size: 0.82rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 0.35rem; }
@@ -759,12 +775,13 @@ body.light-mode .alert-dark-success {
 body.light-mode .avatar-grid-item:hover { border-color: rgba(249,115,22,0.5); }
 .avatar-grid-item--selected { border-color: var(--primary) !important; }
 .review-avatar {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid var(--border-subtle);
+  border: 2px solid var(--border);
   flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
 }
 
 /* ── Watchlist bookmark button (on movie cards) ── */
@@ -988,6 +1005,16 @@ body.light-mode .btn-bookmark.bookmarked { color: var(--gold); }
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.rhc-replied-to {
+  font-size: 0.78rem;
+  color: var(--text-faint);
+  margin-top: 0.2rem;
+}
+.rhc-replied-to strong { color: var(--text-muted); }
+.rhc-original-comment {
+  font-style: italic;
+  color: var(--text-faint);
 }
 .rhc-comment {
   color: var(--text-muted);

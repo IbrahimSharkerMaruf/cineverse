@@ -214,3 +214,27 @@ def get_my_reviews():
     ]
     results = list(movies_coll.aggregate(pipeline))
     return make_response(jsonify(results), 200)
+
+
+@auth_bp.route('/my-replies', methods=['GET'])
+@jwt_required
+def get_my_replies():
+    username = request.user
+    pipeline = [
+        {"$unwind": "$reviews"},
+        {"$unwind": "$reviews.replies"},
+        {"$match": {"reviews.replies.username": username}},
+        {"$project": {
+            "_id": 0,
+            "movie_id": {"$toString": "$_id"},
+            "movie_title": "$title",
+            "poster": "$poster",
+            "review_id": {"$toString": "$reviews._id"},
+            "review_username": "$reviews.username",
+            "review_comment": "$reviews.comment",
+            "reply_id": {"$toString": "$reviews.replies._id"},
+            "comment": "$reviews.replies.comment"
+        }}
+    ]
+    results = list(movies_coll.aggregate(pipeline))
+    return make_response(jsonify(results), 200)

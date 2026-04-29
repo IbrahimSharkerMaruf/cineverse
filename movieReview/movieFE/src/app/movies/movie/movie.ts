@@ -20,6 +20,7 @@ export class Movie {
   submitSuccess = false;
   hoveredStar = 0;
   deleteMovieError = '';
+  confirmDeleteMovie = false;
 
   isInWatchlist = false;
 
@@ -28,6 +29,12 @@ export class Movie {
   editError = '';
   deleteReviewError = '';
   confirmDeleteReviewId: string | null = null;
+
+  replyingToReviewId: string | null = null;
+  replyText = '';
+  replyError = '';
+  confirmDeleteReplyId: string | null = null;
+  confirmDeleteReplyReviewId: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -176,6 +183,55 @@ export class Movie {
     this.webService.deleteMovie(id).subscribe({
       next: () => this.router.navigate(['/movies']),
       error: () => { this.deleteMovieError = 'Failed to delete movie.'; },
+    });
+  }
+
+  startReply(reviewId: string) {
+    this.replyingToReviewId = reviewId;
+    this.replyText = '';
+    this.replyError = '';
+  }
+
+  cancelReply() {
+    this.replyingToReviewId = null;
+    this.replyText = '';
+    this.replyError = '';
+  }
+
+  submitReply(reviewId: string) {
+    if (!this.replyText.trim()) return;
+    const movieId = this.route.snapshot.paramMap.get('id')!;
+    const rawPath = this.authService.getAvatar();
+    const avatarFile = rawPath.split('/').pop() || 'profile.png';
+    this.webService.postReply(movieId, reviewId, this.replyText.trim(), avatarFile).subscribe({
+      next: () => {
+        this.replyingToReviewId = null;
+        this.replyText = '';
+        this.loadReviews();
+      },
+      error: (err) => { this.replyError = err?.error?.error || 'Failed to post reply.'; }
+    });
+  }
+
+  confirmDeleteReply(reviewId: string, replyId: string) {
+    this.confirmDeleteReplyReviewId = reviewId;
+    this.confirmDeleteReplyId = replyId;
+  }
+
+  cancelDeleteReply() {
+    this.confirmDeleteReplyId = null;
+    this.confirmDeleteReplyReviewId = null;
+  }
+
+  deleteReply(reviewId: string, replyId: string) {
+    const movieId = this.route.snapshot.paramMap.get('id')!;
+    this.webService.deleteReply(movieId, reviewId, replyId).subscribe({
+      next: () => {
+        this.confirmDeleteReplyId = null;
+        this.confirmDeleteReplyReviewId = null;
+        this.loadReviews();
+      },
+      error: () => {}
     });
   }
 

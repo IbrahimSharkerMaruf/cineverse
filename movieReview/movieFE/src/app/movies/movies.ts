@@ -15,6 +15,7 @@ import { AuthService } from '../services/auth-service';
 export class Movies {
   movie_list: any[] = [];
   page = 1;
+  totalPages = 1;
   isLastPage = false;
   isLoading = false;
   filterForm: any;
@@ -81,9 +82,10 @@ export class Movies {
   loadMovies() {
     this.isLoading = true;
     this.webService.getMovies(this.page, this.filterForm?.value || {}).subscribe({
-      next: (response: any[]) => {
-        this.movie_list = response;
-        this.isLastPage = response.length < this.webService.pageSize;
+      next: (response) => {
+        this.movie_list = response.movies;
+        this.totalPages = Math.max(1, Math.ceil(response.total / this.webService.pageSize));
+        this.isLastPage = this.page >= this.totalPages;
         this.isLoading = false;
       },
       error: () => {
@@ -97,10 +99,15 @@ export class Movies {
     this.addError = '';
     const formData = new FormData();
     Object.entries(this.addMovieForm.value).forEach(([key, val]) => {
+      if (key === 'genres') return;
       if (val !== '' && val !== null && val !== undefined) {
         formData.append(key, val as string);
       }
     });
+    const selectedGenre: string = this.addMovieForm.value.genres || '';
+    if (selectedGenre) {
+      formData.append('genres', JSON.stringify([{ name: selectedGenre }]));
+    }
     this.webService.addMovie(formData).subscribe({
       next: () => {
         this.addSuccess = true;
@@ -153,6 +160,14 @@ export class Movies {
     }
   }
 
+  searchByTitle() {
+    const title = this.filterForm.get('title')?.value || '';
+    this.filterForm.reset({ title, genre: '', year: '', min_rating: '', max_rating: '', sort: '', order: 'desc' });
+    this.page = 1;
+    sessionStorage['page'] = 1;
+    this.loadMovies();
+  }
+
   applyFilters() {
     this.page = 1;
     sessionStorage['page'] = 1;
@@ -184,7 +199,7 @@ export class Movies {
 
   goToPage() {
     if (!this.jumpPage || this.jumpPage < 1) return;
-    this.page = Math.floor(this.jumpPage);
+    this.page = Math.min(Math.floor(this.jumpPage), this.totalPages);
     this.jumpPage = null;
     sessionStorage['page'] = this.page;
     this.loadMovies();

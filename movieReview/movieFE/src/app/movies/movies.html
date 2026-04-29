@@ -28,7 +28,7 @@
               </div>
               <div class="col-md-6">
                 <label class="form-label">Release Date *</label>
-                <input type="text" class="form-control" formControlName="release_date" placeholder="YYYY-MM-DD" />
+                <input type="date" class="form-control" formControlName="release_date" />
               </div>
               <div class="col-12">
                 <label class="form-label">Overview</label>
@@ -36,31 +36,53 @@
               </div>
               <div class="col-md-4">
                 <label class="form-label">Runtime (min)</label>
-                <input type="number" class="form-control" formControlName="runtime" placeholder="120" />
+                <input type="number" class="form-control" formControlName="runtime" placeholder="120" min="0" />
               </div>
               <div class="col-md-4">
                 <label class="form-label">Rating (0–10)</label>
-                <input type="number" class="form-control" formControlName="vote_average" placeholder="7.5" step="0.1" />
+                <input type="number" class="form-control" formControlName="vote_average" placeholder="7.5" step="0.1" min="0" max="10" />
               </div>
               <div class="col-md-4">
                 <label class="form-label">Vote Count</label>
-                <input type="number" class="form-control" formControlName="vote_count" placeholder="1000" />
+                <input type="number" class="form-control" formControlName="vote_count" placeholder="1000" min="0" />
               </div>
               <div class="col-md-6">
                 <label class="form-label">Budget ($)</label>
-                <input type="number" class="form-control" formControlName="budget" placeholder="50000000" />
+                <input type="number" class="form-control" formControlName="budget" placeholder="50000000" min="0" />
               </div>
               <div class="col-md-6">
                 <label class="form-label">Revenue ($)</label>
-                <input type="number" class="form-control" formControlName="revenue" placeholder="100000000" />
+                <input type="number" class="form-control" formControlName="revenue" placeholder="100000000" min="0" />
               </div>
               <div class="col-md-6">
-                <label class="form-label">Genres <small style="color:#888">(JSON or plain text)</small></label>
-                <input type="text" class="form-control" formControlName="genres" placeholder='[{"name":"Action"},{"name":"Drama"}]' />
+                <label class="form-label">Genres</label>
+                <select class="form-select" formControlName="genres">
+                  <option value="">— Select genre —</option>
+                  <option value="Action">Action</option>
+                  <option value="Adventure">Adventure</option>
+                  <option value="Animation">Animation</option>
+                  <option value="Comedy">Comedy</option>
+                  <option value="Crime">Crime</option>
+                  <option value="Documentary">Documentary</option>
+                  <option value="Drama">Drama</option>
+                  <option value="Family">Family</option>
+                  <option value="Fantasy">Fantasy</option>
+                  <option value="Foreign">Foreign</option>
+                  <option value="History">History</option>
+                  <option value="Horror">Horror</option>
+                  <option value="Music">Music</option>
+                  <option value="Mystery">Mystery</option>
+                  <option value="Romance">Romance</option>
+                  <option value="Science Fiction">Science Fiction</option>
+                  <option value="Thriller">Thriller</option>
+                  <option value="TV Movie">TV Movie</option>
+                  <option value="War">War</option>
+                  <option value="Western">Western</option>
+                </select>
               </div>
               <div class="col-md-6">
-                <label class="form-label">Keywords <small style="color:#888">(JSON or plain text)</small></label>
-                <input type="text" class="form-control" formControlName="keywords" placeholder='[{"name":"hero"},{"name":"adventure"}]' />
+                <label class="form-label">Keywords</label>
+                <input type="text" class="form-control" formControlName="keywords" placeholder="e.g. hero, space, adventure" />
               </div>
               <div class="col-12 d-flex gap-2 mt-2">
                 <button type="submit" class="btn-submit-add" [disabled]="addMovieForm.invalid">Add Movie</button>
@@ -73,13 +95,13 @@
     }
 
     <!-- Search Bar -->
-    <form [formGroup]="filterForm" (ngSubmit)="applyFilters()">
+    <form [formGroup]="filterForm" (ngSubmit)="searchByTitle()">
       <div class="search-hero">
         <div class="search-hero-inner">
           <span class="search-icon">&#128269;</span>
-          <input type="text" class="search-hero-input" formControlName="title" placeholder="Search movies, genres, titles..." (keydown.enter)="applyFilters()" />
+          <input type="text" class="search-hero-input" formControlName="title" placeholder="Search movies..." (keydown.enter)="searchByTitle()" />
           @if (filterForm.get('title')?.value) {
-            <button type="button" class="search-clear-x" (click)="filterForm.patchValue({title:''}); applyFilters()">&#10005;</button>
+            <button type="button" class="search-clear-x" (click)="filterForm.patchValue({title:''}); searchByTitle()">&#10005;</button>
           }
           <button type="submit" class="search-hero-btn">Search</button>
         </div>
@@ -212,7 +234,7 @@
           <button class="btn-page" (click)="previousPage()" [disabled]="page === 1">
             &laquo; Previous
           </button>
-          <span class="page-indicator">Page {{ page }}</span>
+          <span class="page-indicator">Page {{ page }} of {{ totalPages }}</span>
           <button class="btn-page" (click)="nextPage()" [disabled]="isLastPage">
             Next &raquo;
           </button>
@@ -225,6 +247,7 @@
             [(ngModel)]="jumpPage"
             [ngModelOptions]="{standalone: true}"
             min="1"
+            [max]="totalPages"
             placeholder="{{ page }}"
             (keydown.enter)="goToPage()"
           />

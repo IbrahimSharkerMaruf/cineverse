@@ -50,6 +50,9 @@
         <button class="profile-tab" [class.active]="activeTab === 'reviews'" (click)="activeTab = 'reviews'">
           My Reviews <span class="review-count-badge">{{ myReviews.length }}</span>
         </button>
+        <button class="profile-tab" [class.active]="activeTab === 'replies'" (click)="activeTab = 'replies'">
+          My Replies <span class="review-count-badge">{{ myReplies.length }}</span>
+        </button>
         <button class="profile-tab" [class.active]="activeTab === 'settings'" (click)="activeTab = 'settings'">
           &#9881; Settings
         </button>
@@ -118,6 +121,35 @@
                 <div class="review-stars" style="font-size:0.9rem;">{{ starString(r.star) }} <small style="color:#888; font-size:0.75rem;">({{ r.star }}/5)</small></div>
                 <div class="rhc-comment">{{ r.comment }}</div>
               }
+            </div>
+          </div>
+        }
+      }
+
+      <!-- ── My Replies Tab ───────────────────────────────────────────── -->
+      @if (activeTab === 'replies') {
+        @if (myReplies.length === 0) {
+          <div class="empty-state" style="padding:2rem;">
+            <div class="empty-icon">&#8617;</div>
+            <p>You haven't replied to any reviews yet.</p>
+          </div>
+        }
+        @for (r of myReplies; track r.reply_id) {
+          <div class="review-history-card" [routerLink]="['/movies', r.movie_id]" style="cursor:pointer;">
+            <div class="rhc-poster">
+              @if (r.poster) {
+                <img [src]="posterUrl(r.poster)" [alt]="r.movie_title" />
+              } @else {
+                <div class="rhc-poster-blank">{{ r.movie_title?.charAt(0) }}</div>
+              }
+            </div>
+            <div class="rhc-body">
+              <div class="rhc-movie-title">{{ r.movie_title }}</div>
+              <div class="rhc-replied-to">
+                &#8617; replying to <strong>{{ r.review_username }}</strong>:
+                <span class="rhc-original-comment">"{{ r.review_comment | slice:0:80 }}{{ r.review_comment?.length > 80 ? '…' : '' }}"</span>
+              </div>
+              <div class="rhc-comment" style="margin-top:0.3rem;">{{ r.comment }}</div>
             </div>
           </div>
         }

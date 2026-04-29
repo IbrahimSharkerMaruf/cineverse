@@ -23,7 +23,7 @@ export class WebServices {
     if (filters.min_rating) url += `&min_rating=${filters.min_rating}`;
     if (filters.max_rating) url += `&max_rating=${filters.max_rating}`;
     if (filters.sort)       url += `&sort=${filters.sort}&order=${filters.order || 'desc'}`;
-    return this.http.get<any>(url);
+    return this.http.get<{ movies: any[]; total: number }>(url);
   }
 
   getMovie(id: any) {
@@ -98,6 +98,10 @@ export class WebServices {
     return this.http.get<any[]>(`${this.baseUrl}/my-reviews`, { headers: this.authHeaders() });
   }
 
+  getMyReplies() {
+    return this.http.get<any[]>(`${this.baseUrl}/my-replies`, { headers: this.authHeaders() });
+  }
+
   getWatchlistIds() {
     return this.http.get<string[]>(`${this.baseUrl}/watchlist`, { headers: this.authHeaders() });
   }
@@ -134,5 +138,16 @@ export class WebServices {
 
   deleteMyAccount() {
     return this.http.delete<any>(`${this.baseUrl}/delete-account`, { headers: this.authHeaders() });
+  }
+
+  postReply(movieId: string, reviewId: string, comment: string, avatar: string) {
+    const fd = new FormData();
+    fd.append('comment', comment);
+    fd.append('avatar', avatar);
+    return this.http.post<any>(`${this.baseUrl}/movies/${movieId}/reviews/${reviewId}/replies`, fd, { headers: this.authHeaders() });
+  }
+
+  deleteReply(movieId: string, reviewId: string, replyId: string) {
+    return this.http.delete<any>(`${this.baseUrl}/movies/${movieId}/reviews/${reviewId}/replies/${replyId}`, { headers: this.authHeaders() });
   }
 }

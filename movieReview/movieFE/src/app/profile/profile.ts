@@ -20,6 +20,7 @@ function passwordsMatch(group: AbstractControl): ValidationErrors | null {
 export class Profile {
   user: any = null;
   myReviews: any[] = [];
+  myReplies: any[] = [];
   isLoading = true;
 
   // self-delete
@@ -27,7 +28,7 @@ export class Profile {
   deleteAccountError = '';
 
   // tabs
-  activeTab: 'reviews' | 'settings' | 'users' = 'reviews';
+  activeTab: 'reviews' | 'replies' | 'settings' | 'users' = 'reviews';
 
   // username form
   usernameForm: any;
@@ -95,6 +96,7 @@ export class Profile {
       error: () => { this.isLoading = false; }
     });
     this.webService.getMyReviews().subscribe(r => this.myReviews = r);
+    this.webService.getMyReplies().subscribe(r => this.myReplies = r);
   }
 
   // ── Change username ────────────────────────────────────────────────────────

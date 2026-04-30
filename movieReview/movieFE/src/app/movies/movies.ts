@@ -1,3 +1,7 @@
+/*
+ * Angular core, routing, form modules, and project services needed
+ * by the movie list page component.
+ */
 import { Component } from '@angular/core';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -19,32 +23,38 @@ import { AuthService } from '../services/auth-service';
 })
 export class Movies {
 
-  /*
-   * Pagination and movie list state.
-   * page is 1-based and persisted in sessionStorage so it survives navigation.
-   */
+  /** Loaded movie records for the current page. */
   movie_list: any[] = [];
+  /** Current 1-based page number, persisted in sessionStorage. */
   page = 1;
+  /** Total number of pages for the active query. */
   totalPages = 1;
+  /** True when the current page is the last available page. */
   isLastPage = false;
+  /** True while an HTTP request is in flight. */
   isLoading = false;
+  /** Reactive form group holding all active filter values. */
   filterForm: any;
 
-  /*
-   * Admin "Add Movie" panel state.
-   * posterFile / posterPreview handle the optional poster upload and its local preview.
-   */
+  /** Controls visibility of the admin add-movie panel. */
   showAddForm = false;
+  /** Controls visibility of the filters panel. */
   showFilters = false;
+  /** Target page number typed into the jump-to-page input. */
   jumpPage: number | null = null;
+  /** Reactive form group for the admin add-movie inputs. */
   addMovieForm: any;
+  /** True after a movie is successfully added. */
   addSuccess = false;
+  /** Error message shown when the add-movie request fails. */
   addError = '';
+  /** Poster image file selected for upload. */
   posterFile: File | null = null;
+  /** Object URL used to preview the selected poster before upload. */
   posterPreview: string | null = null;
 
-  /*
-   * Counts how many filter fields are currently active (non-empty).
+  /**
+   * Number of filter fields currently active (non-empty).
    * Used to display a badge on the filters button.
    */
   get activeFilterCount(): number {
@@ -52,6 +62,10 @@ export class Movies {
     return [v.genre, v.year, v.min_rating, v.max_rating, v.sort].filter(x => x !== '' && x != null).length;
   }
 
+  /*
+   * Dependency injection — route is used to read the optional genre query
+   * parameter when the page is opened from a genre tag link.
+   */
   constructor(
     public webService: WebServices,
     public authService: AuthService,
@@ -59,7 +73,7 @@ export class Movies {
     private route: ActivatedRoute
   ) {}
 
-  /*
+  /**
    * Lifecycle — initialises filter and add-movie forms, restores the saved page
    * from sessionStorage, then loads the first batch of movies.
    * Also pre-fetches the watchlist so movie cards show the correct saved state.
@@ -104,9 +118,9 @@ export class Movies {
     this.loadMovies();
   }
 
-  /*
-   * Data loading — fetches the current page using the active filter values.
-   * totalPages and isLastPage are recalculated on every response.
+  /**
+   * Fetches the current page using the active filter values.
+   * Recalculates totalPages and isLastPage on every response.
    */
   loadMovies() {
     this.isLoading = true;
@@ -123,11 +137,8 @@ export class Movies {
     });
   }
 
-  /*
-   * Admin — add movie form.
-   * onPosterChange reads the selected file and generates a local preview URL.
-   * submitAddMovie builds a FormData payload (genres is serialised to JSON array)
-   * and reloads the list on success.
+  /**
+   * Reads the selected poster file and generates a local preview URL.
    */
   onPosterChange(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0] ?? null;
@@ -141,6 +152,10 @@ export class Movies {
     }
   }
 
+  /**
+   * Builds a FormData payload and submits a new movie.
+   * Genres is serialised to a JSON array; reloads the list on success.
+   */
   submitAddMovie() {
     this.addSuccess = false;
     this.addError = '';
@@ -172,10 +187,9 @@ export class Movies {
     });
   }
 
-  /*
-   * Filter actions — each resets to page 1 before reloading.
-   * searchByTitle clears all filters except title so they don't conflict.
-   * filterByGenre is triggered by clicking a genre tag on a movie card.
+  /**
+   * Submits a cross-field search; clears all other filters so they don't conflict.
+   * Resets to page 1 before reloading.
    */
   searchByTitle() {
     const title = this.filterForm.get('title')?.value || '';
@@ -185,12 +199,14 @@ export class Movies {
     this.loadMovies();
   }
 
+  /** Applies the current filter panel values and resets to page 1. */
   applyFilters() {
     this.page = 1;
     sessionStorage['page'] = 1;
     this.loadMovies();
   }
 
+  /** Clears all active filters and reloads from page 1. */
   clearFilters() {
     this.filterForm.reset({ title: '', genre: '', year: '', min_rating: '', max_rating: '', sort: '', order: 'desc' });
     this.page = 1;
@@ -198,6 +214,7 @@ export class Movies {
     this.loadMovies();
   }
 
+  /** Filters the list to the clicked genre tag and resets to page 1. */
   filterByGenre(genre: string, event: Event) {
     event.stopPropagation();
     this.filterForm.patchValue({ genre });
@@ -206,7 +223,7 @@ export class Movies {
     this.loadMovies();
   }
 
-  /*
+  /**
    * Pagination controls — page is saved to sessionStorage so returning from
    * a movie detail page lands back on the same page.
    */
@@ -218,6 +235,7 @@ export class Movies {
     }
   }
 
+  /** Advances to the next page if one exists. */
   nextPage() {
     if (!this.isLastPage) {
       this.page++;
@@ -226,6 +244,7 @@ export class Movies {
     }
   }
 
+  /** Jumps directly to the page number entered in the input field. */
   goToPage() {
     if (!this.jumpPage || this.jumpPage < 1) return;
     this.page = Math.min(Math.floor(this.jumpPage), this.totalPages);
@@ -234,9 +253,9 @@ export class Movies {
     this.loadMovies();
   }
 
-  /*
-   * Watchlist toggle — event.stopPropagation prevents the card click
-   * from navigating to the movie detail page at the same time.
+  /**
+   * Toggles the current movie in or out of the user's watchlist.
+   * stopPropagation prevents the card click from navigating to the detail page.
    */
   toggleWatchlist(movieId: string, event: Event) {
     event.stopPropagation();
@@ -252,13 +271,12 @@ export class Movies {
     }
   }
 
-  /*
-   * Template helpers — used directly in movies.html for display formatting.
-   */
+  /** Builds the asset URL for a poster image filename. */
   posterUrl(filename: string): string {
     return `/assets/images/posters/${encodeURIComponent(filename)}`;
   }
 
+  /** Parses a JSON array of name objects and returns a comma-separated string. */
   parseNames(jsonStr: string): string {
     try {
       return JSON.parse(jsonStr).map((item: any) => item.name).join(', ');
@@ -267,6 +285,7 @@ export class Movies {
     }
   }
 
+  /** Parses a JSON genres string and returns an array of genre name strings. */
   genreList(jsonStr: string): string[] {
     try {
       return JSON.parse(jsonStr).map((i: any) => i.name);

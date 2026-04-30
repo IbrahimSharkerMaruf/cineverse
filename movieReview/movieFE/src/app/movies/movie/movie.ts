@@ -1,3 +1,7 @@
+/*
+ * Angular core, routing, form, and project service imports needed
+ * by the movie detail page component.
+ */
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -19,56 +23,61 @@ import { AuthService } from '../../services/auth-service';
 })
 export class Movie {
 
-  /*
-   * Core movie data and review submission form state.
-   * hoveredStar tracks which star the user is hovering in the rating picker.
-   */
+  /** The loaded movie document returned from the API. */
   movie: any = null;
+  /** List of reviews for the current movie. */
   reviews_list: any[] = [];
+  /** Reactive form group for submitting a new review. */
   reviewForm: any;
+  /** Error message shown when review submission fails. */
   submitError = '';
+  /** True after a review is successfully submitted. */
   submitSuccess = false;
+  /** Tracks which star index the user is hovering over in the rating picker. */
   hoveredStar = 0;
 
-  /*
-   * Watchlist state for the currently loaded movie.
-   * Populated on init either from the cached watchlist or a fresh API call.
-   */
+  /** True when the current movie is in the logged-in user's watchlist. */
   isInWatchlist = false;
 
-  /*
-   * Inline review editing state.
-   * editingReviewId is the _id of the review currently open in the edit form.
-   * confirmDeleteReviewId is the _id waiting for the user to confirm deletion.
-   */
+  /** The _id of the review currently open in the inline edit form, or null. */
   editingReviewId: string | null = null;
+  /** Reactive form group for the inline review edit inputs. */
   editForm: any;
+  /** Error message shown when a review edit fails. */
   editError = '';
+  /** Error message shown when a review delete fails. */
   deleteReviewError = '';
+  /** The _id of the review awaiting delete confirmation, or null. */
   confirmDeleteReviewId: string | null = null;
 
-  /*
-   * Reply compose and delete state.
-   * replyingToReviewId is the review whose reply box is currently open.
-   * confirmDeleteReplyId + confirmDeleteReplyReviewId track the pending reply deletion.
-   */
+  /** The _id of the review whose reply compose box is open, or null. */
   replyingToReviewId: string | null = null;
+  /** Text currently typed into the reply compose box. */
   replyText = '';
+  /** Error message shown when posting a reply fails. */
   replyError = '';
+  /** The _id of the reply awaiting delete confirmation, or null. */
   confirmDeleteReplyId: string | null = null;
+  /** The _id of the parent review for the reply pending deletion. */
   confirmDeleteReplyReviewId: string | null = null;
 
-  /*
-   * Admin-only movie management state.
-   * Covers both the delete confirmation flow and the inline edit panel.
-   */
+  /** True when the admin movie delete confirmation prompt is visible. */
   confirmDeleteMovie = false;
+  /** Error message shown when the movie delete request fails. */
   deleteMovieError = '';
+  /** True when the admin inline movie edit panel is open. */
   editingMovie = false;
+  /** Reactive form group for the admin movie edit inputs. */
   editMovieForm: any;
+  /** Error message shown when the movie update request fails. */
   editMovieError = '';
+  /** True briefly after a successful movie update to show a success banner. */
   editMovieSuccess = false;
 
+  /*
+   * Dependency injection — route gives the movie ID from the URL,
+   * router is used to redirect after a movie deletion.
+   */
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -77,8 +86,8 @@ export class Movie {
     private formBuilder: FormBuilder
   ) {}
 
-  /*
-   * Lifecycle — load movie, reviews, and watchlist status on component init.
+  /**
+   * Lifecycle — loads the movie, reviews, and watchlist status on init.
    * Watchlist is read from the local cache when available to avoid an extra request.
    */
   ngOnInit() {
@@ -107,6 +116,10 @@ export class Movie {
     }
   }
 
+  /**
+   * Fetches all reviews for the current movie.
+   * Called on init and after any create, edit, or delete action.
+   */
   loadReviews() {
     const id = this.route.snapshot.paramMap.get('id');
     this.webService.getReviews(id).subscribe((response) => {
@@ -114,10 +127,9 @@ export class Movie {
     });
   }
 
-  /*
-   * Computed ratings shown in the comparison bar.
-   * communityRating averages all user star scores (0–5 scale).
-   * officialRating5 converts the TMDb vote_average from 0–10 to 0–5.
+  /**
+   * Average of all user star scores on a 0–5 scale.
+   * Returns null when there are no reviews yet.
    */
   get communityRating(): number | null {
     if (!this.reviews_list.length) return null;
@@ -125,13 +137,14 @@ export class Movie {
     return Math.round(avg * 10) / 10;
   }
 
+  /** TMDb vote_average converted from the 0–10 scale to 0–5. */
   get officialRating5(): number {
     return this.movie ? Math.round((this.movie.vote_average / 2) * 10) / 10 : 0;
   }
 
-  /*
-   * Watchlist toggle — adds or removes this movie from the user's watchlist
-   * and updates the local AuthService cache optimistically without a page reload.
+  /**
+   * Adds or removes this movie from the user's watchlist and updates
+   * the local AuthService cache optimistically without a page reload.
    */
   toggleWatchlist() {
     const id = this.route.snapshot.paramMap.get('id')!;
@@ -148,9 +161,8 @@ export class Movie {
     }
   }
 
-  /*
-   * Inline review editing — startEdit opens the form pre-filled with the
-   * existing review text and star rating; submitEdit saves and refreshes the list.
+  /**
+   * Opens the inline edit form pre-filled with the existing review text and star rating.
    */
   startEdit(review: any) {
     this.editingReviewId = review._id;
@@ -161,11 +173,13 @@ export class Movie {
     });
   }
 
+  /** Closes the inline edit form without saving. */
   cancelEdit() {
     this.editingReviewId = null;
     this.editError = '';
   }
 
+  /** Submits the edited review and reloads the review list on success. */
   submitEdit(reviewId: string) {
     const movieId = this.route.snapshot.paramMap.get('id')!;
     this.webService.editReview(movieId, reviewId, this.editForm.value).subscribe({
@@ -177,8 +191,8 @@ export class Movie {
     });
   }
 
-  /*
-   * Review submission — posts a new review for the current movie.
+  /**
+   * Posts a new review for the current movie.
    * Resets the form on success and reloads the review list.
    */
   onSubmit() {
@@ -198,18 +212,17 @@ export class Movie {
     });
   }
 
-  /*
-   * Review deletion — confirmDelete shows the inline confirmation prompt;
-   * deleteReview performs the actual delete and refreshes the list.
-   */
+  /** Shows the inline delete confirmation prompt for the given review. */
   confirmDelete(reviewId: string) {
     this.confirmDeleteReviewId = reviewId;
   }
 
+  /** Dismisses the review delete confirmation without deleting. */
   cancelDelete() {
     this.confirmDeleteReviewId = null;
   }
 
+  /** Deletes the review and reloads the list; shows an error banner on failure. */
   deleteReview(reviewId: string) {
     const movieId = this.route.snapshot.paramMap.get('id')!;
     this.deleteReviewError = '';
@@ -223,7 +236,7 @@ export class Movie {
     });
   }
 
-  /*
+  /**
    * Reply system — startReply opens the compose box for a given review;
    * submitReply posts the reply and reloads; confirmDeleteReply / deleteReply
    * handle the two-step delete confirmation for replies.
@@ -234,12 +247,14 @@ export class Movie {
     this.replyError = '';
   }
 
+  /** Closes the reply compose box without posting. */
   cancelReply() {
     this.replyingToReviewId = null;
     this.replyText = '';
     this.replyError = '';
   }
 
+  /** Posts the composed reply text to the given review and reloads. */
   submitReply(reviewId: string) {
     if (!this.replyText.trim()) return;
     const movieId = this.route.snapshot.paramMap.get('id')!;
@@ -253,16 +268,19 @@ export class Movie {
     });
   }
 
+  /** Shows the inline delete confirmation prompt for the given reply. */
   confirmDeleteReply(reviewId: string, replyId: string) {
     this.confirmDeleteReplyReviewId = reviewId;
     this.confirmDeleteReplyId = replyId;
   }
 
+  /** Dismisses the reply delete confirmation without deleting. */
   cancelDeleteReply() {
     this.confirmDeleteReplyId = null;
     this.confirmDeleteReplyReviewId = null;
   }
 
+  /** Deletes the reply and reloads the review list. */
   deleteReply(reviewId: string, replyId: string) {
     const movieId = this.route.snapshot.paramMap.get('id')!;
     this.webService.deleteReply(movieId, reviewId, replyId).subscribe({
@@ -275,11 +293,9 @@ export class Movie {
     });
   }
 
-  /*
-   * Admin — movie edit panel.
-   * startEditMovie builds a reactive form pre-filled with the current movie values.
-   * submitEditMovie sends only non-null fields to the PUT endpoint and updates
-   * the local movie object on success so the page reflects changes immediately.
+  /**
+   * Opens the admin edit panel pre-filled with the current movie field values.
+   * submitEditMovie sends only non-null fields and updates the local object on success.
    */
   startEditMovie() {
     this.editingMovie = true;
@@ -300,12 +316,14 @@ export class Movie {
     });
   }
 
+  /** Closes the admin edit panel without saving. */
   cancelEditMovie() {
     this.editingMovie = false;
     this.editMovieError = '';
     this.editMovieSuccess = false;
   }
 
+  /** Sends the edited movie fields to the PUT endpoint and reflects changes locally on success. */
   submitEditMovie() {
     const id = this.route.snapshot.paramMap.get('id')!;
     const fd = new FormData();
@@ -332,9 +350,8 @@ export class Movie {
     });
   }
 
-  /*
-   * Admin — movie deletion.
-   * Navigates back to /movies on success so the deleted movie is no longer accessible.
+  /**
+   * Deletes the current movie and navigates back to /movies on success.
    */
   deleteMovie() {
     const id = this.route.snapshot.paramMap.get('id')!;
@@ -344,11 +361,7 @@ export class Movie {
     });
   }
 
-  /*
-   * Template helpers — used directly in movie.html for display formatting.
-   * posterUrl builds the asset path; genreList / keywordList parse the JSON
-   * arrays stored in the database; starString converts a number to a star glyph string.
-   */
+  /** Returns true when the given form control is invalid and has been touched. */
   isInvalid(control: string) {
     return (
       this.reviewForm.controls[control].invalid &&
@@ -356,26 +369,32 @@ export class Movie {
     );
   }
 
+  /** Builds the asset URL for a poster image filename. */
   posterUrl(filename: string): string {
     return `/assets/images/posters/${encodeURIComponent(filename)}`;
   }
 
+  /** Parses a JSON array string into a plain array; returns empty array on failure. */
   parseJson(jsonStr: string): any[] {
     try { return JSON.parse(jsonStr); } catch { return []; }
   }
 
+  /** Returns an array of genre name strings parsed from the stored JSON. */
   genreList(jsonStr: string): string[] {
     return this.parseJson(jsonStr).map((i: any) => i.name);
   }
 
+  /** Returns up to 15 keyword name strings parsed from the stored JSON. */
   keywordList(jsonStr: string): string[] {
     return this.parseJson(jsonStr).map((i: any) => i.name).slice(0, 15);
   }
 
+  /** Converts a numeric star count to a filled/empty star glyph string. */
   starString(n: number): string {
     return '★'.repeat(Math.round(n)) + '☆'.repeat(5 - Math.round(n));
   }
 
+  /** Returns genre names as a comma-separated string. */
   parseNames(jsonStr: string): string {
     return this.genreList(jsonStr).join(', ');
   }

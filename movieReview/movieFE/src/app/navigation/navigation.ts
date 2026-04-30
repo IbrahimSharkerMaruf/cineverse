@@ -16,14 +16,30 @@ import { WebServices } from '../services/web-services';
   styleUrl: './navigation.css',
 })
 export class Navigation implements OnInit {
+
   /** True when the app is in dark mode (default). */
   isDarkMode = true;
 
+  /** Internal auth service exposed publicly for template login-state checks. */
+  authService: AuthService;
+
+  /** Auth0 SDK service exposed publicly for template observable bindings. */
+  auth0: Auth0Service;
+
+  /**
+   * Injects the auth services and web service.
+   * @param authService Internal service for session state and watchlist management.
+   * @param auth0 Auth0 Angular SDK service for login/logout and auth observables.
+   * @param webService Used to pre-fetch watchlist IDs on load.
+   */
   constructor(
-    public authService: AuthService,
-    public auth0: Auth0Service,
+    authService: AuthService,
+    auth0: Auth0Service,
     private webService: WebServices,
-  ) {}
+  ) {
+    this.authService = authService;
+    this.auth0 = auth0;
+  }
 
   /** Reads saved theme from localStorage and applies it on load. */
   ngOnInit() {
@@ -57,6 +73,7 @@ export class Navigation implements OnInit {
     this.applyTheme();
   }
 
+  /** Applies the current isDarkMode value to the document body class. */
   private applyTheme() {
     document.body.classList.toggle('light-mode', !this.isDarkMode);
   }

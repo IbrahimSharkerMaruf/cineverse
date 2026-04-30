@@ -2298,7 +2298,7 @@ export class WebServices {
    */
   getMovies(page: number, filters: any &#x3D; {}) {
     let url &#x3D; &#x60;${this.baseUrl}/movies?pn&#x3D;${page}&amp;ps&#x3D;${this.pageSize}&#x60;;
-    if (filters.title)      url +&#x3D; &#x60;&amp;title&#x3D;${encodeURIComponent(filters.title)}&#x60;;
+    if (filters.title)      url +&#x3D; &#x60;&amp;q&#x3D;${encodeURIComponent(filters.title)}&#x60;;
     if (filters.genre)      url +&#x3D; &#x60;&amp;genre&#x3D;${encodeURIComponent(filters.genre)}&#x60;;
     if (filters.year)       url +&#x3D; &#x60;&amp;year&#x3D;${filters.year}&#x60;;
     if (filters.min_rating) url +&#x3D; &#x60;&amp;min_rating&#x3D;${filters.min_rating}&#x60;;

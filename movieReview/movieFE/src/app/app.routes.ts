@@ -1,3 +1,7 @@
+/*
+ * Angular router and Auth0 guard import, plus all page components
+ * referenced in the route definitions below.
+ */
 import { Routes } from '@angular/router';
 import { authGuardFn } from '@auth0/auth0-angular';
 import { Home } from './home/home';

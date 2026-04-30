@@ -13,11 +13,23 @@ import { AuthService } from '../../services/auth-service';
   templateUrl: './register.html',
 })
 export class Register {
+
+  /** Auth0 SDK service exposed publicly so the template can call loginWithRedirect. */
+  auth0: Auth0Service;
+
+  /**
+   * Injects Auth0, the internal auth service, and the router.
+   * @param auth0 Auth0 Angular SDK service used to trigger the sign-up redirect.
+   * @param authService Internal service used to check existing login state.
+   * @param router Used to redirect already-authenticated users away from this page.
+   */
   constructor(
-    public auth0: Auth0Service,
+    auth0: Auth0Service,
     private authService: AuthService,
     private router: Router,
-  ) {}
+  ) {
+    this.auth0 = auth0;
+  }
 
   /** Redirects to `/movies` if the user is already logged in. */
   ngOnInit() {

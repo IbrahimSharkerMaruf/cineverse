@@ -63,6 +63,18 @@ def auth_sync():
 
 # ── Profile ────────────────────────────────────────────────────────────────────
 
+ALLOWED_AVATARS = {'profile.png','rabbit.png','panda.png','man.png','cat.png','woman.png','hacker.png','boy.png'}
+
+@auth_bp.route('/profile/avatar', methods=['PUT'])
+@jwt_required
+def update_avatar():
+    avatar = request.form.get('avatar', '').strip()
+    if avatar not in ALLOWED_AVATARS:
+        return make_response(jsonify({"error": "Invalid avatar"}), 400)
+    users.update_one({"username": request.user}, {"$set": {"avatar": avatar}})
+    return make_response(jsonify({"avatar": avatar}), 200)
+
+
 @auth_bp.route('/profile', methods=['GET'])
 @jwt_required
 def get_profile():

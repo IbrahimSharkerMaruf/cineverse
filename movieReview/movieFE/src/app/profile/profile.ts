@@ -17,6 +17,10 @@ export class Profile {
   myReplies: any[] = [];
   isLoading = true;
 
+  // avatar picker
+  showAvatarPicker = false;
+  avatarOptions = ['profile.png','rabbit.png','panda.png','man.png','cat.png','woman.png','hacker.png','boy.png'];
+
   // self-delete
   showDeleteConfirm = false;
   deleteAccountError = '';
@@ -92,6 +96,18 @@ export class Profile {
         this.editingReviewId = null;
       },
       error: () => { this.editReviewError = 'Failed to update review.'; }
+    });
+  }
+
+  // ── Avatar ─────────────────────────────────────────────────────────────────
+
+  selectAvatar(avatar: string) {
+    this.webService.updateAvatar(avatar).subscribe({
+      next: () => {
+        this.user.avatar = avatar;
+        this.authService.updateAvatar(avatar);
+        this.showAvatarPicker = false;
+      }
     });
   }
 

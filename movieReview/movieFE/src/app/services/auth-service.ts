@@ -45,6 +45,10 @@ export class AuthService {
     this.auth0.logout({ logoutParams: { returnTo: window.location.origin } });
   }
 
+  updateAvatar(avatar: string): void {
+    if (this._profile) this._profile.avatar = avatar;
+  }
+
   setWatchlist(ids: string[]): void {
     this.watchlistIds = ids;
     this.watchlistLoaded = true;

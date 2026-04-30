@@ -121,6 +121,12 @@ export class WebServices {
     return this.withAuth(headers => this.http.delete<any>(`${this.baseUrl}/admin/users/${encodeURIComponent(username)}`, { headers }));
   }
 
+  updateAvatar(avatar: string) {
+    const fd = new FormData();
+    fd.append('avatar', avatar);
+    return this.withAuth(headers => this.http.put<any>(`${this.baseUrl}/profile/avatar`, fd, { headers }));
+  }
+
   deleteMyAccount() {
     return this.withAuth(headers => this.http.delete<any>(`${this.baseUrl}/delete-account`, { headers }));
   }

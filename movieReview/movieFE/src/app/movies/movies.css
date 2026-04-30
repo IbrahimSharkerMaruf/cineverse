@@ -133,18 +133,22 @@
   color: var(--text-strong);
   margin-bottom: 1.2rem;
 }
-.add-movie-card .form-control {
+.add-movie-card .form-control,
+.add-movie-card .form-select {
   background: var(--input-bg);
   border: 1px solid var(--border);
   color: var(--text);
   border-radius: 6px;
 }
-.add-movie-card .form-control:focus {
+.add-movie-card .form-control:focus,
+.add-movie-card .form-select:focus {
   background: var(--input-bg);
   border-color: var(--primary);
   color: var(--text);
   box-shadow: none;
 }
+.add-movie-card .form-control::placeholder { color: var(--text-muted); }
+.add-movie-card .form-select option { background: var(--card-bg); color: var(--text); }
 .add-movie-card .form-label { color: var(--text-muted); font-size: 0.85rem; }
 
 .btn-submit-add {
@@ -170,3 +174,38 @@
   transition: border-color 0.2s;
 }
 .btn-cancel-add:hover { border-color: var(--text-muted); color: var(--text-strong); }
+
+.poster-upload-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.poster-preview-thumb {
+  width: 56px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.poster-upload-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--input-bg);
+  border: 1px dashed var(--border);
+  color: var(--text-muted);
+  border-radius: 8px;
+  padding: 0.55rem 1rem;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.poster-upload-label:hover { border-color: var(--primary); color: var(--text-strong); }

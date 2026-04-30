@@ -35,10 +35,10 @@ Open `http://localhost:4200`
 ## Test Accounts
 
 | Role      | Username          | Password |
-|-----------|-------------------|----------|
-| Admin     |  IbrahimSharker   |   12345  |
-| Moderator |  Farhan           |   12345  |
-| Regular   |   Azmain          |    12345 |
+|-----------|-------------------------------|---------------|
+| Admin     |  collectionofmeme@gmail.com   |   meme@12345  |
+| Moderator |  farhan@gmail.com             |   meme@12345  |
+| Regular   |   azmain@gmail.com            |   meme@12345  |
 
 ---
 

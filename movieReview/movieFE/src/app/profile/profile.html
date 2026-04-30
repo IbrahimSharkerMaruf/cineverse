@@ -11,7 +11,10 @@
 
       <!-- Profile Header -->
       <div class="profile-header">
-        <img [src]="'/assets/images/avatar/' + (user.avatar || 'profile.png')" class="profile-avatar-lg" alt="avatar" />
+        <div class="avatar-edit-wrap">
+          <img [src]="'/assets/images/avatar/' + (user.avatar || 'profile.png')" class="profile-avatar-lg" alt="avatar" />
+          <button class="avatar-edit-btn" (click)="showAvatarPicker = !showAvatarPicker" title="Change avatar">&#9998;</button>
+        </div>
         <div class="profile-header-info">
           <div class="profile-username">
             {{ user.username }}
@@ -44,6 +47,20 @@
           }
         </div>
       </div>
+
+      <!-- Avatar Picker -->
+      @if (showAvatarPicker) {
+        <div class="avatar-picker-panel mb-3">
+          <div class="avp-title">Choose your avatar</div>
+          <div class="avp-grid">
+            @for (av of avatarOptions; track av) {
+              <button class="avp-item" [class.avp-selected]="user.avatar === av" (click)="selectAvatar(av)" [title]="av">
+                <img [src]="'/assets/images/avatar/' + av" [alt]="av" />
+              </button>
+            }
+          </div>
+        </div>
+      }
 
       <!-- Tab Bar -->
       <div class="profile-tab-bar">

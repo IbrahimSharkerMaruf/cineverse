@@ -84,9 +84,25 @@
                 <label class="form-label">Keywords</label>
                 <input type="text" class="form-control" formControlName="keywords" placeholder="e.g. hero, space, adventure" />
               </div>
+              <div class="col-12">
+                <label class="form-label">Poster Image <span style="color:var(--text-dim); font-weight:400;">(optional)</span></label>
+                <div class="poster-upload-row">
+                  @if (posterPreview) {
+                    <img [src]="posterPreview" class="poster-preview-thumb" alt="preview" />
+                  }
+                  <label class="poster-upload-label">
+                    {{ posterFile ? posterFile.name : 'Choose image...' }}
+                    <input type="file" accept="image/*" (change)="onPosterChange($event)" style="display:none;" />
+                  </label>
+                  @if (posterFile) {
+                    <button type="button" class="btn-cancel-edit" style="font-size:0.8rem; padding:0.3rem 0.7rem;"
+                      (click)="posterFile = null; posterPreview = null">Remove</button>
+                  }
+                </div>
+              </div>
               <div class="col-12 d-flex gap-2 mt-2">
                 <button type="submit" class="btn-submit-add" [disabled]="addMovieForm.invalid">Add Movie</button>
-                <button type="button" class="btn-cancel-add" (click)="showAddForm = false; addSuccess = false; addError = ''">Cancel</button>
+                <button type="button" class="btn-cancel-add" (click)="showAddForm = false; addSuccess = false; addError = ''; posterFile = null; posterPreview = null">Cancel</button>
               </div>
             </div>
           </form>

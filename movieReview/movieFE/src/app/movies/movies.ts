@@ -26,6 +26,8 @@ export class Movies {
   addMovieForm: any;
   addSuccess = false;
   addError = '';
+  posterFile: File | null = null;
+  posterPreview: string | null = null;
 
   get activeFilterCount(): number {
     const v = this.filterForm?.value || {};
@@ -94,6 +96,18 @@ export class Movies {
     });
   }
 
+  onPosterChange(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0] ?? null;
+    this.posterFile = file;
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => { this.posterPreview = reader.result as string; };
+      reader.readAsDataURL(file);
+    } else {
+      this.posterPreview = null;
+    }
+  }
+
   submitAddMovie() {
     this.addSuccess = false;
     this.addError = '';
@@ -108,10 +122,15 @@ export class Movies {
     if (selectedGenre) {
       formData.append('genres', JSON.stringify([{ name: selectedGenre }]));
     }
+    if (this.posterFile) {
+      formData.append('poster', this.posterFile);
+    }
     this.webService.addMovie(formData).subscribe({
       next: () => {
         this.addSuccess = true;
         this.addMovieForm.reset();
+        this.posterFile = null;
+        this.posterPreview = null;
         this.loadMovies();
       },
       error: (err) => {

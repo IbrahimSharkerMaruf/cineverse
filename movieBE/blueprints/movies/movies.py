@@ -1,10 +1,25 @@
+import os
 from flask import Blueprint, request, make_response, jsonify
 from bson import ObjectId, json_util
+from werkzeug.utils import secure_filename
 import json
 import datetime
 from decorators import jwt_required, admin_required
 
 import globals
+
+ALLOWED_IMAGE_EXTS = {'png', 'jpg', 'jpeg', 'webp', 'gif'}
+
+def _save_poster(file) -> str | None:
+    if not file or not file.filename:
+        return None
+    ext = file.filename.rsplit('.', 1)[-1].lower()
+    if ext not in ALLOWED_IMAGE_EXTS:
+        return None
+    filename = secure_filename(file.filename)
+    os.makedirs(globals.POSTERS_DIR, exist_ok=True)
+    file.save(os.path.join(globals.POSTERS_DIR, filename))
+    return filename
 
 movies = globals.db.biz
 
@@ -219,6 +234,8 @@ def addMovie():
     except (ValueError, TypeError):
         return make_response(jsonify({"error": "budget and revenue must be integers"}), 422)
 
+    poster_filename = _save_poster(request.files.get('poster'))
+
     new_movie = {
         "title": data.get("title").strip(),
         "release_date": data.get("release_date").strip(),
@@ -233,6 +250,8 @@ def addMovie():
         "keywords": data.get("keywords", "").strip(),
         "reviews": []
     }
+    if poster_filename:
+        new_movie["poster"] = poster_filename
 
     result = movies.insert_one(new_movie)
     return make_response(jsonify({"url": f"http://127.0.0.1:5001/movies/{str(result.inserted_id)}"}), 201)

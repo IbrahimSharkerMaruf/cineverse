@@ -1,0 +1,224 @@
+.lp-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a0505 50%, #0a0a0a 100%);
+  padding: 2rem 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.lp-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(229,9,20,0.18) 0%, transparent 60%),
+              radial-gradient(ellipse at 75% 20%, rgba(229,9,20,0.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.lp-inner {
+  display: flex;
+  align-items: center;
+  gap: 5rem;
+  max-width: 960px;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Brand side ── */
+.lp-brand {
+  flex: 1;
+  color: #fff;
+}
+
+.lp-logo {
+  font-size: 2.8rem;
+  font-weight: 900;
+  letter-spacing: -1px;
+  color: #fff;
+  margin-bottom: 1.25rem;
+}
+
+.lp-logo span { color: var(--primary); }
+
+.lp-tagline {
+  font-size: 1.35rem;
+  font-weight: 300;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.lp-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.lp-features li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: rgba(255,255,255,0.75);
+  font-size: 0.97rem;
+}
+
+.lp-check {
+  width: 22px;
+  height: 22px;
+  background: rgba(229,9,20,0.2);
+  border: 1px solid rgba(229,9,20,0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  color: var(--primary);
+  font-weight: 900;
+  flex-shrink: 0;
+}
+
+.lp-quote {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.3);
+  font-style: italic;
+  border-left: 2px solid rgba(229,9,20,0.4);
+  padding-left: 0.85rem;
+  line-height: 1.6;
+}
+
+/* ── Card side ── */
+.lp-card {
+  background: rgba(28,28,28,0.95);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  padding: 2.5rem 2.25rem;
+  width: 340px;
+  flex-shrink: 0;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(229,9,20,0.08);
+  backdrop-filter: blur(10px);
+}
+
+.lp-icon {
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.lp-card-title {
+  font-size: 1.65rem;
+  font-weight: 900;
+  color: #fff;
+  margin: 0 0 0.3rem;
+}
+
+.lp-card-sub {
+  color: rgba(255,255,255,0.45);
+  font-size: 0.9rem;
+  margin-bottom: 2rem;
+}
+
+.lp-btn {
+  width: 100%;
+  background: var(--primary);
+  border: none;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.97rem;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  letter-spacing: 0.2px;
+}
+
+.lp-btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(229,9,20,0.4);
+}
+
+.lp-btn:active { transform: translateY(0); }
+
+.lp-separator {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.75rem 0 1rem;
+}
+
+.lp-separator::before,
+.lp-separator::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,0.08);
+}
+
+.lp-separator span {
+  color: rgba(255,255,255,0.3);
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+
+.lp-signup-note {
+  color: rgba(255,255,255,0.35);
+  font-size: 0.8rem;
+  line-height: 1.6;
+  text-align: center;
+  margin: 0;
+}
+
+.lp-signup-note span {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* ── Light mode ── */
+body.light-mode .lp-wrapper {
+  background: linear-gradient(135deg, #fff9f5 0%, #fff0e4 50%, #fff9f5 100%);
+}
+body.light-mode .lp-glow {
+  background: radial-gradient(ellipse at 30% 50%, rgba(249,115,22,0.15) 0%, transparent 60%);
+}
+body.light-mode .lp-logo { color: #111; }
+body.light-mode .lp-tagline { color: rgba(0,0,0,0.55); }
+body.light-mode .lp-features li { color: rgba(0,0,0,0.65); }
+body.light-mode .lp-check {
+  background: rgba(249,115,22,0.1);
+  border-color: rgba(249,115,22,0.4);
+  color: var(--primary);
+}
+body.light-mode .lp-quote { color: rgba(0,0,0,0.3); border-left-color: rgba(249,115,22,0.4); }
+body.light-mode .lp-card {
+  background: #fff;
+  border-color: rgba(0,0,0,0.08);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+}
+body.light-mode .lp-card-title { color: #111; }
+body.light-mode .lp-card-sub { color: rgba(0,0,0,0.4); }
+body.light-mode .lp-separator::before,
+body.light-mode .lp-separator::after { background: rgba(0,0,0,0.08); }
+body.light-mode .lp-separator span { color: rgba(0,0,0,0.35); }
+body.light-mode .lp-signup-note { color: rgba(0,0,0,0.35); }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .lp-inner {
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+  .lp-brand { text-align: center; }
+  .lp-features li { justify-content: center; }
+  .lp-quote { text-align: left; }
+  .lp-card { width: 100%; max-width: 380px; }
+}

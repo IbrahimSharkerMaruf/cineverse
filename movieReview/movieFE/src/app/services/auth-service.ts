@@ -1,63 +1,48 @@
 import { Injectable } from '@angular/core';
+import { AuthService as Auth0Service } from '@auth0/auth0-angular';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  private _profile: any = null;
 
   watchlistIds: string[] = [];
   watchlistLoaded = false;
 
+  constructor(private auth0: Auth0Service) {}
+
   isLoggedIn(): boolean {
-    return !!sessionStorage.getItem('token');
+    return this._profile !== null;
   }
 
   isAdmin(): boolean {
-    const token = this.getToken();
-    if (!token) return false;
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload?.admin === true;
-    } catch {
-      return false;
-    }
+    return this._profile?.admin === true;
   }
 
   isModerator(): boolean {
-    const token = this.getToken();
-    if (!token) return false;
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload?.moderator === true && payload?.admin !== true;
-    } catch {
-      return false;
-    }
-  }
-
-  getToken(): string | null {
-    return sessionStorage.getItem('token');
+    return this._profile?.moderator === true && !this.isAdmin();
   }
 
   getUsername(): string | null {
-    return sessionStorage.getItem('username');
+    return this._profile?.username ?? null;
   }
 
   getAvatar(): string {
-    return sessionStorage.getItem('avatar') || '/assets/images/avatar/profile.png';
+    return `/assets/images/avatar/${this._profile?.avatar || 'profile.png'}`;
   }
 
-  setSession(token: string, username: string, avatar: string = 'profile.png'): void {
-    sessionStorage.setItem('token', token);
-    sessionStorage.setItem('username', username);
-    sessionStorage.setItem('avatar', `/assets/images/avatar/${avatar}`);
+  setProfile(profile: any): void {
+    this._profile = profile;
+    this.watchlistIds = profile?.watchlist || [];
+    this.watchlistLoaded = true;
   }
 
   clearSession(): void {
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('username');
-    sessionStorage.removeItem('avatar');
+    this._profile = null;
     this.watchlistIds = [];
     this.watchlistLoaded = false;
+    this.auth0.logout({ logoutParams: { returnTo: window.location.origin } });
   }
 
   setWatchlist(ids: string[]): void {

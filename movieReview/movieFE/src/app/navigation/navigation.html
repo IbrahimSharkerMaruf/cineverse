@@ -49,10 +49,10 @@
           </li>
         } @else {
           <li class="nav-item">
-            <a class="btn-nav-login" [routerLink]="'/login'">Login</a>
+            <button class="btn-nav-login" (click)="login()">Login</button>
           </li>
           <li class="nav-item">
-            <a class="btn-nav-register" [routerLink]="'/register'">Register</a>
+            <button class="btn-nav-register" (click)="login()">Register</button>
           </li>
         }
       </ul>

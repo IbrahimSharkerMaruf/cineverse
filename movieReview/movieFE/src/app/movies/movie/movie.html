@@ -253,19 +253,7 @@
           }
 
           <form [formGroup]="reviewForm" (ngSubmit)="onSubmit()">
-            @if (!authService.isLoggedIn()) {
-              <div class="mb-3">
-                <label class="form-label">Username</label>
-                <input type="text" class="form-control" formControlName="username"
-                  placeholder="Your name"
-                  [ngClass]="{'is-invalid': isInvalid('username')}" />
-                @if (isInvalid('username')) {
-                  <div class="invalid-feedback">Username is required.</div>
-                }
-              </div>
-            } @else {
-              <p class="posting-as">Posting as <strong>{{ authService.getUsername() }}</strong></p>
-            }
+            <p class="posting-as">Posting as <strong>{{ authService.getUsername() }}</strong></p>
 
             <div class="mb-3">
               <label class="form-label">Your Review</label>

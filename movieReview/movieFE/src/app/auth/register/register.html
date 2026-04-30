@@ -2,53 +2,16 @@
   <div class="auth-card">
     <div class="auth-card-header">
       <h1>CINE<span style="opacity:0.8;">VERSE</span></h1>
-      <p>Create your free account</p>
+      <p>Create your account</p>
     </div>
-    <div class="auth-card-body">
-      @if (errorMessage) {
-        <div class="alert-dark-danger mb-3">{{ errorMessage }}</div>
-      }
-      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-
-        <!-- Avatar picker -->
-        <div class="mb-4">
-          <label class="form-label">Choose Your Avatar</label>
-          <div class="avatar-picker">
-            <div class="avatar-preview-wrap">
-              <img [src]="'/assets/images/avatar/' + selectedAvatar" class="avatar-preview-img" alt="Selected avatar" />
-            </div>
-            <div class="avatar-dropdown-wrap">
-              <div class="avatar-grid">
-                @for (avatar of avatarList; track avatar) {
-                  <div class="avatar-grid-item" [class.avatar-grid-item--selected]="selectedAvatar === avatar" (click)="selectAvatar(avatar)">
-                    <img [src]="'/assets/images/avatar/' + avatar" [alt]="avatar" />
-                  </div>
-                }
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label">Username</label>
-          <input type="text" class="form-control" formControlName="username"
-            placeholder="Choose a username"
-            [ngClass]="{'is-invalid': isInvalid('username')}" />
-          @if (isInvalid('username')) {
-            <div class="invalid-feedback">At least 3 characters required.</div>
-          }
-        </div>
-        <div class="mb-4">
-          <label class="form-label">Password</label>
-          <input type="password" class="form-control" formControlName="password"
-            placeholder="Choose a password (min 6 chars)"
-            [ngClass]="{'is-invalid': isInvalid('password')}" />
-          @if (isInvalid('password')) {
-            <div class="invalid-feedback">At least 6 characters required.</div>
-          }
-        </div>
-        <button class="btn-auth" type="submit">Create Account</button>
-      </form>
+    <div class="auth-card-body" style="text-align:center;">
+      <p style="color:var(--text-muted); margin-bottom:1.5rem; font-size:0.95rem;">
+        Sign up with your email, Google, or GitHub.<br />
+        Your account is secured by Auth0.
+      </p>
+      <button class="btn-auth" (click)="signUp()" style="width:100%;">
+        Create Account
+      </button>
     </div>
     <div class="auth-footer">
       Already have an account? <a [routerLink]="'/login'">Sign in</a>

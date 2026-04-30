@@ -1,37 +1,38 @@
-<div class="auth-wrapper">
-  <div class="auth-card">
-    <div class="auth-card-header">
-      <h1>CINE<span style="opacity:0.8;">VERSE</span></h1>
-      <p>Sign in to your account</p>
+<div class="lp-wrapper">
+  <div class="lp-glow"></div>
+
+  <div class="lp-inner">
+
+    <!-- Brand side -->
+    <div class="lp-brand">
+      <div class="lp-logo">CINE<span>VERSE</span></div>
+      <p class="lp-tagline">Your ultimate destination<br>for movie reviews.</p>
+      <ul class="lp-features">
+        <li><span class="lp-check">&#10003;</span> Rate and review any movie</li>
+        <li><span class="lp-check">&#10003;</span> Build your personal watchlist</li>
+        <li><span class="lp-check">&#10003;</span> Reply to community reviews</li>
+        <li><span class="lp-check">&#10003;</span> Compare community vs official ratings</li>
+      </ul>
+      <div class="lp-quote">"Cinema is a mirror by which we often see ourselves."</div>
     </div>
-    <div class="auth-card-body">
-      @if (errorMessage) {
-        <div class="alert-dark-danger mb-3">{{ errorMessage }}</div>
-      }
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <div class="mb-3">
-          <label class="form-label">Username</label>
-          <input type="text" class="form-control" formControlName="username"
-            placeholder="Enter your username"
-            [ngClass]="{'is-invalid': isInvalid('username')}" />
-          @if (isInvalid('username')) {
-            <div class="invalid-feedback">Username is required.</div>
-          }
-        </div>
-        <div class="mb-4">
-          <label class="form-label">Password</label>
-          <input type="password" class="form-control" formControlName="password"
-            placeholder="Enter your password"
-            [ngClass]="{'is-invalid': isInvalid('password')}" />
-          @if (isInvalid('password')) {
-            <div class="invalid-feedback">Password is required.</div>
-          }
-        </div>
-        <button class="btn-auth" type="submit">Sign In</button>
-      </form>
+
+    <!-- Card -->
+    <div class="lp-card">
+      <span class="lp-icon">&#127916;</span>
+      <h2 class="lp-card-title">Welcome back</h2>
+      <p class="lp-card-sub">Sign in to continue to CineVerse</p>
+
+      <button class="lp-btn" (click)="loginWithAuth0()">
+        &#128274; Continue with Auth0
+      </button>
+
+      <div class="lp-separator"><span>New to CineVerse?</span></div>
+
+      <p class="lp-signup-note">
+        Auth0 will let you sign up — use your email, Google, or other providers.
+        <span>No extra steps needed.</span>
+      </p>
     </div>
-    <div class="auth-footer">
-      Don't have an account? <a [routerLink]="'/register'">Create one</a>
-    </div>
+
   </div>
 </div>

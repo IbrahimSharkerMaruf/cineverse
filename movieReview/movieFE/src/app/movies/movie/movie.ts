@@ -46,10 +46,6 @@ export class Movie {
 
   ngOnInit() {
     this.reviewForm = this.formBuilder.group({
-      username: [
-        { value: this.authService.getUsername() || '', disabled: this.authService.isLoggedIn() },
-        Validators.required,
-      ],
       comment: ['', Validators.required],
       stars: [5],
     });
@@ -135,16 +131,7 @@ export class Movie {
     this.submitError = '';
     this.submitSuccess = false;
     const id = this.route.snapshot.paramMap.get('id');
-    const rawPath = this.authService.getAvatar();
-    const avatarFile = rawPath.split('/').pop() || 'profile.png';
-    const formValue = {
-      ...this.reviewForm.getRawValue(),
-      username: this.authService.isLoggedIn()
-        ? this.authService.getUsername()
-        : this.reviewForm.value.username,
-      avatar: avatarFile,
-    };
-    this.webService.postReview(id, formValue).subscribe({
+    this.webService.postReview(id, this.reviewForm.getRawValue()).subscribe({
       next: () => {
         this.submitSuccess = true;
         this.reviewForm.patchValue({ comment: '', stars: 5 });
@@ -201,9 +188,7 @@ export class Movie {
   submitReply(reviewId: string) {
     if (!this.replyText.trim()) return;
     const movieId = this.route.snapshot.paramMap.get('id')!;
-    const rawPath = this.authService.getAvatar();
-    const avatarFile = rawPath.split('/').pop() || 'profile.png';
-    this.webService.postReply(movieId, reviewId, this.replyText.trim(), avatarFile).subscribe({
+    this.webService.postReply(movieId, reviewId, this.replyText.trim()).subscribe({
       next: () => {
         this.replyingToReviewId = null;
         this.replyText = '';

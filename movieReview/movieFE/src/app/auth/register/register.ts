@@ -1,56 +1,27 @@
 import { Component } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { WebServices } from '../../services/web-services';
+import { RouterModule, Router } from '@angular/router';
+import { AuthService as Auth0Service } from '@auth0/auth0-angular';
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule, CommonModule, RouterLink],
+  imports: [RouterModule],
   templateUrl: './register.html',
 })
 export class Register {
-  registerForm: any;
-  errorMessage = '';
-  selectedAvatar = 'profile.png';
-  avatarList = ['profile.png', 'man.png', 'woman.png', 'boy.png', 'cat.png', 'panda.png', 'rabbit.png', 'hacker.png'];
-
   constructor(
-    private formBuilder: FormBuilder,
-    private webService: WebServices,
-    private router: Router
+    public auth0: Auth0Service,
+    private authService: AuthService,
+    private router: Router,
   ) {}
 
   ngOnInit() {
-    this.registerForm = this.formBuilder.group({
-      username: ['', [Validators.required, Validators.minLength(3)]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-    });
+    if (this.authService.isLoggedIn()) {
+      this.router.navigate(['/movies']);
+    }
   }
 
-  selectAvatar(avatar: string) {
-    this.selectedAvatar = avatar;
-  }
-
-  onSubmit() {
-    this.errorMessage = '';
-    this.webService
-      .register(this.registerForm.value.username, this.registerForm.value.password, this.selectedAvatar)
-      .subscribe({
-        next: () => {
-          this.router.navigate(['/login']);
-        },
-        error: (err) => {
-          this.errorMessage =
-            err?.error?.message || 'Registration failed. Username may already be taken.';
-        },
-      });
-  }
-
-  isInvalid(control: string) {
-    return (
-      this.registerForm.controls[control].invalid &&
-      this.registerForm.controls[control].touched
-    );
+  signUp() {
+    this.auth0.loginWithRedirect({ authorizationParams: { screen_hint: 'signup' } });
   }
 }

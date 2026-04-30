@@ -1,15 +1,9 @@
 import { Component } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { WebServices } from '../services/web-services';
 import { AuthService } from '../services/auth-service';
-
-function passwordsMatch(group: AbstractControl): ValidationErrors | null {
-  const np = group.get('new_password')?.value;
-  const cp = group.get('confirm_password')?.value;
-  return np && cp && np !== cp ? { mismatch: true } : null;
-}
 
 @Component({
   selector: 'app-profile',
@@ -28,19 +22,7 @@ export class Profile {
   deleteAccountError = '';
 
   // tabs
-  activeTab: 'reviews' | 'replies' | 'settings' | 'users' = 'reviews';
-
-  // username form
-  usernameForm: any;
-  usernameSuccess = '';
-  usernameError = '';
-  usernameLoading = false;
-
-  // password form
-  passwordForm: any;
-  passwordSuccess = '';
-  passwordError = '';
-  passwordLoading = false;
+  activeTab: 'reviews' | 'replies' | 'users' = 'reviews';
 
   // inline review editing (from My Reviews tab)
   editingReviewId: string | null = null;
@@ -66,26 +48,10 @@ export class Profile {
   constructor(
     public authService: AuthService,
     private webService: WebServices,
-    private router: Router,
     private fb: FormBuilder
   ) {}
 
   ngOnInit() {
-    if (!this.authService.isLoggedIn()) {
-      this.router.navigate(['/login']);
-      return;
-    }
-    this.usernameForm = this.fb.group({
-      new_username:     ['', Validators.required],
-      current_password: ['', Validators.required],
-    });
-
-    this.passwordForm = this.fb.group({
-      current_password: ['', Validators.required],
-      new_password:     ['', [Validators.required, Validators.minLength(6)]],
-      confirm_password: ['', Validators.required],
-    }, { validators: passwordsMatch });
-
     this.webService.getProfile().subscribe({
       next: (u) => {
         this.user = u;
@@ -97,67 +63,6 @@ export class Profile {
     });
     this.webService.getMyReviews().subscribe(r => this.myReviews = r);
     this.webService.getMyReplies().subscribe(r => this.myReplies = r);
-  }
-
-  // ── Change username ────────────────────────────────────────────────────────
-
-  submitUsername() {
-    this.usernameSuccess = '';
-    this.usernameError = '';
-    if (this.usernameForm.invalid) return;
-    const v = this.usernameForm.value;
-    this.usernameLoading = true;
-    this.webService.updateProfile({ current_password: v.current_password, new_username: v.new_username.trim() }).subscribe({
-      next: (res) => {
-        this.usernameLoading = false;
-        this.usernameSuccess = 'Username updated successfully!';
-        this.authService.setSession(res.token, res.username, res.avatar);
-        this.user.username = res.username;
-        this.usernameForm.reset();
-        setTimeout(() => this.usernameSuccess = '', 4000);
-      },
-      error: (err) => {
-        this.usernameLoading = false;
-        this.usernameError = err?.error?.error || 'Failed to update username.';
-      }
-    });
-  }
-
-  unameInvalid(name: string) {
-    const c = this.usernameForm.get(name);
-    return c?.invalid && c?.touched;
-  }
-
-  // ── Change password ────────────────────────────────────────────────────────
-
-  submitPassword() {
-    this.passwordSuccess = '';
-    this.passwordError = '';
-    if (this.passwordForm.invalid) return;
-    const v = this.passwordForm.value;
-    this.passwordLoading = true;
-    this.webService.updateProfile({ current_password: v.current_password, new_password: v.new_password }).subscribe({
-      next: (res) => {
-        this.passwordLoading = false;
-        this.passwordSuccess = 'Password updated successfully!';
-        this.authService.setSession(res.token, res.username, res.avatar);
-        this.passwordForm.reset();
-        setTimeout(() => this.passwordSuccess = '', 4000);
-      },
-      error: (err) => {
-        this.passwordLoading = false;
-        this.passwordError = err?.error?.error || 'Failed to update password.';
-      }
-    });
-  }
-
-  pwInvalid(name: string) {
-    const c = this.passwordForm.get(name);
-    return c?.invalid && c?.touched;
-  }
-
-  get passwordMismatch() {
-    return this.passwordForm.hasError('mismatch') && this.passwordForm.get('confirm_password')?.touched;
   }
 
   // ── Inline review editing (My Reviews tab) ─────────────────────────────────
@@ -197,7 +102,6 @@ export class Profile {
     this.webService.deleteMyAccount().subscribe({
       next: () => {
         this.authService.clearSession();
-        this.router.navigate(['/']);
       },
       error: () => { this.deleteAccountError = 'Failed to delete account. Please try again.'; }
     });

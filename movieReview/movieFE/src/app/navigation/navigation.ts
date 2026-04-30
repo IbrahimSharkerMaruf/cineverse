@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { AuthService as Auth0Service } from '@auth0/auth0-angular';
 import { AuthService } from '../services/auth-service';
 import { WebServices } from '../services/web-services';
 
@@ -15,14 +16,26 @@ export class Navigation implements OnInit {
 
   constructor(
     public authService: AuthService,
+    public auth0: Auth0Service,
     private webService: WebServices,
-    private router: Router
   ) {}
 
   ngOnInit() {
     const saved = localStorage.getItem('theme');
     this.isDarkMode = saved !== 'light';
     this.applyTheme();
+
+    this.auth0.error$.subscribe(err => {
+      console.error('[Auth0 SDK error]', err);
+    });
+
+    this.auth0.isLoading$.subscribe(loading => {
+      console.log('[Auth0] isLoading:', loading);
+    });
+
+    this.auth0.isAuthenticated$.subscribe(auth => {
+      console.log('[Auth0] isAuthenticated$:', auth);
+    });
 
     if (this.authService.isLoggedIn() && !this.authService.watchlistLoaded) {
       this.webService.getWatchlistIds().subscribe(ids => {
@@ -41,20 +54,11 @@ export class Navigation implements OnInit {
     document.body.classList.toggle('light-mode', !this.isDarkMode);
   }
 
-  logout() {
-    const token = this.authService.getToken();
-    if (token) {
-      this.webService.logout(token).subscribe({
-        next: () => this.clearAndRedirect(),
-        error: () => this.clearAndRedirect(),
-      });
-    } else {
-      this.clearAndRedirect();
-    }
+  login() {
+    this.auth0.loginWithRedirect();
   }
 
-  private clearAndRedirect() {
+  logout() {
     this.authService.clearSession();
-    this.router.navigate(['/login']);
   }
 }

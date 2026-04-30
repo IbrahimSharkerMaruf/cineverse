@@ -53,9 +53,6 @@
         <button class="profile-tab" [class.active]="activeTab === 'replies'" (click)="activeTab = 'replies'">
           My Replies <span class="review-count-badge">{{ myReplies.length }}</span>
         </button>
-        <button class="profile-tab" [class.active]="activeTab === 'settings'" (click)="activeTab = 'settings'">
-          &#9881; Settings
-        </button>
         @if (user.admin) {
           <button class="profile-tab" [class.active]="activeTab === 'users'" (click)="activeTab = 'users'">
             &#128100; Manage Users <span class="review-count-badge">{{ allUsers.length }}</span>
@@ -153,99 +150,6 @@
             </div>
           </div>
         }
-      }
-
-      <!-- ── Settings Tab ───────────────────────────────────────────── -->
-      @if (activeTab === 'settings') {
-        <div class="settings-grid">
-
-          <!-- Change Username -->
-          <div class="settings-card">
-            <div class="settings-title">&#9998; Change Username</div>
-            <p class="settings-hint">Pick a new display name. Your current password is required to confirm.</p>
-
-            @if (usernameSuccess) {
-              <div class="alert-dark-success mb-3">&#10003; {{ usernameSuccess }}</div>
-            }
-            @if (usernameError) {
-              <div class="alert-dark-danger mb-3">{{ usernameError }}</div>
-            }
-
-            <form [formGroup]="usernameForm" (ngSubmit)="submitUsername()">
-              <div class="mb-3">
-                <label class="form-label">New Username</label>
-                <input type="text" class="form-control" formControlName="new_username"
-                  placeholder="Enter new username"
-                  [ngClass]="{'is-invalid': unameInvalid('new_username')}" />
-                <div class="form-text">Current: <strong>{{ user.username }}</strong></div>
-                @if (unameInvalid('new_username')) {
-                  <div class="invalid-feedback">Username is required.</div>
-                }
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Current Password</label>
-                <input type="password" class="form-control" formControlName="current_password"
-                  placeholder="Confirm with your password"
-                  [ngClass]="{'is-invalid': unameInvalid('current_password')}" />
-                @if (unameInvalid('current_password')) {
-                  <div class="invalid-feedback">Current password is required.</div>
-                }
-              </div>
-              <button type="submit" class="btn-submit-review" style="width:100%;"
-                [disabled]="usernameForm.invalid || usernameLoading">
-                {{ usernameLoading ? 'Saving…' : 'Update Username' }}
-              </button>
-            </form>
-          </div>
-
-          <!-- Change Password -->
-          <div class="settings-card">
-            <div class="settings-title">&#128274; Change Password</div>
-            <p class="settings-hint">Choose a strong password at least 6 characters long.</p>
-
-            @if (passwordSuccess) {
-              <div class="alert-dark-success mb-3">&#10003; {{ passwordSuccess }}</div>
-            }
-            @if (passwordError) {
-              <div class="alert-dark-danger mb-3">{{ passwordError }}</div>
-            }
-
-            <form [formGroup]="passwordForm" (ngSubmit)="submitPassword()">
-              <div class="mb-3">
-                <label class="form-label">Current Password</label>
-                <input type="password" class="form-control" formControlName="current_password"
-                  placeholder="Your current password"
-                  [ngClass]="{'is-invalid': pwInvalid('current_password')}" />
-                @if (pwInvalid('current_password')) {
-                  <div class="invalid-feedback">Current password is required.</div>
-                }
-              </div>
-              <div class="mb-3">
-                <label class="form-label">New Password</label>
-                <input type="password" class="form-control" formControlName="new_password"
-                  placeholder="At least 6 characters"
-                  [ngClass]="{'is-invalid': pwInvalid('new_password')}" />
-                @if (pwInvalid('new_password')) {
-                  <div class="invalid-feedback">Password must be at least 6 characters.</div>
-                }
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Confirm New Password</label>
-                <input type="password" class="form-control" formControlName="confirm_password"
-                  placeholder="Repeat new password"
-                  [ngClass]="{'is-invalid': passwordMismatch}" />
-                @if (passwordMismatch) {
-                  <div class="invalid-feedback">Passwords do not match.</div>
-                }
-              </div>
-              <button type="submit" class="btn-submit-review" style="width:100%;"
-                [disabled]="passwordForm.invalid || passwordLoading">
-                {{ passwordLoading ? 'Saving…' : 'Update Password' }}
-              </button>
-            </form>
-          </div>
-
-        </div>
       }
 
       <!-- ── Manage Users Tab ───────────────────────────────────────── -->

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { WebServices } from '../services/web-services';
 import { AuthService } from '../services/auth-service';
@@ -17,14 +17,9 @@ export class Watchlist {
   constructor(
     public authService: AuthService,
     private webService: WebServices,
-    private router: Router
   ) {}
 
   ngOnInit() {
-    if (!this.authService.isLoggedIn()) {
-      this.router.navigate(['/login']);
-      return;
-    }
     this.load();
   }
 

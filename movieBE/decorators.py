@@ -1,59 +1,64 @@
 import globals
 from flask import jsonify, request, make_response
-import jwt
 from functools import wraps
+from auth0_utils import validate_auth0_token
 
-blacklist = globals.db.blacklist
+users = globals.db.users
+
+
+def _get_token():
+    auth_header = request.headers.get('Authorization', '')
+    if auth_header.startswith('Bearer '):
+        return auth_header[7:]
+    return request.headers.get('x-access-token')
+
 
 def jwt_required(func):
     @wraps(func)
-    def jwt_required_wrapper(*args, **kwargs):
-        token = None
-
-        if 'x-access-token' in request.headers:
-            token = request.headers['x-access-token']
-
+    def wrapper(*args, **kwargs):
+        token = _get_token()
         if not token:
-            return make_response(jsonify({"message":"token is missing"}), 401)
+            return make_response(jsonify({"message": "token is missing"}), 401)
 
-        try:
-            data = jwt.decode(token, globals.SECRET_KEY, algorithms=['HS256'])
-            request.user = data['user']
-            request.admin = data['admin']
-            request.moderator = data.get('moderator', False)
-        except:
-            return make_response(jsonify({"message":"invalid token"}), 401)
+        payload = validate_auth0_token(token)
+        if not payload:
+            return make_response(jsonify({"message": "invalid token"}), 401)
 
-        bl_token = blacklist.find_one({'token':token})
-        if bl_token is not None:
-            return make_response(jsonify({"message":"Token has been cancelled"}), 401)
+        sub = payload.get('sub')
+        user = users.find_one({"sub": sub})
+        if not user:
+            return make_response(jsonify({"message": "user not synced"}), 401)
+
+        request.user = user['username']
+        request.admin = user.get('admin', False)
+        request.moderator = user.get('moderator', False)
 
         return func(*args, **kwargs)
-    return jwt_required_wrapper
+    return wrapper
 
 
 def admin_required(func):
     @wraps(func)
-    def admin_required_wrapper(*args, **kwargs):
-        token = None
-
-        if 'x-access-token' in request.headers:
-            token = request.headers['x-access-token']
-
+    def wrapper(*args, **kwargs):
+        token = _get_token()
         if not token:
-            return make_response(jsonify({"message":"token is missing"}), 401)
+            return make_response(jsonify({"message": "token is missing"}), 401)
 
-        try:
-            data = jwt.decode(token, globals.SECRET_KEY, algorithms=['HS256'])
-        except:
-            return make_response(jsonify({"message":"invalid token"}), 401)
+        payload = validate_auth0_token(token)
+        if not payload:
+            return make_response(jsonify({"message": "invalid token"}), 401)
 
-        bl_token = blacklist.find_one({'token':token})
-        if bl_token is not None:
-            return make_response(jsonify({"message":"Token has been cancelled"}), 401)
+        sub = payload.get('sub')
+        user = users.find_one({"sub": sub})
+        if not user:
+            return make_response(jsonify({"message": "user not synced"}), 401)
 
-        if data['admin'] != True:
-            return make_response(jsonify({"message":"admin access required"}), 403)
+        if not user.get('admin', False):
+            return make_response(jsonify({"message": "admin access required"}), 403)
+
+        request.user = user['username']
+        request.admin = True
+        request.moderator = user.get('moderator', False)
 
         return func(*args, **kwargs)
-    return admin_required_wrapper
+    return wrapper

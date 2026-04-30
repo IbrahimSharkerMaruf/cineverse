@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AuthService as Auth0Service } from '@auth0/auth0-angular';
+import { switchMap, take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -9,12 +11,24 @@ export class WebServices {
   baseUrl = 'http://127.0.0.1:5001';
   pageSize: number = 8;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private auth0: Auth0Service) { }
 
-  private authHeaders(): HttpHeaders {
-    return new HttpHeaders({ 'x-access-token': sessionStorage.getItem('token') || '' });
+  private withAuth<T>(call: (headers: HttpHeaders) => import('rxjs').Observable<T>) {
+    return this.auth0.idTokenClaims$.pipe(
+      take(1),
+      switchMap(claims => {
+        const token = claims?.__raw ?? '';
+        return call(new HttpHeaders({ Authorization: `Bearer ${token}` }));
+      })
+    );
   }
 
+  // ── Auth0 sync ──────────────────────────────────────────────────────────────
+  syncAuth() {
+    return this.withAuth(headers => this.http.post<any>(`${this.baseUrl}/auth/sync`, {}, { headers }));
+  }
+
+  // ── Public endpoints (no auth needed) ──────────────────────────────────────
   getMovies(page: number, filters: any = {}) {
     let url = `${this.baseUrl}/movies?pn=${page}&ps=${this.pageSize}`;
     if (filters.title)      url += `&title=${encodeURIComponent(filters.title)}`;
@@ -34,120 +48,90 @@ export class WebServices {
     return this.http.get<any>(`${this.baseUrl}/movies/${id}/reviews`);
   }
 
+  // ── Protected endpoints ─────────────────────────────────────────────────────
   postReview(id: any, review: any) {
     const postData = new FormData();
-    postData.append('username', review.username);
     postData.append('comment', review.comment);
     postData.append('star', review.stars);
-    postData.append('avatar', review.avatar || 'profile.png');
-    return this.http.post<any>(`${this.baseUrl}/movies/${id}/reviews`, postData);
+    return this.withAuth(headers => this.http.post<any>(`${this.baseUrl}/movies/${id}/reviews`, postData, { headers }));
   }
 
   editReview(movieId: string, reviewId: string, data: any) {
     const postData = new FormData();
     postData.append('comment', data.comment);
     postData.append('star', String(data.stars));
-    return this.http.put<any>(`${this.baseUrl}/movies/${movieId}/reviews/${reviewId}`, postData, { headers: this.authHeaders() });
+    return this.withAuth(headers => this.http.put<any>(`${this.baseUrl}/movies/${movieId}/reviews/${reviewId}`, postData, { headers }));
   }
 
   deleteReview(movieId: string, reviewId: string) {
-    return this.http.delete<any>(`${this.baseUrl}/movies/${movieId}/reviews/${reviewId}`, { headers: this.authHeaders() });
-  }
-
-  login(username: string, password: string) {
-    const postData = new FormData();
-    postData.append('username', username);
-    postData.append('password', password);
-    return this.http.post<any>(`${this.baseUrl}/login`, postData);
-  }
-
-  register(username: string, password: string, avatar: string = 'profile.png') {
-    const postData = new FormData();
-    postData.append('username', username);
-    postData.append('password', password);
-    postData.append('avatar', avatar);
-    return this.http.post<any>(`${this.baseUrl}/register`, postData);
-  }
-
-  logout(token: string) {
-    const headers = new HttpHeaders({ 'x-access-token': token });
-    return this.http.get<any>(`${this.baseUrl}/logout`, { headers });
+    return this.withAuth(headers => this.http.delete<any>(`${this.baseUrl}/movies/${movieId}/reviews/${reviewId}`, { headers }));
   }
 
   addMovie(formData: FormData) {
-    return this.http.post<any>(`${this.baseUrl}/movies`, formData, { headers: this.authHeaders() });
+    return this.withAuth(headers => this.http.post<any>(`${this.baseUrl}/movies`, formData, { headers }));
   }
 
   deleteMovie(id: string) {
-    return this.http.delete<any>(`${this.baseUrl}/movies/${id}`, { headers: this.authHeaders() });
+    return this.withAuth(headers => this.http.delete<any>(`${this.baseUrl}/movies/${id}`, { headers }));
   }
 
   getProfile() {
-    return this.http.get<any>(`${this.baseUrl}/profile`, { headers: this.authHeaders() });
-  }
-
-  updateProfile(data: { current_password: string; new_username?: string; new_password?: string }) {
-    const fd = new FormData();
-    fd.append('current_password', data.current_password);
-    if (data.new_username) fd.append('new_username', data.new_username);
-    if (data.new_password) fd.append('new_password', data.new_password);
-    return this.http.put<any>(`${this.baseUrl}/profile`, fd, { headers: this.authHeaders() });
+    return this.withAuth(headers => this.http.get<any>(`${this.baseUrl}/profile`, { headers }));
   }
 
   getMyReviews() {
-    return this.http.get<any[]>(`${this.baseUrl}/my-reviews`, { headers: this.authHeaders() });
+    return this.withAuth(headers => this.http.get<any[]>(`${this.baseUrl}/my-reviews`, { headers }));
   }
 
   getMyReplies() {
-    return this.http.get<any[]>(`${this.baseUrl}/my-replies`, { headers: this.authHeaders() });
+    return this.withAuth(headers => this.http.get<any[]>(`${this.baseUrl}/my-replies`, { headers }));
   }
 
   getWatchlistIds() {
-    return this.http.get<string[]>(`${this.baseUrl}/watchlist`, { headers: this.authHeaders() });
+    return this.withAuth(headers => this.http.get<string[]>(`${this.baseUrl}/watchlist`, { headers }));
   }
 
   getWatchlistMovies() {
-    return this.http.get<any[]>(`${this.baseUrl}/watchlist/movies`, { headers: this.authHeaders() });
+    return this.withAuth(headers => this.http.get<any[]>(`${this.baseUrl}/watchlist/movies`, { headers }));
   }
 
   addToWatchlist(movieId: string) {
-    return this.http.post<any>(`${this.baseUrl}/watchlist/${movieId}`, null, { headers: this.authHeaders() });
+    return this.withAuth(headers => this.http.post<any>(`${this.baseUrl}/watchlist/${movieId}`, null, { headers }));
   }
 
   removeFromWatchlist(movieId: string) {
-    return this.http.delete<any>(`${this.baseUrl}/watchlist/${movieId}`, { headers: this.authHeaders() });
+    return this.withAuth(headers => this.http.delete<any>(`${this.baseUrl}/watchlist/${movieId}`, { headers }));
   }
 
   getAllUsers() {
-    return this.http.get<any[]>(`${this.baseUrl}/admin/users`, { headers: this.authHeaders() });
+    return this.withAuth(headers => this.http.get<any[]>(`${this.baseUrl}/admin/users`, { headers }));
   }
 
   getUserReviews(username: string) {
-    return this.http.get<any[]>(`${this.baseUrl}/admin/users/${encodeURIComponent(username)}/reviews`, { headers: this.authHeaders() });
+    return this.withAuth(headers => this.http.get<any[]>(`${this.baseUrl}/admin/users/${encodeURIComponent(username)}/reviews`, { headers }));
   }
 
   setModerator(username: string, value: boolean) {
     const data = new FormData();
     data.append('moderator', String(value));
-    return this.http.put<any>(`${this.baseUrl}/admin/users/${encodeURIComponent(username)}/moderator`, data, { headers: this.authHeaders() });
+    return this.withAuth(headers => this.http.put<any>(`${this.baseUrl}/admin/users/${encodeURIComponent(username)}/moderator`, data, { headers }));
   }
 
   adminDeleteUser(username: string) {
-    return this.http.delete<any>(`${this.baseUrl}/admin/users/${encodeURIComponent(username)}`, { headers: this.authHeaders() });
+    return this.withAuth(headers => this.http.delete<any>(`${this.baseUrl}/admin/users/${encodeURIComponent(username)}`, { headers }));
   }
 
   deleteMyAccount() {
-    return this.http.delete<any>(`${this.baseUrl}/delete-account`, { headers: this.authHeaders() });
+    return this.withAuth(headers => this.http.delete<any>(`${this.baseUrl}/delete-account`, { headers }));
   }
 
-  postReply(movieId: string, reviewId: string, comment: string, avatar: string) {
+  postReply(movieId: string, reviewId: string, comment: string) {
     const fd = new FormData();
     fd.append('comment', comment);
-    fd.append('avatar', avatar);
-    return this.http.post<any>(`${this.baseUrl}/movies/${movieId}/reviews/${reviewId}/replies`, fd, { headers: this.authHeaders() });
+    return this.withAuth(headers => this.http.post<any>(`${this.baseUrl}/movies/${movieId}/reviews/${reviewId}/replies`, fd, { headers }));
   }
 
   deleteReply(movieId: string, reviewId: string, replyId: string) {
-    return this.http.delete<any>(`${this.baseUrl}/movies/${movieId}/reviews/${reviewId}/replies/${replyId}`, { headers: this.authHeaders() });
+    return this.withAuth(headers => this.http.delete<any>(`${this.baseUrl}/movies/${movieId}/reviews/${reviewId}/replies/${replyId}`, { headers }));
   }
 }

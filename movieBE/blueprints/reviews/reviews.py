@@ -38,21 +38,16 @@ def fetch_all_reviews(movie_id):
 
 
 @reviews_bp.route('/movies/<string:movie_id>/reviews', methods=['POST'])
+@jwt_required
 def reviewMovie(movie_id):
     oid = valid_oid(movie_id)
     if not oid:
         return make_response(jsonify({"error": "Invalid movie ID format"}), 400)
 
     data = request.form
-
-    username = data.get("username", "").strip()
-    comment = data.get("comment", "").strip()
+    comment  = data.get("comment", "").strip()
     star_raw = data.get("star", "").strip()
 
-    if not username:
-        return make_response(jsonify({"error": "username is required"}), 400)
-    if len(username) > 50:
-        return make_response(jsonify({"error": "username must be 50 characters or fewer"}), 422)
     if not comment:
         return make_response(jsonify({"error": "comment is required"}), 400)
     if len(comment) > 1000:
@@ -71,18 +66,16 @@ def reviewMovie(movie_id):
     if not movie:
         return make_response(jsonify({"error": "Movie not found"}), 404)
 
-    avatar = data.get("avatar", "profile.png")
-    allowed_avatars = {"profile.png", "man.png", "woman.png", "boy.png", "cat.png", "panda.png", "rabbit.png", "hacker.png"}
-    if avatar not in allowed_avatars:
-        avatar = "profile.png"
+    user_doc = users_coll.find_one({"username": request.user}, {"avatar": 1})
+    avatar = user_doc.get('avatar', 'profile.png') if user_doc else 'profile.png'
 
     new_review_id = ObjectId()
     new_review = {
-        "_id": new_review_id,
-        "username": username,
-        "comment": comment,
-        "star": stars,
-        "avatar": avatar
+        "_id":      new_review_id,
+        "username": request.user,
+        "comment":  comment,
+        "star":     stars,
+        "avatar":   avatar
     }
 
     movies.update_one({"_id": oid}, {"$push": {"reviews": new_review}})
@@ -196,17 +189,15 @@ def addReply(movie_id, review_id):
     if len(comment) > 500:
         return make_response(jsonify({"error": "Reply must be 500 characters or fewer"}), 422)
 
-    avatar = request.form.get("avatar", "profile.png")
-    allowed_avatars = {"profile.png", "man.png", "woman.png", "boy.png", "cat.png", "panda.png", "rabbit.png", "hacker.png"}
-    if avatar not in allowed_avatars:
-        avatar = "profile.png"
+    user_doc = users_coll.find_one({"username": request.user}, {"avatar": 1})
+    avatar = user_doc.get('avatar', 'profile.png') if user_doc else 'profile.png'
 
     reply_id = ObjectId()
     new_reply = {
-        "_id": reply_id,
+        "_id":      reply_id,
         "username": request.user,
-        "comment": comment,
-        "avatar": avatar
+        "comment":  comment,
+        "avatar":   avatar
     }
 
     result = movies.update_one(

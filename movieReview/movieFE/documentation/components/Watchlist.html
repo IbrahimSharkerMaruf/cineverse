@@ -1,0 +1,1029 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>cineverse documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">cineverse documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  Watchlist</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/watchlist/watchlist.ts</code>
+</p>
+
+
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Watchlist page component.
+Displays all movies saved to the current user&#39;s watchlist and allows removal.</p>
+
+    </p>
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">providers</td>
+                <td class="col-md-9">
+                                <code><a href="../injectables/WebServices.html" target="_self" >WebServices</a></code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-watchlist</code></td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="https://angular.io/api/router/RouterModule" target="_blank" >RouterModule</a></code>
+                                <code><a href="https://angular.io/api/common/CommonModule" target="_blank" >CommonModule</a></code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./watchlist.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#authService" >authService</a>
+                            </li>
+                            <li>
+                                <a href="#isLoading" >isLoading</a>
+                            </li>
+                            <li>
+                                <a href="#movies" >movies</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#load" >load</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#parseNames" >parseNames</a>
+                            </li>
+                            <li>
+                                <a href="#posterUrl" >posterUrl</a>
+                            </li>
+                            <li>
+                                <a href="#remove" >remove</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(authService: <a href="../injectables/AuthService.html" target="_self">AuthService</a>, webService: <a href="../injectables/WebServices.html" target="_self">WebServices</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">src/app/watchlist/watchlist.ts:21</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>authService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AuthService.html" target="_self" >AuthService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>webService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/WebServices.html" target="_self" >WebServices</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="load"></a>
+                    <span class="name">
+                        <span ><b>load</b></span>
+                        <a href="#load"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>load()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="34"
+                                    class="link-to-prism">src/app/watchlist/watchlist.ts:34</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Fetches the full watchlist movie objects from the backend.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="29"
+                                    class="link-to-prism">src/app/watchlist/watchlist.ts:29</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Loads the user&#39;s watchlist movies on component init.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="parseNames"></a>
+                    <span class="name">
+                        <span ><b>parseNames</b></span>
+                        <a href="#parseNames"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>parseNames(jsonStr: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="67"
+                                    class="link-to-prism">src/app/watchlist/watchlist.ts:67</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Parses a JSON array string and returns a comma-separated list of <code>name</code> values.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>jsonStr</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>JSON string like <code>[{&quot;name&quot;:&quot;Action&quot;},...]</code>.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="posterUrl"></a>
+                    <span class="name">
+                        <span ><b>posterUrl</b></span>
+                        <a href="#posterUrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>posterUrl(filename: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="59"
+                                    class="link-to-prism">src/app/watchlist/watchlist.ts:59</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Builds the asset URL for a movie poster file.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>filename</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Poster filename stored in the database.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="remove"></a>
+                    <span class="name">
+                        <span ><b>remove</b></span>
+                        <a href="#remove"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>remove(movieId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, event: <a href="https://angular.io/api/router/Event" target="_blank">Event</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="47"
+                                    class="link-to-prism">src/app/watchlist/watchlist.ts:47</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Removes a movie from the watchlist and updates the local cache.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>movieId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Movie ID to remove.</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://angular.io/api/router/Event" target="_blank" >Event</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Click event (propagation stopped to avoid card navigation).</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="authService"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>authService</b></span>
+                        <a href="#authService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../injectables/AuthService.html" target="_self" >AuthService</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/watchlist/watchlist.ts:24</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isLoading"></a>
+                    <span class="name">
+                        <span ><b>isLoading</b></span>
+                        <a href="#isLoading"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">src/app/watchlist/watchlist.ts:21</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>True while the watchlist is being fetched from the backend.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="movies"></a>
+                    <span class="name">
+                        <span ><b>movies</b></span>
+                        <a href="#movies"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>any[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/app/watchlist/watchlist.ts:19</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Full movie objects in the user&#39;s watchlist.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component } from &#x27;@angular/core&#x27;;
+import { RouterModule } from &#x27;@angular/router&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { WebServices } from &#x27;../services/web-services&#x27;;
+import { AuthService } from &#x27;../services/auth-service&#x27;;
+
+/**
+ * Watchlist page component.
+ * Displays all movies saved to the current user&#x27;s watchlist and allows removal.
+ */
+@Component({
+  selector: &#x27;app-watchlist&#x27;,
+  imports: [RouterModule, CommonModule],
+  providers: [WebServices],
+  templateUrl: &#x27;./watchlist.html&#x27;,
+})
+export class Watchlist {
+  /** Full movie objects in the user&#x27;s watchlist. */
+  movies: any[] &#x3D; [];
+  /** True while the watchlist is being fetched from the backend. */
+  isLoading &#x3D; false;
+
+  constructor(
+    public authService: AuthService,
+    private webService: WebServices,
+  ) {}
+
+  /** Loads the user&#x27;s watchlist movies on component init. */
+  ngOnInit() {
+    this.load();
+  }
+
+  /** Fetches the full watchlist movie objects from the backend. */
+  load() {
+    this.isLoading &#x3D; true;
+    this.webService.getWatchlistMovies().subscribe({
+      next: (r) &#x3D;&gt; { this.movies &#x3D; r; this.isLoading &#x3D; false; },
+      error: () &#x3D;&gt; { this.isLoading &#x3D; false; }
+    });
+  }
+
+  /**
+   * Removes a movie from the watchlist and updates the local cache.
+   * @param movieId Movie ID to remove.
+   * @param event Click event (propagation stopped to avoid card navigation).
+   */
+  remove(movieId: string, event: Event) {
+    event.stopPropagation();
+    this.webService.removeFromWatchlist(movieId).subscribe(() &#x3D;&gt; {
+      this.authService.removeFromWatchlistLocal(movieId);
+      this.movies &#x3D; this.movies.filter(m &#x3D;&gt; m._id !&#x3D;&#x3D; movieId);
+    });
+  }
+
+  /**
+   * Builds the asset URL for a movie poster file.
+   * @param filename Poster filename stored in the database.
+   */
+  posterUrl(filename: string): string {
+    return &#x60;/assets/images/posters/${encodeURIComponent(filename)}&#x60;;
+  }
+
+  /**
+   * Parses a JSON array string and returns a comma-separated list of &#x60;name&#x60; values.
+   * @param jsonStr JSON string like &#x60;[{&quot;name&quot;:&quot;Action&quot;},...]&#x60;.
+   */
+  parseNames(jsonStr: string): string {
+    try {
+      return JSON.parse(jsonStr).map((i: any) &#x3D;&gt; i.name).join(&#x27;, &#x27;);
+    } catch { return jsonStr || &#x27;&#x27;; }
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;page-wrapper&quot;&gt;
+  &lt;div class&#x3D;&quot;container-xl px-4&quot;&gt;
+
+    &lt;div class&#x3D;&quot;d-flex align-items-center mb-4&quot;&gt;
+      &lt;h1 class&#x3D;&quot;watchlist-title&quot;&gt;My Watchlist&lt;/h1&gt;
+      &lt;span class&#x3D;&quot;review-count-badge ms-3&quot;&gt;{{ movies.length }}&lt;/span&gt;
+    &lt;/div&gt;
+
+    @if (isLoading) {
+      &lt;div class&#x3D;&quot;text-center py-5&quot;&gt;
+        &lt;div class&#x3D;&quot;spinner-border&quot; style&#x3D;&quot;width:3rem;height:3rem;&quot; role&#x3D;&quot;status&quot;&gt;&lt;/div&gt;
+        &lt;p class&#x3D;&quot;mt-3&quot; style&#x3D;&quot;color:#666;&quot;&gt;Loading watchlist...&lt;/p&gt;
+      &lt;/div&gt;
+    }
+
+    @if (!isLoading &amp;&amp; movies.length &#x3D;&#x3D;&#x3D; 0) {
+      &lt;div class&#x3D;&quot;empty-state&quot;&gt;
+        &lt;div class&#x3D;&quot;empty-icon&quot;&gt;&amp;#9733;&lt;/div&gt;
+        &lt;h4&gt;Your watchlist is empty&lt;/h4&gt;
+        &lt;p&gt;Browse movies and click the bookmark to save them here.&lt;/p&gt;
+        &lt;a class&#x3D;&quot;btn-hero&quot; style&#x3D;&quot;text-decoration:none;&quot; [routerLink]&#x3D;&quot;&#x27;/movies&#x27;&quot;&gt;Browse Movies&lt;/a&gt;
+      &lt;/div&gt;
+    }
+
+    @if (!isLoading &amp;&amp; movies.length &gt; 0) {
+      &lt;div class&#x3D;&quot;row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4&quot;&gt;
+        @for (movie of movies; track movie._id) {
+          &lt;div class&#x3D;&quot;col&quot;&gt;
+            &lt;div class&#x3D;&quot;movie-card&quot; [routerLink]&#x3D;&quot;[&#x27;/movies&#x27;, movie._id]&quot;&gt;
+              &lt;button class&#x3D;&quot;btn-bookmark bookmarked&quot; (click)&#x3D;&quot;remove(movie._id, $event)&quot; title&#x3D;&quot;Remove from watchlist&quot;&gt;&amp;#9733;&lt;/button&gt;
+              @if (movie.poster) {
+                &lt;div class&#x3D;&quot;mc-poster&quot;&gt;
+                  &lt;img [src]&#x3D;&quot;posterUrl(movie.poster)&quot; [alt]&#x3D;&quot;movie.title&quot; loading&#x3D;&quot;lazy&quot; /&gt;
+                  &lt;div class&#x3D;&quot;mc-info&quot;&gt;
+                    &lt;div class&#x3D;&quot;mc-genre&quot;&gt;{{ parseNames(movie.genres) }}&lt;/div&gt;
+                    &lt;div class&#x3D;&quot;mc-title&quot;&gt;{{ movie.title }}&lt;/div&gt;
+                    &lt;div class&#x3D;&quot;mc-meta&quot;&gt;
+                      &lt;span class&#x3D;&quot;mc-year&quot;&gt;{{ movie.release_date?.slice(0,4) }}&lt;/span&gt;
+                      &lt;span class&#x3D;&quot;mc-rating&quot;&gt;&amp;#9733; {{ movie.vote_average }}&lt;/span&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              } @else {
+                &lt;div class&#x3D;&quot;mc-blank&quot;&gt;
+                  &lt;span class&#x3D;&quot;mc-blank-letter&quot;&gt;{{ movie.title?.charAt(0) }}&lt;/span&gt;
+                  &lt;div class&#x3D;&quot;mc-info&quot;&gt;
+                    &lt;div class&#x3D;&quot;mc-genre&quot;&gt;{{ parseNames(movie.genres) }}&lt;/div&gt;
+                    &lt;div class&#x3D;&quot;mc-title&quot;&gt;{{ movie.title }}&lt;/div&gt;
+                    &lt;div class&#x3D;&quot;mc-meta&quot;&gt;
+                      &lt;span class&#x3D;&quot;mc-year&quot;&gt;{{ movie.release_date?.slice(0,4) }}&lt;/span&gt;
+                      &lt;span class&#x3D;&quot;mc-rating&quot;&gt;&amp;#9733; {{ movie.vote_average }}&lt;/span&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              }
+            &lt;/div&gt;
+          &lt;/div&gt;
+        }
+      &lt;/div&gt;
+    }
+
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="page-wrapper">  <div class="container-xl px-4">    <div class="d-flex align-items-center mb-4">      <h1 class="watchlist-title">My Watchlist</h1>      <span class="review-count-badge ms-3">{{ movies.length }}</span>    </div>    @if (isLoading) {      <div class="text-center py-5">        <div class="spinner-border" style="width:3rem;height:3rem;" role="status"></div>        <p class="mt-3" style="color:#666;">Loading watchlist...</p>      </div>    }    @if (!isLoading && movies.length === 0) {      <div class="empty-state">        <div class="empty-icon">&#9733;</div>        <h4>Your watchlist is empty</h4>        <p>Browse movies and click the bookmark to save them here.</p>        <a class="btn-hero" style="text-decoration:none;" [routerLink]="\'/movies\'">Browse Movies</a>      </div>    }    @if (!isLoading && movies.length > 0) {      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">        @for (movie of movies; track movie._id) {          <div class="col">            <div class="movie-card" [routerLink]="[\'/movies\', movie._id]">              <button class="btn-bookmark bookmarked" (click)="remove(movie._id, $event)" title="Remove from watchlist">&#9733;</button>              @if (movie.poster) {                <div class="mc-poster">                  <img [src]="posterUrl(movie.poster)" [alt]="movie.title" loading="lazy" />                  <div class="mc-info">                    <div class="mc-genre">{{ parseNames(movie.genres) }}</div>                    <div class="mc-title">{{ movie.title }}</div>                    <div class="mc-meta">                      <span class="mc-year">{{ movie.release_date?.slice(0,4) }}</span>                      <span class="mc-rating">&#9733; {{ movie.vote_average }}</span>                    </div>                  </div>                </div>              } @else {                <div class="mc-blank">                  <span class="mc-blank-letter">{{ movie.title?.charAt(0) }}</span>                  <div class="mc-info">                    <div class="mc-genre">{{ parseNames(movie.genres) }}</div>                    <div class="mc-title">{{ movie.title }}</div>                    <div class="mc-meta">                      <span class="mc-year">{{ movie.release_date?.slice(0,4) }}</span>                      <span class="mc-rating">&#9733; {{ movie.vote_average }}</span>                    </div>                  </div>                </div>              }            </div>          </div>        }      </div>    }  </div></div></div>'
+    var COMPONENTS = [{'name': 'App', 'selector': 'app-root'},{'name': 'Home', 'selector': 'app-home'},{'name': 'Login', 'selector': 'app-login'},{'name': 'Movie', 'selector': 'app-movie'},{'name': 'Movies', 'selector': 'app-movies'},{'name': 'Navigation', 'selector': 'app-navigation'},{'name': 'Profile', 'selector': 'app-profile'},{'name': 'Register', 'selector': 'app-register'},{'name': 'Watchlist', 'selector': 'app-watchlist'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'Watchlist'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'Watchlist.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

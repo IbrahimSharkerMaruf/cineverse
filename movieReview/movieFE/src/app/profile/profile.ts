@@ -5,6 +5,11 @@ import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angu
 import { WebServices } from '../services/web-services';
 import { AuthService } from '../services/auth-service';
 
+/**
+ * User profile page component.
+ * Shows the logged-in user's info, their reviews and replies, and avatar selection.
+ * Admins additionally see a user management panel with moderator controls and user deletion.
+ */
 @Component({
   selector: 'app-profile',
   imports: [RouterModule, CommonModule, FormsModule, ReactiveFormsModule],
@@ -12,37 +17,53 @@ import { AuthService } from '../services/auth-service';
   templateUrl: './profile.html',
 })
 export class Profile {
+  /** Current user's profile data returned by the backend. */
   user: any = null;
+  /** Reviews written by the current user. */
   myReviews: any[] = [];
+  /** Replies written by the current user. */
   myReplies: any[] = [];
+  /** True while the initial profile fetch is in progress. */
   isLoading = true;
 
-  // avatar picker
+  /** Controls visibility of the avatar selection grid. */
   showAvatarPicker = false;
+  /** Available avatar filenames the user can choose from. */
   avatarOptions = ['profile.png','rabbit.png','panda.png','man.png','cat.png','woman.png','hacker.png','boy.png'];
 
-  // self-delete
+  /** Controls visibility of the account deletion confirmation prompt. */
   showDeleteConfirm = false;
+  /** Error message shown when account deletion fails. */
   deleteAccountError = '';
 
-  // tabs
+  /** Currently active tab: `'reviews'`, `'replies'`, or `'users'` (admin only). */
   activeTab: 'reviews' | 'replies' | 'users' = 'reviews';
 
-  // inline review editing (from My Reviews tab)
+  /** Review ID currently being edited inline from the My Reviews tab, or null if none. */
   editingReviewId: string | null = null;
+  /** Reactive form for editing a review inline. */
   editReviewForm: any;
+  /** Error message shown when an inline review edit fails. */
   editReviewError = '';
 
-  // admin: user management
+  /** All users loaded for the admin management panel. */
   allUsers: any[] = [];
+  /** True while the admin user list is loading. */
   usersLoading = false;
+  /** Search string for filtering the admin user list. */
   userSearch = '';
+  /** Username whose review list is currently expanded in the admin panel, or null. */
   expandedUsername: string | null = null;
+  /** Reviews for the currently expanded user in the admin panel. */
   expandedReviews: any[] = [];
+  /** True while the expanded user's reviews are loading. */
   expandedReviewsLoading = false;
+  /** Error message shown when an admin user deletion fails. */
   deleteUserError = '';
+  /** Username awaiting admin delete confirmation, or null. */
   confirmDeleteUsername: string | null = null;
 
+  /** Users filtered by the current `userSearch` string. */
   get filteredUsers(): any[] {
     if (!this.userSearch.trim()) return this.allUsers;
     const q = this.userSearch.toLowerCase();
@@ -55,6 +76,7 @@ export class Profile {
     private fb: FormBuilder
   ) {}
 
+  /** Loads the user's profile, reviews, replies, and (if admin) all users on init. */
   ngOnInit() {
     this.webService.getProfile().subscribe({
       next: (u) => {
@@ -71,6 +93,10 @@ export class Profile {
 
   // ── Inline review editing (My Reviews tab) ─────────────────────────────────
 
+  /**
+   * Opens the inline edit form for a review in the My Reviews tab.
+   * @param r Review object to edit.
+   */
   startEditReview(r: any) {
     this.editingReviewId = r.review_id;
     this.editReviewError = '';
@@ -80,11 +106,16 @@ export class Profile {
     });
   }
 
+  /** Closes the inline review edit form without saving. */
   cancelEditReview() {
     this.editingReviewId = null;
     this.editReviewError = '';
   }
 
+  /**
+   * Saves an edited review and updates the local list optimistically on success.
+   * @param r Review object containing `movie_id` and `review_id`.
+   */
   submitEditReview(r: any) {
     this.webService.editReview(r.movie_id, r.review_id, this.editReviewForm.value).subscribe({
       next: () => {
@@ -101,6 +132,10 @@ export class Profile {
 
   // ── Avatar ─────────────────────────────────────────────────────────────────
 
+  /**
+   * Updates the user's avatar and syncs the change to the auth service.
+   * @param avatar Avatar filename to set (e.g. `'rabbit.png'`).
+   */
   selectAvatar(avatar: string) {
     this.webService.updateAvatar(avatar).subscribe({
       next: () => {
@@ -113,6 +148,7 @@ export class Profile {
 
   // ── Self-delete ────────────────────────────────────────────────────────────
 
+  /** Permanently deletes the current user's account and triggers logout. */
   confirmDeleteAccount() {
     this.deleteAccountError = '';
     this.webService.deleteMyAccount().subscribe({
@@ -125,6 +161,7 @@ export class Profile {
 
   // ── Admin: user management ─────────────────────────────────────────────────
 
+  /** Fetches all registered users for the admin management panel. */
   loadAllUsers() {
     this.usersLoading = true;
     this.webService.getAllUsers().subscribe({
@@ -133,6 +170,10 @@ export class Profile {
     });
   }
 
+  /**
+   * Expands or collapses the review list for a user in the admin panel.
+   * @param username Username whose reviews to toggle.
+   */
   toggleUserReviews(username: string) {
     if (this.expandedUsername === username) {
       this.expandedUsername = null;
@@ -148,6 +189,11 @@ export class Profile {
     });
   }
 
+  /**
+   * Grants or revokes the moderator role for a user and updates the local list.
+   * @param username Target username.
+   * @param value `true` to grant moderator, `false` to revoke.
+   */
   setModerator(username: string, value: boolean) {
     this.webService.setModerator(username, value).subscribe({
       next: () => {
@@ -157,6 +203,10 @@ export class Profile {
     });
   }
 
+  /**
+   * Deletes a user account as admin and removes them from the local list.
+   * @param username Username of the account to delete.
+   */
   deleteUser(username: string) {
     this.deleteUserError = '';
     this.confirmDeleteUsername = null;
@@ -172,10 +222,18 @@ export class Profile {
     });
   }
 
+  /**
+   * Builds the asset URL for a movie poster file.
+   * @param filename Poster filename stored in the database.
+   */
   posterUrl(filename: string): string {
     return `/assets/images/posters/${encodeURIComponent(filename)}`;
   }
 
+  /**
+   * Converts a numeric rating to a filled/empty star string (e.g. `"★★★☆☆"`).
+   * @param n Rating value (0–5).
+   */
   starString(n: number): string {
     return '★'.repeat(Math.round(n)) + '☆'.repeat(5 - Math.round(n));
   }

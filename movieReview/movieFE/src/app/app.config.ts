@@ -14,6 +14,7 @@ import { routes } from './app.routes';
 import { WebServices } from './services/web-services';
 import { AuthService } from './services/auth-service';
 
+/** Root application configuration: registers providers for routing, HTTP, Auth0, and the app initializer that syncs the Auth0 session with the backend on startup. */
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),

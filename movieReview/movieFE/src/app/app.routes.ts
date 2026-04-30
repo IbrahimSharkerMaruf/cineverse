@@ -8,6 +8,7 @@ import { Register } from './auth/register/register';
 import { Profile } from './profile/profile';
 import { Watchlist } from './watchlist/watchlist';
 
+/** Application route definitions. `/profile` and `/watchlist` require Auth0 authentication via `authGuardFn`. */
 export const routes: Routes = [
   { path: '', component: Home },
   { path: 'movies', component: Movies },

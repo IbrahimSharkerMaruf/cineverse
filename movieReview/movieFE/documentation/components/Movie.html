@@ -1,0 +1,3550 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>cineverse documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">cineverse documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  Movie</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/movies/movie/movie.ts</code>
+</p>
+
+
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Movie detail page component.
+Shows full movie information, community reviews, and a review submission form.
+Supports inline review editing, reply threads, watchlist toggle, and admin movie deletion.</p>
+
+    </p>
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">providers</td>
+                <td class="col-md-9">
+                                <code><a href="../injectables/WebServices.html" target="_self" >WebServices</a></code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-movie</code></td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="https://angular.io/api/router/RouterLink" target="_blank" >RouterLink</a></code>
+                                <code><a href="https://angular.io/api/common/CommonModule" target="_blank" >CommonModule</a></code>
+                                <code><a href="https://angular.io/api/forms/ReactiveFormsModule" target="_blank" >ReactiveFormsModule</a></code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./movie.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./movie.css</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#authService" >authService</a>
+                            </li>
+                            <li>
+                                <a href="#confirmDeleteMovie" >confirmDeleteMovie</a>
+                            </li>
+                            <li>
+                                <a href="#confirmDeleteReplyId" >confirmDeleteReplyId</a>
+                            </li>
+                            <li>
+                                <a href="#confirmDeleteReplyReviewId" >confirmDeleteReplyReviewId</a>
+                            </li>
+                            <li>
+                                <a href="#confirmDeleteReviewId" >confirmDeleteReviewId</a>
+                            </li>
+                            <li>
+                                <a href="#deleteMovieError" >deleteMovieError</a>
+                            </li>
+                            <li>
+                                <a href="#deleteReviewError" >deleteReviewError</a>
+                            </li>
+                            <li>
+                                <a href="#editError" >editError</a>
+                            </li>
+                            <li>
+                                <a href="#editForm" >editForm</a>
+                            </li>
+                            <li>
+                                <a href="#editingReviewId" >editingReviewId</a>
+                            </li>
+                            <li>
+                                <a href="#hoveredStar" >hoveredStar</a>
+                            </li>
+                            <li>
+                                <a href="#isInWatchlist" >isInWatchlist</a>
+                            </li>
+                            <li>
+                                <a href="#movie" >movie</a>
+                            </li>
+                            <li>
+                                <a href="#replyError" >replyError</a>
+                            </li>
+                            <li>
+                                <a href="#replyingToReviewId" >replyingToReviewId</a>
+                            </li>
+                            <li>
+                                <a href="#replyText" >replyText</a>
+                            </li>
+                            <li>
+                                <a href="#reviewForm" >reviewForm</a>
+                            </li>
+                            <li>
+                                <a href="#reviews_list" >reviews_list</a>
+                            </li>
+                            <li>
+                                <a href="#submitError" >submitError</a>
+                            </li>
+                            <li>
+                                <a href="#submitSuccess" >submitSuccess</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#cancelDelete" >cancelDelete</a>
+                            </li>
+                            <li>
+                                <a href="#cancelDeleteReply" >cancelDeleteReply</a>
+                            </li>
+                            <li>
+                                <a href="#cancelEdit" >cancelEdit</a>
+                            </li>
+                            <li>
+                                <a href="#cancelReply" >cancelReply</a>
+                            </li>
+                            <li>
+                                <a href="#confirmDelete" >confirmDelete</a>
+                            </li>
+                            <li>
+                                <a href="#confirmDeleteReply" >confirmDeleteReply</a>
+                            </li>
+                            <li>
+                                <a href="#deleteMovie" >deleteMovie</a>
+                            </li>
+                            <li>
+                                <a href="#deleteReply" >deleteReply</a>
+                            </li>
+                            <li>
+                                <a href="#deleteReview" >deleteReview</a>
+                            </li>
+                            <li>
+                                <a href="#genreList" >genreList</a>
+                            </li>
+                            <li>
+                                <a href="#isInvalid" >isInvalid</a>
+                            </li>
+                            <li>
+                                <a href="#keywordList" >keywordList</a>
+                            </li>
+                            <li>
+                                <a href="#loadReviews" >loadReviews</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onSubmit" >onSubmit</a>
+                            </li>
+                            <li>
+                                <a href="#parseJson" >parseJson</a>
+                            </li>
+                            <li>
+                                <a href="#parseNames" >parseNames</a>
+                            </li>
+                            <li>
+                                <a href="#posterUrl" >posterUrl</a>
+                            </li>
+                            <li>
+                                <a href="#starString" >starString</a>
+                            </li>
+                            <li>
+                                <a href="#startEdit" >startEdit</a>
+                            </li>
+                            <li>
+                                <a href="#startReply" >startReply</a>
+                            </li>
+                            <li>
+                                <a href="#submitEdit" >submitEdit</a>
+                            </li>
+                            <li>
+                                <a href="#submitReply" >submitReply</a>
+                            </li>
+                            <li>
+                                <a href="#toggleWatchlist" >toggleWatchlist</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#communityRating" >communityRating</a>
+                                </li>
+                                <li>
+                                    <a href="#officialRating5" >officialRating5</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(route: <a href="https://angular.io/api/router/ActivatedRoute" target="_blank">ActivatedRoute</a>, router: <a href="https://angular.io/api/router/Router" target="_blank">Router</a>, webService: <a href="../injectables/WebServices.html" target="_self">WebServices</a>, authService: <a href="../injectables/AuthService.html" target="_self">AuthService</a>, formBuilder: <a href="https://angular.io/api/forms/FormBuilder" target="_blank">FormBuilder</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/app/movies/movie/movie.ts:61</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>route</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/ActivatedRoute" target="_blank" >ActivatedRoute</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/Router" target="_blank" >Router</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>webService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/WebServices.html" target="_self" >WebServices</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>authService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AuthService.html" target="_self" >AuthService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>formBuilder</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/forms/FormBuilder" target="_blank" >FormBuilder</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cancelDelete"></a>
+                    <span class="name">
+                        <span ><b>cancelDelete</b></span>
+                        <a href="#cancelDelete"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cancelDelete()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="194"
+                                    class="link-to-prism">src/app/movies/movie/movie.ts:194</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Dismisses the review delete confirmation prompt.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cancelDeleteReply"></a>
+                    <span class="name">
+                        <span ><b>cancelDeleteReply</b></span>
+                        <a href="#cancelDeleteReply"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cancelDeleteReply()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="265"
+                                    class="link-to-prism">src/app/movies/movie/movie.ts:265</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Dismisses the reply delete confirmation prompt.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cancelEdit"></a>
+                    <span class="name">
+                        <span ><b>cancelEdit</b></span>
+                        <a href="#cancelEdit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cancelEdit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="147"
+                                    class="link-to-prism">src/app/movies/movie/movie.ts:147</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Closes the inline edit form without saving.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cancelReply"></a>
+                    <span class="name">
+                        <span ><b>cancelReply</b></span>
+                        <a href="#cancelReply"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cancelReply()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="235"
+                                    class="link-to-prism">src/app/movies/movie/movie.ts:235</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Closes the reply compose box without posting.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="confirmDelete"></a>
+                    <span class="name">
+                        <span ><b>confirmDelete</b></span>
+                        <a href="#confirmDelete"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>confirmDelete(reviewId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="189"
+                                    class="link-to-prism">src/app/movies/movie/movie.ts:189</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Shows the delete confirmation prompt for a review.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>reviewId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Review ID to confirm deletion for.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="confirmDeleteReply"></a>
+                    <span class="name">
+                        <span ><b>confirmDeleteReply</b></span>
+                        <a href="#confirmDeleteReply"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>confirmDeleteReply(reviewId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, replyId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="259"
+                                    class="link-to-prism">src/app/movies/movie/movie.ts:259</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Shows the delete confirmation prompt for a reply.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>reviewId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Review the reply belongs to.</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>replyId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Reply ID to confirm deletion for.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteMovie"></a>
+                    <span class="name">
+                        <span ><b>deleteMovie</b></span>
+                        <a href="#deleteMovie"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>deleteMovie()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="216"
+                                    class="link-to-prism">src/app/movies/movie/movie.ts:216</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Deletes the current movie (admin only) and navigates back to the movie list.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteReply"></a>
+                    <span class="name">
+                        <span ><b>deleteReply</b></span>
+                        <a href="#deleteReply"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>deleteReply(reviewId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, replyId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="275"
+                                    class="link-to-prism">src/app/movies/movie/movie.ts:275</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Deletes a reply and refreshes the review list.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>reviewId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Review the reply belongs to.</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>replyId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Reply ID to delete.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteReview"></a>
+                    <span class="name">
+                        <span ><b>deleteReview</b></span>
+                        <a href="#deleteReview"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>deleteReview(reviewId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="202"
+                                    class="link-to-prism">src/app/movies/movie/movie.ts:202</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Deletes a review and refreshes the list.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>reviewId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Review ID to delete.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="genreList"></a>
+                    <span class="name">
+                        <span ><b>genreList</b></span>
+                        <a href="#genreList"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>genreList(jsonStr: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="318"
+                                    class="link-to-prism">src/app/movies/movie/movie.ts:318</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Returns an array of genre name strings from a JSON genre array.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>jsonStr</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>JSON string like <code>[{&quot;name&quot;:&quot;Action&quot;},...]</code>.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>string[]</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isInvalid"></a>
+                    <span class="name">
+                        <span ><b>isInvalid</b></span>
+                        <a href="#isInvalid"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isInvalid(control: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="291"
+                                    class="link-to-prism">src/app/movies/movie/movie.ts:291</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Returns true if a review form control is invalid and has been touched.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>control</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Form control name to check.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="keywordList"></a>
+                    <span class="name">
+                        <span ><b>keywordList</b></span>
+                        <a href="#keywordList"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>keywordList(jsonStr: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="326"
+                                    class="link-to-prism">src/app/movies/movie/movie.ts:326</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Returns up to 15 keyword name strings from a JSON keyword array.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>jsonStr</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>JSON string like <code>[{&quot;name&quot;:&quot;hero&quot;},...]</code>.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>string[]</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadReviews"></a>
+                    <span class="name">
+                        <span ><b>loadReviews</b></span>
+                        <a href="#loadReviews"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>loadReviews()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="98"
+                                    class="link-to-prism">src/app/movies/movie/movie.ts:98</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Fetches and refreshes the review list for the current movie.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="71"
+                                    class="link-to-prism">src/app/movies/movie/movie.ts:71</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSubmit"></a>
+                    <span class="name">
+                        <span ><b>onSubmit</b></span>
+                        <a href="#onSubmit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onSubmit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="168"
+                                    class="link-to-prism">src/app/movies/movie/movie.ts:168</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Submits the new review form and reloads reviews on success.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="parseJson"></a>
+                    <span class="name">
+                        <span ><b>parseJson</b></span>
+                        <a href="#parseJson"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>parseJson(jsonStr: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="310"
+                                    class="link-to-prism">src/app/movies/movie/movie.ts:310</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Safely parses a JSON string into an array.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>jsonStr</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>JSON string to parse.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>any[]</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="parseNames"></a>
+                    <span class="name">
+                        <span ><b>parseNames</b></span>
+                        <a href="#parseNames"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>parseNames(jsonStr: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="338"
+                                    class="link-to-prism">src/app/movies/movie/movie.ts:338</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>jsonStr</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="posterUrl"></a>
+                    <span class="name">
+                        <span ><b>posterUrl</b></span>
+                        <a href="#posterUrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>posterUrl(filename: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="302"
+                                    class="link-to-prism">src/app/movies/movie/movie.ts:302</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Builds the asset URL for a movie poster file.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>filename</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Poster filename stored in the database.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="starString"></a>
+                    <span class="name">
+                        <span ><b>starString</b></span>
+                        <a href="#starString"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>starString(n: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="334"
+                                    class="link-to-prism">src/app/movies/movie/movie.ts:334</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Converts a numeric rating to a filled/empty star string (e.g. <code>&quot;★★★☆☆&quot;</code>).</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>n</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Rating value (0–5).</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="startEdit"></a>
+                    <span class="name">
+                        <span ><b>startEdit</b></span>
+                        <a href="#startEdit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>startEdit(review: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="137"
+                                    class="link-to-prism">src/app/movies/movie/movie.ts:137</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Opens the inline edit form pre-filled with the review&#39;s current values.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>review</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Review object to edit.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="startReply"></a>
+                    <span class="name">
+                        <span ><b>startReply</b></span>
+                        <a href="#startReply"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>startReply(reviewId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="228"
+                                    class="link-to-prism">src/app/movies/movie/movie.ts:228</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Opens the reply compose box for a specific review.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>reviewId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Review ID to reply to.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="submitEdit"></a>
+                    <span class="name">
+                        <span ><b>submitEdit</b></span>
+                        <a href="#submitEdit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>submitEdit(reviewId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="156"
+                                    class="link-to-prism">src/app/movies/movie/movie.ts:156</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Saves the edited review and reloads the review list on success.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>reviewId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Review ID being updated.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="submitReply"></a>
+                    <span class="name">
+                        <span ><b>submitReply</b></span>
+                        <a href="#submitReply"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>submitReply(reviewId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="241"
+                                    class="link-to-prism">src/app/movies/movie/movie.ts:241</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>reviewId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleWatchlist"></a>
+                    <span class="name">
+                        <span ><b>toggleWatchlist</b></span>
+                        <a href="#toggleWatchlist"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleWatchlist()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="118"
+                                    class="link-to-prism">src/app/movies/movie/movie.ts:118</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Adds or removes this movie from the user&#39;s watchlist, updating local cache optimistically.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="authService"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>authService</b></span>
+                        <a href="#authService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../injectables/AuthService.html" target="_self" >AuthService</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">src/app/movies/movie/movie.ts:67</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="confirmDeleteMovie"></a>
+                    <span class="name">
+                        <span ><b>confirmDeleteMovie</b></span>
+                        <a href="#confirmDeleteMovie"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/movies/movie/movie.ts:36</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>True when the admin movie-delete confirmation prompt is visible.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="confirmDeleteReplyId"></a>
+                    <span class="name">
+                        <span ><b>confirmDeleteReplyId</b></span>
+                        <a href="#confirmDeleteReplyId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/app/movies/movie/movie.ts:59</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Reply ID awaiting delete confirmation, or null if none.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="confirmDeleteReplyReviewId"></a>
+                    <span class="name">
+                        <span ><b>confirmDeleteReplyReviewId</b></span>
+                        <a href="#confirmDeleteReplyReviewId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/app/movies/movie/movie.ts:61</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Review ID that owns the reply awaiting delete confirmation.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="confirmDeleteReviewId"></a>
+                    <span class="name">
+                        <span ><b>confirmDeleteReviewId</b></span>
+                        <a href="#confirmDeleteReviewId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/app/movies/movie/movie.ts:50</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Review ID awaiting delete confirmation, or null if none.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteMovieError"></a>
+                    <span class="name">
+                        <span ><b>deleteMovieError</b></span>
+                        <a href="#deleteMovieError"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/movies/movie/movie.ts:34</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Error message shown when movie deletion fails.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteReviewError"></a>
+                    <span class="name">
+                        <span ><b>deleteReviewError</b></span>
+                        <a href="#deleteReviewError"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/app/movies/movie/movie.ts:48</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Error message shown when a review deletion fails.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="editError"></a>
+                    <span class="name">
+                        <span ><b>editError</b></span>
+                        <a href="#editError"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/movies/movie/movie.ts:46</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Error message shown when a review edit fails.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="editForm"></a>
+                    <span class="name">
+                        <span ><b>editForm</b></span>
+                        <a href="#editForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/app/movies/movie/movie.ts:44</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Reactive form for editing an existing review.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="editingReviewId"></a>
+                    <span class="name">
+                        <span ><b>editingReviewId</b></span>
+                        <a href="#editingReviewId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/app/movies/movie/movie.ts:42</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Review ID currently being edited inline, or null if none.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="hoveredStar"></a>
+                    <span class="name">
+                        <span ><b>hoveredStar</b></span>
+                        <a href="#hoveredStar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>0</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/app/movies/movie/movie.ts:32</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Star rating index currently hovered in the star picker (0 = none).</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isInWatchlist"></a>
+                    <span class="name">
+                        <span ><b>isInWatchlist</b></span>
+                        <a href="#isInWatchlist"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/movies/movie/movie.ts:39</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>True when the current movie is in the user&#39;s watchlist.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="movie"></a>
+                    <span class="name">
+                        <span ><b>movie</b></span>
+                        <a href="#movie"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/app/movies/movie/movie.ts:22</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Full movie object returned by the backend.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="replyError"></a>
+                    <span class="name">
+                        <span ><b>replyError</b></span>
+                        <a href="#replyError"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/app/movies/movie/movie.ts:57</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Error message shown when posting a reply fails.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="replyingToReviewId"></a>
+                    <span class="name">
+                        <span ><b>replyingToReviewId</b></span>
+                        <a href="#replyingToReviewId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/app/movies/movie/movie.ts:53</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Review ID for which the reply compose box is open, or null if none.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="replyText"></a>
+                    <span class="name">
+                        <span ><b>replyText</b></span>
+                        <a href="#replyText"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/app/movies/movie/movie.ts:55</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Draft text for a reply being composed.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="reviewForm"></a>
+                    <span class="name">
+                        <span ><b>reviewForm</b></span>
+                        <a href="#reviewForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/movies/movie/movie.ts:26</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Reactive form for submitting a new review.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="reviews_list"></a>
+                    <span class="name">
+                        <span ><b>reviews_list</b></span>
+                        <a href="#reviews_list"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>any[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/movies/movie/movie.ts:24</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>List of reviews for the current movie.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="submitError"></a>
+                    <span class="name">
+                        <span ><b>submitError</b></span>
+                        <a href="#submitError"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/movies/movie/movie.ts:28</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Error message shown when review submission fails.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="submitSuccess"></a>
+                    <span class="name">
+                        <span ><b>submitSuccess</b></span>
+                        <a href="#submitSuccess"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/movies/movie/movie.ts:30</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>True after a review is successfully submitted.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-accessors">
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="communityRating"></a>
+                        <span class="name"><b>communityRating</b><a href="#communityRating"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>communityRating()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="106" class="link-to-prism">src/app/movies/movie/movie.ts:106</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Average star rating from all user reviews, rounded to 1 decimal. Null if no reviews.</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>number | null</code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="officialRating5"></a>
+                        <span class="name"><b>officialRating5</b><a href="#officialRating5"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>officialRating5()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="113" class="link-to-prism">src/app/movies/movie/movie.ts:113</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Official TMDb rating converted from a 0–10 scale to a 0–5 star scale.</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component } from &#x27;@angular/core&#x27;;
+import { ActivatedRoute, Router, RouterLink } from &#x27;@angular/router&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { FormBuilder, ReactiveFormsModule, Validators } from &#x27;@angular/forms&#x27;;
+import { WebServices } from &#x27;../../services/web-services&#x27;;
+import { AuthService } from &#x27;../../services/auth-service&#x27;;
+
+/**
+ * Movie detail page component.
+ * Shows full movie information, community reviews, and a review submission form.
+ * Supports inline review editing, reply threads, watchlist toggle, and admin movie deletion.
+ */
+@Component({
+  selector: &#x27;app-movie&#x27;,
+  imports: [RouterLink, CommonModule, ReactiveFormsModule],
+  providers: [WebServices],
+  templateUrl: &#x27;./movie.html&#x27;,
+  styleUrl: &#x27;./movie.css&#x27;,
+})
+export class Movie {
+  /** Full movie object returned by the backend. */
+  movie: any &#x3D; null;
+  /** List of reviews for the current movie. */
+  reviews_list: any[] &#x3D; [];
+  /** Reactive form for submitting a new review. */
+  reviewForm: any;
+  /** Error message shown when review submission fails. */
+  submitError &#x3D; &#x27;&#x27;;
+  /** True after a review is successfully submitted. */
+  submitSuccess &#x3D; false;
+  /** Star rating index currently hovered in the star picker (0 &#x3D; none). */
+  hoveredStar &#x3D; 0;
+  /** Error message shown when movie deletion fails. */
+  deleteMovieError &#x3D; &#x27;&#x27;;
+  /** True when the admin movie-delete confirmation prompt is visible. */
+  confirmDeleteMovie &#x3D; false;
+
+  /** True when the current movie is in the user&#x27;s watchlist. */
+  isInWatchlist &#x3D; false;
+
+  /** Review ID currently being edited inline, or null if none. */
+  editingReviewId: string | null &#x3D; null;
+  /** Reactive form for editing an existing review. */
+  editForm: any;
+  /** Error message shown when a review edit fails. */
+  editError &#x3D; &#x27;&#x27;;
+  /** Error message shown when a review deletion fails. */
+  deleteReviewError &#x3D; &#x27;&#x27;;
+  /** Review ID awaiting delete confirmation, or null if none. */
+  confirmDeleteReviewId: string | null &#x3D; null;
+
+  /** Review ID for which the reply compose box is open, or null if none. */
+  replyingToReviewId: string | null &#x3D; null;
+  /** Draft text for a reply being composed. */
+  replyText &#x3D; &#x27;&#x27;;
+  /** Error message shown when posting a reply fails. */
+  replyError &#x3D; &#x27;&#x27;;
+  /** Reply ID awaiting delete confirmation, or null if none. */
+  confirmDeleteReplyId: string | null &#x3D; null;
+  /** Review ID that owns the reply awaiting delete confirmation. */
+  confirmDeleteReplyReviewId: string | null &#x3D; null;
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private webService: WebServices,
+    public authService: AuthService,
+    private formBuilder: FormBuilder
+  ) {}
+
+  ngOnInit() {
+    this.reviewForm &#x3D; this.formBuilder.group({
+      comment: [&#x27;&#x27;, Validators.required],
+      stars: [5],
+    });
+
+    const id &#x3D; this.route.snapshot.paramMap.get(&#x27;id&#x27;);
+
+    this.webService.getMovie(id).subscribe((response) &#x3D;&gt; {
+      this.movie &#x3D; response;
+    });
+
+    this.loadReviews();
+
+    if (this.authService.isLoggedIn()) {
+      if (this.authService.watchlistLoaded) {
+        this.isInWatchlist &#x3D; this.authService.isInWatchlist(id!);
+      } else {
+        this.webService.getWatchlistIds().subscribe(ids &#x3D;&gt; {
+          this.authService.setWatchlist(ids);
+          this.isInWatchlist &#x3D; this.authService.isInWatchlist(id!);
+        });
+      }
+    }
+  }
+
+  /** Fetches and refreshes the review list for the current movie. */
+  loadReviews() {
+    const id &#x3D; this.route.snapshot.paramMap.get(&#x27;id&#x27;);
+    this.webService.getReviews(id).subscribe((response) &#x3D;&gt; {
+      this.reviews_list &#x3D; response;
+    });
+  }
+
+  /** Average star rating from all user reviews, rounded to 1 decimal. Null if no reviews. */
+  get communityRating(): number | null {
+    if (!this.reviews_list.length) return null;
+    const avg &#x3D; this.reviews_list.reduce((s: number, r: any) &#x3D;&gt; s + r.star, 0) / this.reviews_list.length;
+    return Math.round(avg * 10) / 10;
+  }
+
+  /** Official TMDb rating converted from a 0–10 scale to a 0–5 star scale. */
+  get officialRating5(): number {
+    return this.movie ? Math.round((this.movie.vote_average / 2) * 10) / 10 : 0;
+  }
+
+  /** Adds or removes this movie from the user&#x27;s watchlist, updating local cache optimistically. */
+  toggleWatchlist() {
+    const id &#x3D; this.route.snapshot.paramMap.get(&#x27;id&#x27;)!;
+    if (this.isInWatchlist) {
+      this.webService.removeFromWatchlist(id).subscribe(() &#x3D;&gt; {
+        this.isInWatchlist &#x3D; false;
+        this.authService.removeFromWatchlistLocal(id);
+      });
+    } else {
+      this.webService.addToWatchlist(id).subscribe(() &#x3D;&gt; {
+        this.isInWatchlist &#x3D; true;
+        this.authService.addToWatchlistLocal(id);
+      });
+    }
+  }
+
+  /**
+   * Opens the inline edit form pre-filled with the review&#x27;s current values.
+   * @param review Review object to edit.
+   */
+  startEdit(review: any) {
+    this.editingReviewId &#x3D; review._id;
+    this.editError &#x3D; &#x27;&#x27;;
+    this.editForm &#x3D; this.formBuilder.group({
+      comment: [review.comment, Validators.required],
+      stars: [review.star],
+    });
+  }
+
+  /** Closes the inline edit form without saving. */
+  cancelEdit() {
+    this.editingReviewId &#x3D; null;
+    this.editError &#x3D; &#x27;&#x27;;
+  }
+
+  /**
+   * Saves the edited review and reloads the review list on success.
+   * @param reviewId Review ID being updated.
+   */
+  submitEdit(reviewId: string) {
+    const movieId &#x3D; this.route.snapshot.paramMap.get(&#x27;id&#x27;)!;
+    this.webService.editReview(movieId, reviewId, this.editForm.value).subscribe({
+      next: () &#x3D;&gt; {
+        this.editingReviewId &#x3D; null;
+        this.loadReviews();
+      },
+      error: () &#x3D;&gt; { this.editError &#x3D; &#x27;Failed to update review.&#x27;; }
+    });
+  }
+
+  /** Submits the new review form and reloads reviews on success. */
+  onSubmit() {
+    this.submitError &#x3D; &#x27;&#x27;;
+    this.submitSuccess &#x3D; false;
+    const id &#x3D; this.route.snapshot.paramMap.get(&#x27;id&#x27;);
+    this.webService.postReview(id, this.reviewForm.getRawValue()).subscribe({
+      next: () &#x3D;&gt; {
+        this.submitSuccess &#x3D; true;
+        this.reviewForm.patchValue({ comment: &#x27;&#x27;, stars: 5 });
+        this.reviewForm.markAsPristine();
+        this.loadReviews();
+      },
+      error: () &#x3D;&gt; {
+        this.submitError &#x3D; &#x27;Failed to submit review. Please try again.&#x27;;
+      },
+    });
+  }
+
+  /**
+   * Shows the delete confirmation prompt for a review.
+   * @param reviewId Review ID to confirm deletion for.
+   */
+  confirmDelete(reviewId: string) {
+    this.confirmDeleteReviewId &#x3D; reviewId;
+  }
+
+  /** Dismisses the review delete confirmation prompt. */
+  cancelDelete() {
+    this.confirmDeleteReviewId &#x3D; null;
+  }
+
+  /**
+   * Deletes a review and refreshes the list.
+   * @param reviewId Review ID to delete.
+   */
+  deleteReview(reviewId: string) {
+    const movieId &#x3D; this.route.snapshot.paramMap.get(&#x27;id&#x27;)!;
+    this.deleteReviewError &#x3D; &#x27;&#x27;;
+    this.confirmDeleteReviewId &#x3D; null;
+    this.webService.deleteReview(movieId, reviewId).subscribe({
+      next: () &#x3D;&gt; this.loadReviews(),
+      error: (err) &#x3D;&gt; {
+        this.deleteReviewError &#x3D; err?.error?.error || &#x27;Failed to delete review.&#x27;;
+        setTimeout(() &#x3D;&gt; this.deleteReviewError &#x3D; &#x27;&#x27;, 4000);
+      }
+    });
+  }
+
+  /** Deletes the current movie (admin only) and navigates back to the movie list. */
+  deleteMovie() {
+    const id &#x3D; this.route.snapshot.paramMap.get(&#x27;id&#x27;)!;
+    this.webService.deleteMovie(id).subscribe({
+      next: () &#x3D;&gt; this.router.navigate([&#x27;/movies&#x27;]),
+      error: () &#x3D;&gt; { this.deleteMovieError &#x3D; &#x27;Failed to delete movie.&#x27;; },
+    });
+  }
+
+  /**
+   * Opens the reply compose box for a specific review.
+   * @param reviewId Review ID to reply to.
+   */
+  startReply(reviewId: string) {
+    this.replyingToReviewId &#x3D; reviewId;
+    this.replyText &#x3D; &#x27;&#x27;;
+    this.replyError &#x3D; &#x27;&#x27;;
+  }
+
+  /** Closes the reply compose box without posting. */
+  cancelReply() {
+    this.replyingToReviewId &#x3D; null;
+    this.replyText &#x3D; &#x27;&#x27;;
+    this.replyError &#x3D; &#x27;&#x27;;
+  }
+
+  submitReply(reviewId: string) {
+    if (!this.replyText.trim()) return;
+    const movieId &#x3D; this.route.snapshot.paramMap.get(&#x27;id&#x27;)!;
+    this.webService.postReply(movieId, reviewId, this.replyText.trim()).subscribe({
+      next: () &#x3D;&gt; {
+        this.replyingToReviewId &#x3D; null;
+        this.replyText &#x3D; &#x27;&#x27;;
+        this.loadReviews();
+      },
+      error: (err) &#x3D;&gt; { this.replyError &#x3D; err?.error?.error || &#x27;Failed to post reply.&#x27;; }
+    });
+  }
+
+  /**
+   * Shows the delete confirmation prompt for a reply.
+   * @param reviewId Review the reply belongs to.
+   * @param replyId Reply ID to confirm deletion for.
+   */
+  confirmDeleteReply(reviewId: string, replyId: string) {
+    this.confirmDeleteReplyReviewId &#x3D; reviewId;
+    this.confirmDeleteReplyId &#x3D; replyId;
+  }
+
+  /** Dismisses the reply delete confirmation prompt. */
+  cancelDeleteReply() {
+    this.confirmDeleteReplyId &#x3D; null;
+    this.confirmDeleteReplyReviewId &#x3D; null;
+  }
+
+  /**
+   * Deletes a reply and refreshes the review list.
+   * @param reviewId Review the reply belongs to.
+   * @param replyId Reply ID to delete.
+   */
+  deleteReply(reviewId: string, replyId: string) {
+    const movieId &#x3D; this.route.snapshot.paramMap.get(&#x27;id&#x27;)!;
+    this.webService.deleteReply(movieId, reviewId, replyId).subscribe({
+      next: () &#x3D;&gt; {
+        this.confirmDeleteReplyId &#x3D; null;
+        this.confirmDeleteReplyReviewId &#x3D; null;
+        this.loadReviews();
+      },
+      error: () &#x3D;&gt; {}
+    });
+  }
+
+  /**
+   * Returns true if a review form control is invalid and has been touched.
+   * @param control Form control name to check.
+   */
+  isInvalid(control: string) {
+    return (
+      this.reviewForm.controls[control].invalid &amp;&amp;
+      this.reviewForm.controls[control].touched
+    );
+  }
+
+  /**
+   * Builds the asset URL for a movie poster file.
+   * @param filename Poster filename stored in the database.
+   */
+  posterUrl(filename: string): string {
+    return &#x60;/assets/images/posters/${encodeURIComponent(filename)}&#x60;;
+  }
+
+  /**
+   * Safely parses a JSON string into an array.
+   * @param jsonStr JSON string to parse.
+   */
+  parseJson(jsonStr: string): any[] {
+    try { return JSON.parse(jsonStr); } catch { return []; }
+  }
+
+  /**
+   * Returns an array of genre name strings from a JSON genre array.
+   * @param jsonStr JSON string like &#x60;[{&quot;name&quot;:&quot;Action&quot;},...]&#x60;.
+   */
+  genreList(jsonStr: string): string[] {
+    return this.parseJson(jsonStr).map((i: any) &#x3D;&gt; i.name);
+  }
+
+  /**
+   * Returns up to 15 keyword name strings from a JSON keyword array.
+   * @param jsonStr JSON string like &#x60;[{&quot;name&quot;:&quot;hero&quot;},...]&#x60;.
+   */
+  keywordList(jsonStr: string): string[] {
+    return this.parseJson(jsonStr).map((i: any) &#x3D;&gt; i.name).slice(0, 15);
+  }
+
+  /**
+   * Converts a numeric rating to a filled/empty star string (e.g. &#x60;&quot;★★★☆☆&quot;&#x60;).
+   * @param n Rating value (0–5).
+   */
+  starString(n: number): string {
+    return &#x27;★&#x27;.repeat(Math.round(n)) + &#x27;☆&#x27;.repeat(5 - Math.round(n));
+  }
+
+  parseNames(jsonStr: string): string {
+    return this.genreList(jsonStr).join(&#x27;, &#x27;);
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;page-wrapper&quot;&gt;
+  &lt;div class&#x3D;&quot;container-xl px-4&quot;&gt;
+
+    &lt;a [routerLink]&#x3D;&quot;&#x27;/movies&#x27;&quot; class&#x3D;&quot;btn-back mb-4&quot;&gt;&amp;#8592; Back to Movies&lt;/a&gt;
+
+    @if (!movie) {
+      &lt;div class&#x3D;&quot;text-center py-5&quot;&gt;
+        &lt;div class&#x3D;&quot;spinner-border&quot; style&#x3D;&quot;width:3rem;height:3rem;&quot; role&#x3D;&quot;status&quot;&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    }
+
+    @if (movie) {
+
+      &lt;!-- Movie Header --&gt;
+      &lt;div class&#x3D;&quot;detail-header&quot;&gt;
+        &lt;div class&#x3D;&quot;row align-items-start gx-4&quot;&gt;
+
+          &lt;!-- Poster --&gt;
+          @if (movie.poster) {
+            &lt;div class&#x3D;&quot;col-auto mb-4 mb-lg-0&quot;&gt;
+              &lt;img [src]&#x3D;&quot;posterUrl(movie.poster)&quot; [alt]&#x3D;&quot;movie.title&quot; class&#x3D;&quot;detail-poster&quot; /&gt;
+            &lt;/div&gt;
+          }
+
+          &lt;!-- Info --&gt;
+          &lt;div [class]&#x3D;&quot;movie.poster ? &#x27;col-lg&#x27; : &#x27;col-lg-8&#x27;&quot;&gt;
+            &lt;h1 class&#x3D;&quot;detail-title&quot;&gt;{{ movie.title }}&lt;/h1&gt;
+
+            &lt;div class&#x3D;&quot;mb-3&quot;&gt;
+              @for (g of genreList(movie.genres); track g) {
+                &lt;a class&#x3D;&quot;genre-badge&quot; [routerLink]&#x3D;&quot;&#x27;/movies&#x27;&quot; [queryParams]&#x3D;&quot;{genre: g}&quot;&gt;{{ g }}&lt;/a&gt;
+              }
+            &lt;/div&gt;
+
+            &lt;p class&#x3D;&quot;detail-overview&quot;&gt;{{ movie.overview }}&lt;/p&gt;
+
+            @if (movie.keywords) {
+              &lt;div class&#x3D;&quot;mt-2&quot;&gt;
+                @for (k of keywordList(movie.keywords); track k) {
+                  &lt;span class&#x3D;&quot;keyword-badge&quot;&gt;{{ k }}&lt;/span&gt;
+                }
+              &lt;/div&gt;
+            }
+          &lt;/div&gt;
+
+          &lt;!-- Stats --&gt;
+          &lt;div class&#x3D;&quot;col-lg-4 mt-4 mt-lg-0&quot;&gt;
+            &lt;div class&#x3D;&quot;row g-2&quot;&gt;
+              &lt;div class&#x3D;&quot;col-6&quot;&gt;
+                &lt;div class&#x3D;&quot;stat-box&quot;&gt;
+                  &lt;div class&#x3D;&quot;stat-value gold&quot;&gt;&amp;#9733; {{ movie.vote_average }}&lt;/div&gt;
+                  &lt;div class&#x3D;&quot;stat-label&quot;&gt;Rating&lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;col-6&quot;&gt;
+                &lt;div class&#x3D;&quot;stat-box&quot;&gt;
+                  &lt;div class&#x3D;&quot;stat-value&quot;&gt;{{ movie.runtime }}&lt;small style&#x3D;&quot;font-size:0.9rem;font-weight:400;&quot;&gt; min&lt;/small&gt;&lt;/div&gt;
+                  &lt;div class&#x3D;&quot;stat-label&quot;&gt;Runtime&lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;col-6&quot;&gt;
+                &lt;div class&#x3D;&quot;stat-box&quot;&gt;
+                  &lt;div class&#x3D;&quot;stat-value&quot; style&#x3D;&quot;font-size:1rem;&quot;&gt;{{ movie.release_date }}&lt;/div&gt;
+                  &lt;div class&#x3D;&quot;stat-label&quot;&gt;Released&lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;col-6&quot;&gt;
+                &lt;div class&#x3D;&quot;stat-box&quot;&gt;
+                  &lt;div class&#x3D;&quot;stat-value&quot;&gt;{{ movie.vote_count | number }}&lt;/div&gt;
+                  &lt;div class&#x3D;&quot;stat-label&quot;&gt;Votes&lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;!-- Community vs Official Rating --&gt;
+            @if (communityRating !&#x3D;&#x3D; null) {
+              &lt;div class&#x3D;&quot;community-rating-card mt-3&quot;&gt;
+                &lt;div class&#x3D;&quot;cr-title&quot;&gt;CineVerse vs Official&lt;/div&gt;
+                &lt;div class&#x3D;&quot;cr-row&quot;&gt;
+                  &lt;span class&#x3D;&quot;cr-label&quot;&gt;Community&lt;/span&gt;
+                  &lt;div class&#x3D;&quot;cr-bar-wrap&quot;&gt;
+                    &lt;div class&#x3D;&quot;cr-bar cr-bar-community&quot; [style.width.%]&#x3D;&quot;(communityRating! / 5) * 100&quot;&gt;&lt;/div&gt;
+                  &lt;/div&gt;
+                  &lt;span class&#x3D;&quot;cr-value&quot;&gt;{{ communityRating }}/5&lt;/span&gt;
+                &lt;/div&gt;
+                &lt;div class&#x3D;&quot;cr-row&quot;&gt;
+                  &lt;span class&#x3D;&quot;cr-label&quot;&gt;Official&lt;/span&gt;
+                  &lt;div class&#x3D;&quot;cr-bar-wrap&quot;&gt;
+                    &lt;div class&#x3D;&quot;cr-bar cr-bar-official&quot; [style.width.%]&#x3D;&quot;(officialRating5 / 5) * 100&quot;&gt;&lt;/div&gt;
+                  &lt;/div&gt;
+                  &lt;span class&#x3D;&quot;cr-value&quot;&gt;{{ officialRating5 }}/5&lt;/span&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            }
+
+            &lt;!-- Watchlist Button --&gt;
+            @if (authService.isLoggedIn()) {
+              &lt;div class&#x3D;&quot;mt-3&quot;&gt;
+                &lt;button class&#x3D;&quot;btn-watchlist&quot; [class.in-watchlist]&#x3D;&quot;isInWatchlist&quot; (click)&#x3D;&quot;toggleWatchlist()&quot;&gt;
+                  {{ isInWatchlist ? &#x27;&amp;#9733; In Watchlist&#x27; : &#x27;&amp;#9734; Save to Watchlist&#x27; }}
+                &lt;/button&gt;
+              &lt;/div&gt;
+            }
+
+            @if (authService.isAdmin()) {
+              &lt;div class&#x3D;&quot;mt-3&quot;&gt;
+                @if (confirmDeleteMovie) {
+                  &lt;div class&#x3D;&quot;delete-confirm-box&quot;&gt;
+                    &lt;p class&#x3D;&quot;delete-confirm-text&quot;&gt;Delete &lt;strong&gt;{{ movie.title }}&lt;/strong&gt;? This cannot be undone.&lt;/p&gt;
+                    &lt;div class&#x3D;&quot;d-flex gap-2&quot;&gt;
+                      &lt;button class&#x3D;&quot;btn-danger-solid&quot; (click)&#x3D;&quot;deleteMovie()&quot;&gt;Yes, delete&lt;/button&gt;
+                      &lt;button class&#x3D;&quot;btn-cancel-edit&quot; (click)&#x3D;&quot;confirmDeleteMovie &#x3D; false&quot;&gt;Cancel&lt;/button&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                } @else {
+                  &lt;button class&#x3D;&quot;btn-delete-movie&quot; (click)&#x3D;&quot;confirmDeleteMovie &#x3D; true&quot;&gt;&amp;#128465; Delete Movie&lt;/button&gt;
+                }
+                @if (deleteMovieError) {
+                  &lt;div style&#x3D;&quot;color:#e74c3c; font-size:0.8rem; margin-top:0.4rem;&quot;&gt;{{ deleteMovieError }}&lt;/div&gt;
+                }
+              &lt;/div&gt;
+            }
+          &lt;/div&gt;
+
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Reviews Section --&gt;
+      &lt;div class&#x3D;&quot;d-flex align-items-center mb-3&quot;&gt;
+        &lt;span class&#x3D;&quot;section-title&quot;&gt;Reviews&lt;/span&gt;
+        &lt;span class&#x3D;&quot;review-count-badge&quot;&gt;{{ reviews_list.length }}&lt;/span&gt;
+      &lt;/div&gt;
+
+      @if (deleteReviewError) {
+        &lt;div class&#x3D;&quot;alert-dark-danger mb-3&quot; style&#x3D;&quot;font-size:0.85rem;&quot;&gt;{{ deleteReviewError }}&lt;/div&gt;
+      }
+
+      @if (reviews_list.length &#x3D;&#x3D;&#x3D; 0) {
+        &lt;div class&#x3D;&quot;empty-state&quot; style&#x3D;&quot;padding:2rem;&quot;&gt;
+          &lt;div class&#x3D;&quot;empty-icon&quot;&gt;&amp;#128172;&lt;/div&gt;
+          &lt;p style&#x3D;&quot;color:#555;&quot;&gt;No reviews yet — be the first!&lt;/p&gt;
+        &lt;/div&gt;
+      }
+
+      @for (review of reviews_list; track review._id) {
+        &lt;div class&#x3D;&quot;review-card&quot;&gt;
+          &lt;div class&#x3D;&quot;d-flex justify-content-between align-items-start&quot;&gt;
+            &lt;div class&#x3D;&quot;d-flex align-items-center gap-2&quot;&gt;
+              &lt;img [src]&#x3D;&quot;&#x27;/assets/images/avatar/&#x27; + (review.avatar || &#x27;profile.png&#x27;)&quot; class&#x3D;&quot;review-avatar&quot; alt&#x3D;&quot;avatar&quot; /&gt;
+              &lt;span class&#x3D;&quot;review-username&quot;&gt;{{ review.username }}&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;d-flex align-items-center gap-2 flex-shrink-0&quot;&gt;
+              &lt;span class&#x3D;&quot;review-stars&quot;&gt;{{ starString(review.star) }} &lt;small style&#x3D;&quot;color:#888;font-size:0.75rem;&quot;&gt;({{ review.star }}/5)&lt;/small&gt;&lt;/span&gt;
+              @if (review.username &#x3D;&#x3D;&#x3D; authService.getUsername()) {
+                &lt;button class&#x3D;&quot;btn-edit-review&quot; (click)&#x3D;&quot;startEdit(review)&quot; title&#x3D;&quot;Edit review&quot;&gt;&amp;#9998;&lt;/button&gt;
+              }
+              @if (authService.isAdmin() || authService.isModerator() || review.username &#x3D;&#x3D;&#x3D; authService.getUsername()) {
+                @if (confirmDeleteReviewId &#x3D;&#x3D;&#x3D; review._id) {
+                  &lt;span class&#x3D;&quot;inline-confirm&quot;&gt;
+                    &lt;span class&#x3D;&quot;inline-confirm-text&quot;&gt;Delete?&lt;/span&gt;
+                    &lt;button class&#x3D;&quot;inline-confirm-yes&quot; (click)&#x3D;&quot;deleteReview(review._id)&quot;&gt;Yes&lt;/button&gt;
+                    &lt;button class&#x3D;&quot;inline-confirm-no&quot; (click)&#x3D;&quot;cancelDelete()&quot;&gt;No&lt;/button&gt;
+                  &lt;/span&gt;
+                } @else {
+                  &lt;button class&#x3D;&quot;btn-delete-review&quot; (click)&#x3D;&quot;confirmDelete(review._id)&quot;&gt;&amp;#128465;&lt;/button&gt;
+                }
+              }
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          @if (editingReviewId &#x3D;&#x3D;&#x3D; review._id) {
+            &lt;form [formGroup]&#x3D;&quot;editForm&quot; (ngSubmit)&#x3D;&quot;submitEdit(review._id)&quot; class&#x3D;&quot;mt-3&quot;&gt;
+              &lt;textarea class&#x3D;&quot;form-control mb-2&quot; rows&#x3D;&quot;3&quot; formControlName&#x3D;&quot;comment&quot; placeholder&#x3D;&quot;Edit your review...&quot;&gt;&lt;/textarea&gt;
+              &lt;div class&#x3D;&quot;d-flex gap-2 mb-2&quot;&gt;
+                @for (star of [1,2,3,4,5]; track star) {
+                  &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn border-0 p-0&quot;
+                    style&#x3D;&quot;font-size:1.4rem; background:transparent; transition:transform 0.1s;&quot;
+                    [style.color]&#x3D;&quot;editForm.get(&#x27;stars&#x27;)?.value &gt;&#x3D; star ? &#x27;#f5c518&#x27; : &#x27;#555&#x27;&quot;
+                    (click)&#x3D;&quot;editForm.patchValue({stars: star})&quot;&gt;&amp;#9733;&lt;/button&gt;
+                }
+                &lt;span style&#x3D;&quot;color:#888; font-size:0.82rem; align-self:center; margin-left:0.25rem;&quot;&gt;{{ editForm.get(&#x27;stars&#x27;)?.value }}/5&lt;/span&gt;
+              &lt;/div&gt;
+              @if (editError) {
+                &lt;div class&#x3D;&quot;alert-dark-danger mb-2&quot; style&#x3D;&quot;font-size:0.85rem;&quot;&gt;{{ editError }}&lt;/div&gt;
+              }
+              &lt;div class&#x3D;&quot;d-flex gap-2&quot;&gt;
+                &lt;button type&#x3D;&quot;submit&quot; class&#x3D;&quot;btn-submit-review&quot; style&#x3D;&quot;padding:0.4rem 1.2rem; font-size:0.85rem;&quot; [disabled]&#x3D;&quot;editForm.invalid&quot;&gt;Save&lt;/button&gt;
+                &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn-cancel-edit&quot; (click)&#x3D;&quot;cancelEdit()&quot;&gt;Cancel&lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/form&gt;
+          } @else {
+            &lt;div class&#x3D;&quot;review-comment&quot;&gt;{{ review.comment }}&lt;/div&gt;
+          }
+
+          &lt;!-- Replies --&gt;
+          @if (review.replies &amp;&amp; review.replies.length &gt; 0) {
+            &lt;div class&#x3D;&quot;replies-list mt-2&quot;&gt;
+              @for (reply of review.replies; track reply._id) {
+                &lt;div class&#x3D;&quot;reply-card&quot;&gt;
+                  &lt;div class&#x3D;&quot;d-flex justify-content-between align-items-start&quot;&gt;
+                    &lt;div class&#x3D;&quot;d-flex align-items-center gap-2&quot;&gt;
+                      &lt;img [src]&#x3D;&quot;&#x27;/assets/images/avatar/&#x27; + (reply.avatar || &#x27;profile.png&#x27;)&quot; class&#x3D;&quot;reply-avatar&quot; alt&#x3D;&quot;avatar&quot; /&gt;
+                      &lt;span class&#x3D;&quot;reply-username&quot;&gt;{{ reply.username }}&lt;/span&gt;
+                    &lt;/div&gt;
+                    @if (authService.isLoggedIn() &amp;&amp; (reply.username &#x3D;&#x3D;&#x3D; authService.getUsername() || authService.isAdmin() || authService.isModerator())) {
+                      @if (confirmDeleteReplyId &#x3D;&#x3D;&#x3D; reply._id) {
+                        &lt;span class&#x3D;&quot;inline-confirm&quot;&gt;
+                          &lt;span class&#x3D;&quot;inline-confirm-text&quot;&gt;Delete?&lt;/span&gt;
+                          &lt;button class&#x3D;&quot;inline-confirm-yes&quot; (click)&#x3D;&quot;deleteReply(review._id, reply._id)&quot;&gt;Yes&lt;/button&gt;
+                          &lt;button class&#x3D;&quot;inline-confirm-no&quot; (click)&#x3D;&quot;cancelDeleteReply()&quot;&gt;No&lt;/button&gt;
+                        &lt;/span&gt;
+                      } @else {
+                        &lt;button class&#x3D;&quot;btn-delete-review&quot; (click)&#x3D;&quot;confirmDeleteReply(review._id, reply._id)&quot;&gt;&amp;#128465;&lt;/button&gt;
+                      }
+                    }
+                  &lt;/div&gt;
+                  &lt;div class&#x3D;&quot;reply-comment&quot;&gt;{{ reply.comment }}&lt;/div&gt;
+                &lt;/div&gt;
+              }
+            &lt;/div&gt;
+          }
+
+          &lt;!-- Reply button &amp; form --&gt;
+          @if (authService.isLoggedIn()) {
+            @if (replyingToReviewId &#x3D;&#x3D;&#x3D; review._id) {
+              &lt;div class&#x3D;&quot;reply-form mt-2&quot;&gt;
+                &lt;textarea class&#x3D;&quot;form-control mb-2&quot; rows&#x3D;&quot;2&quot; [value]&#x3D;&quot;replyText&quot; (input)&#x3D;&quot;replyText &#x3D; $any($event.target).value&quot; placeholder&#x3D;&quot;Write a reply...&quot;&gt;&lt;/textarea&gt;
+                @if (replyError) {
+                  &lt;div class&#x3D;&quot;alert-dark-danger mb-2&quot; style&#x3D;&quot;font-size:0.82rem;&quot;&gt;{{ replyError }}&lt;/div&gt;
+                }
+                &lt;div class&#x3D;&quot;d-flex gap-2&quot;&gt;
+                  &lt;button class&#x3D;&quot;btn-submit-review&quot; style&#x3D;&quot;padding:0.3rem 1rem; font-size:0.82rem;&quot; (click)&#x3D;&quot;submitReply(review._id)&quot; [disabled]&#x3D;&quot;!replyText.trim()&quot;&gt;Post Reply&lt;/button&gt;
+                  &lt;button class&#x3D;&quot;btn-cancel-edit&quot; (click)&#x3D;&quot;cancelReply()&quot;&gt;Cancel&lt;/button&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            } @else {
+              &lt;button class&#x3D;&quot;btn-reply mt-2&quot; (click)&#x3D;&quot;startReply(review._id)&quot;&gt;&amp;#8617; Reply&lt;/button&gt;
+            }
+          }
+        &lt;/div&gt;
+      }
+
+      &lt;!-- Review Form --&gt;
+      &lt;div class&#x3D;&quot;review-form-card&quot;&gt;
+        &lt;div class&#x3D;&quot;review-form-header&quot;&gt;&amp;#9997; Write a Review&lt;/div&gt;
+        &lt;div class&#x3D;&quot;review-form-body&quot;&gt;
+
+          @if (submitSuccess) {
+            &lt;div class&#x3D;&quot;alert-dark-success mb-3&quot;&gt;&amp;#10003; Review submitted successfully!&lt;/div&gt;
+          }
+          @if (submitError) {
+            &lt;div class&#x3D;&quot;alert-dark-danger mb-3&quot;&gt;{{ submitError }}&lt;/div&gt;
+          }
+
+          &lt;form [formGroup]&#x3D;&quot;reviewForm&quot; (ngSubmit)&#x3D;&quot;onSubmit()&quot;&gt;
+            &lt;p class&#x3D;&quot;posting-as&quot;&gt;Posting as &lt;strong&gt;{{ authService.getUsername() }}&lt;/strong&gt;&lt;/p&gt;
+
+            &lt;div class&#x3D;&quot;mb-3&quot;&gt;
+              &lt;label class&#x3D;&quot;form-label&quot;&gt;Your Review&lt;/label&gt;
+              &lt;textarea class&#x3D;&quot;form-control&quot; rows&#x3D;&quot;4&quot; formControlName&#x3D;&quot;comment&quot;
+                placeholder&#x3D;&quot;Share your thoughts about this movie...&quot;
+                [ngClass]&#x3D;&quot;{&#x27;is-invalid&#x27;: isInvalid(&#x27;comment&#x27;)}&quot;&gt;&lt;/textarea&gt;
+              @if (isInvalid(&#x27;comment&#x27;)) {
+                &lt;div class&#x3D;&quot;invalid-feedback&quot;&gt;Review text is required.&lt;/div&gt;
+              }
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;mb-4&quot;&gt;
+              &lt;label class&#x3D;&quot;form-label&quot;&gt;Rating&lt;/label&gt;
+              &lt;div class&#x3D;&quot;d-flex gap-2&quot;&gt;
+                @for (star of [1,2,3,4,5]; track star) {
+                  &lt;button type&#x3D;&quot;button&quot;
+                    class&#x3D;&quot;btn border-0 p-0&quot;
+                    style&#x3D;&quot;font-size:1.8rem; line-height:1; background:transparent; transition:transform 0.1s;&quot;
+                    [style.color]&#x3D;&quot;reviewForm.get(&#x27;stars&#x27;)?.value &gt;&#x3D; star ? &#x27;#f5c518&#x27; : &#x27;#444&#x27;&quot;
+                    (click)&#x3D;&quot;reviewForm.patchValue({stars: star})&quot;
+                    (mouseenter)&#x3D;&quot;hoveredStar &#x3D; star&quot;
+                    (mouseleave)&#x3D;&quot;hoveredStar &#x3D; 0&quot;&gt;
+                    &amp;#9733;
+                  &lt;/button&gt;
+                }
+                &lt;span style&#x3D;&quot;color:#888; font-size:0.85rem; align-self:center; margin-left:0.5rem;&quot;&gt;
+                  {{ reviewForm.get(&#x27;stars&#x27;)?.value }}/5
+                &lt;/span&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;button class&#x3D;&quot;btn-submit-review&quot; type&#x3D;&quot;submit&quot; [disabled]&#x3D;&quot;reviewForm.invalid&quot;&gt;
+              Submit Review
+            &lt;/button&gt;
+          &lt;/form&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+    }
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="page-wrapper">  <div class="container-xl px-4">    <a [routerLink]="\'/movies\'" class="btn-back mb-4">&#8592; Back to Movies</a>    @if (!movie) {      <div class="text-center py-5">        <div class="spinner-border" style="width:3rem;height:3rem;" role="status"></div>      </div>    }    @if (movie) {      <!-- Movie Header -->      <div class="detail-header">        <div class="row align-items-start gx-4">          <!-- Poster -->          @if (movie.poster) {            <div class="col-auto mb-4 mb-lg-0">              <img [src]="posterUrl(movie.poster)" [alt]="movie.title" class="detail-poster" />            </div>          }          <!-- Info -->          <div [class]="movie.poster ? \'col-lg\' : \'col-lg-8\'">            <h1 class="detail-title">{{ movie.title }}</h1>            <div class="mb-3">              @for (g of genreList(movie.genres); track g) {                <a class="genre-badge" [routerLink]="\'/movies\'" [queryParams]="{genre: g}">{{ g }}</a>              }            </div>            <p class="detail-overview">{{ movie.overview }}</p>            @if (movie.keywords) {              <div class="mt-2">                @for (k of keywordList(movie.keywords); track k) {                  <span class="keyword-badge">{{ k }}</span>                }              </div>            }          </div>          <!-- Stats -->          <div class="col-lg-4 mt-4 mt-lg-0">            <div class="row g-2">              <div class="col-6">                <div class="stat-box">                  <div class="stat-value gold">&#9733; {{ movie.vote_average }}</div>                  <div class="stat-label">Rating</div>                </div>              </div>              <div class="col-6">                <div class="stat-box">                  <div class="stat-value">{{ movie.runtime }}<small style="font-size:0.9rem;font-weight:400;"> min</small></div>                  <div class="stat-label">Runtime</div>                </div>              </div>              <div class="col-6">                <div class="stat-box">                  <div class="stat-value" style="font-size:1rem;">{{ movie.release_date }}</div>                  <div class="stat-label">Released</div>                </div>              </div>              <div class="col-6">                <div class="stat-box">                  <div class="stat-value">{{ movie.vote_count | number }}</div>                  <div class="stat-label">Votes</div>                </div>              </div>            </div>            <!-- Community vs Official Rating -->            @if (communityRating !== null) {              <div class="community-rating-card mt-3">                <div class="cr-title">CineVerse vs Official</div>                <div class="cr-row">                  <span class="cr-label">Community</span>                  <div class="cr-bar-wrap">                    <div class="cr-bar cr-bar-community" [style.width.%]="(communityRating! / 5) * 100"></div>                  </div>                  <span class="cr-value">{{ communityRating }}/5</span>                </div>                <div class="cr-row">                  <span class="cr-label">Official</span>                  <div class="cr-bar-wrap">                    <div class="cr-bar cr-bar-official" [style.width.%]="(officialRating5 / 5) * 100"></div>                  </div>                  <span class="cr-value">{{ officialRating5 }}/5</span>                </div>              </div>            }            <!-- Watchlist Button -->            @if (authService.isLoggedIn()) {              <div class="mt-3">                <button class="btn-watchlist" [class.in-watchlist]="isInWatchlist" (click)="toggleWatchlist()">                  {{ isInWatchlist ? \'&#9733; In Watchlist\' : \'&#9734; Save to Watchlist\' }}                </button>              </div>            }            @if (authService.isAdmin()) {              <div class="mt-3">                @if (confirmDeleteMovie) {                  <div class="delete-confirm-box">                    <p class="delete-confirm-text">Delete <strong>{{ movie.title }}</strong>? This cannot be undone.</p>                    <div class="d-flex gap-2">                      <button class="btn-danger-solid" (click)="deleteMovie()">Yes, delete</button>                      <button class="btn-cancel-edit" (click)="confirmDeleteMovie = false">Cancel</button>                    </div>                  </div>                } @else {                  <button class="btn-delete-movie" (click)="confirmDeleteMovie = true">&#128465; Delete Movie</button>                }                @if (deleteMovieError) {                  <div style="color:#e74c3c; font-size:0.8rem; margin-top:0.4rem;">{{ deleteMovieError }}</div>                }              </div>            }          </div>        </div>      </div>      <!-- Reviews Section -->      <div class="d-flex align-items-center mb-3">        <span class="section-title">Reviews</span>        <span class="review-count-badge">{{ reviews_list.length }}</span>      </div>      @if (deleteReviewError) {        <div class="alert-dark-danger mb-3" style="font-size:0.85rem;">{{ deleteReviewError }}</div>      }      @if (reviews_list.length === 0) {        <div class="empty-state" style="padding:2rem;">          <div class="empty-icon">&#128172;</div>          <p style="color:#555;">No reviews yet — be the first!</p>        </div>      }      @for (review of reviews_list; track review._id) {        <div class="review-card">          <div class="d-flex justify-content-between align-items-start">            <div class="d-flex align-items-center gap-2">              <img [src]="\'/assets/images/avatar/\' + (review.avatar || \'profile.png\')" class="review-avatar" alt="avatar" />              <span class="review-username">{{ review.username }}</span>            </div>            <div class="d-flex align-items-center gap-2 flex-shrink-0">              <span class="review-stars">{{ starString(review.star) }} <small style="color:#888;font-size:0.75rem;">({{ review.star }}/5)</small></span>              @if (review.username === authService.getUsername()) {                <button class="btn-edit-review" (click)="startEdit(review)" title="Edit review">&#9998;</button>              }              @if (authService.isAdmin() || authService.isModerator() || review.username === authService.getUsername()) {                @if (confirmDeleteReviewId === review._id) {                  <span class="inline-confirm">                    <span class="inline-confirm-text">Delete?</span>                    <button class="inline-confirm-yes" (click)="deleteReview(review._id)">Yes</button>                    <button class="inline-confirm-no" (click)="cancelDelete()">No</button>                  </span>                } @else {                  <button class="btn-delete-review" (click)="confirmDelete(review._id)">&#128465;</button>                }              }            </div>          </div>          @if (editingReviewId === review._id) {            <form [formGroup]="editForm" (ngSubmit)="submitEdit(review._id)" class="mt-3">              <textarea class="form-control mb-2" rows="3" formControlName="comment" placeholder="Edit your review..."></textarea>              <div class="d-flex gap-2 mb-2">                @for (star of [1,2,3,4,5]; track star) {                  <button type="button" class="btn border-0 p-0"                    style="font-size:1.4rem; background:transparent; transition:transform 0.1s;"                    [style.color]="editForm.get(\'stars\')?.value >= star ? \'#f5c518\' : \'#555\'"                    (click)="editForm.patchValue({stars: star})">&#9733;</button>                }                <span style="color:#888; font-size:0.82rem; align-self:center; margin-left:0.25rem;">{{ editForm.get(\'stars\')?.value }}/5</span>              </div>              @if (editError) {                <div class="alert-dark-danger mb-2" style="font-size:0.85rem;">{{ editError }}</div>              }              <div class="d-flex gap-2">                <button type="submit" class="btn-submit-review" style="padding:0.4rem 1.2rem; font-size:0.85rem;" [disabled]="editForm.invalid">Save</button>                <button type="button" class="btn-cancel-edit" (click)="cancelEdit()">Cancel</button>              </div>            </form>          } @else {            <div class="review-comment">{{ review.comment }}</div>          }          <!-- Replies -->          @if (review.replies && review.replies.length > 0) {            <div class="replies-list mt-2">              @for (reply of review.replies; track reply._id) {                <div class="reply-card">                  <div class="d-flex justify-content-between align-items-start">                    <div class="d-flex align-items-center gap-2">                      <img [src]="\'/assets/images/avatar/\' + (reply.avatar || \'profile.png\')" class="reply-avatar" alt="avatar" />                      <span class="reply-username">{{ reply.username }}</span>                    </div>                    @if (authService.isLoggedIn() && (reply.username === authService.getUsername() || authService.isAdmin() || authService.isModerator())) {                      @if (confirmDeleteReplyId === reply._id) {                        <span class="inline-confirm">                          <span class="inline-confirm-text">Delete?</span>                          <button class="inline-confirm-yes" (click)="deleteReply(review._id, reply._id)">Yes</button>                          <button class="inline-confirm-no" (click)="cancelDeleteReply()">No</button>                        </span>                      } @else {                        <button class="btn-delete-review" (click)="confirmDeleteReply(review._id, reply._id)">&#128465;</button>                      }                    }                  </div>                  <div class="reply-comment">{{ reply.comment }}</div>                </div>              }            </div>          }          <!-- Reply button & form -->          @if (authService.isLoggedIn()) {            @if (replyingToReviewId === review._id) {              <div class="reply-form mt-2">                <textarea class="form-control mb-2" rows="2" [value]="replyText" (input)="replyText = $any($event.target).value" placeholder="Write a reply..."></textarea>                @if (replyError) {                  <div class="alert-dark-danger mb-2" style="font-size:0.82rem;">{{ replyError }}</div>                }                <div class="d-flex gap-2">                  <button class="btn-submit-review" style="padding:0.3rem 1rem; font-size:0.82rem;" (click)="submitReply(review._id)" [disabled]="!replyText.trim()">Post Reply</button>                  <button class="btn-cancel-edit" (click)="cancelReply()">Cancel</button>                </div>              </div>            } @else {              <button class="btn-reply mt-2" (click)="startReply(review._id)">&#8617; Reply</button>            }          }        </div>      }      <!-- Review Form -->      <div class="review-form-card">        <div class="review-form-header">&#9997; Write a Review</div>        <div class="review-form-body">          @if (submitSuccess) {            <div class="alert-dark-success mb-3">&#10003; Review submitted successfully!</div>          }          @if (submitError) {            <div class="alert-dark-danger mb-3">{{ submitError }}</div>          }          <form [formGroup]="reviewForm" (ngSubmit)="onSubmit()">            <p class="posting-as">Posting as <strong>{{ authService.getUsername() }}</strong></p>            <div class="mb-3">              <label class="form-label">Your Review</label>              <textarea class="form-control" rows="4" formControlName="comment"                placeholder="Share your thoughts about this movie..."                [ngClass]="{\'is-invalid\': isInvalid(\'comment\')}"></textarea>              @if (isInvalid(\'comment\')) {                <div class="invalid-feedback">Review text is required.</div>              }            </div>            <div class="mb-4">              <label class="form-label">Rating</label>              <div class="d-flex gap-2">                @for (star of [1,2,3,4,5]; track star) {                  <button type="button"                    class="btn border-0 p-0"                    style="font-size:1.8rem; line-height:1; background:transparent; transition:transform 0.1s;"                    [style.color]="reviewForm.get(\'stars\')?.value >= star ? \'#f5c518\' : \'#444\'"                    (click)="reviewForm.patchValue({stars: star})"                    (mouseenter)="hoveredStar = star"                    (mouseleave)="hoveredStar = 0">                    &#9733;                  </button>                }                <span style="color:#888; font-size:0.85rem; align-self:center; margin-left:0.5rem;">                  {{ reviewForm.get(\'stars\')?.value }}/5                </span>              </div>            </div>            <button class="btn-submit-review" type="submit" [disabled]="reviewForm.invalid">              Submit Review            </button>          </form>        </div>      </div>    }  </div></div></div>'
+    var COMPONENTS = [{'name': 'App', 'selector': 'app-root'},{'name': 'Home', 'selector': 'app-home'},{'name': 'Login', 'selector': 'app-login'},{'name': 'Movie', 'selector': 'app-movie'},{'name': 'Movies', 'selector': 'app-movies'},{'name': 'Navigation', 'selector': 'app-navigation'},{'name': 'Profile', 'selector': 'app-profile'},{'name': 'Register', 'selector': 'app-register'},{'name': 'Watchlist', 'selector': 'app-watchlist'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'Movie'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'Movie.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

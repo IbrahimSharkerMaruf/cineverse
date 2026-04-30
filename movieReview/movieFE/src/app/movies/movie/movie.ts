@@ -5,6 +5,11 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { WebServices } from '../../services/web-services';
 import { AuthService } from '../../services/auth-service';
 
+/**
+ * Movie detail page component.
+ * Shows full movie information, community reviews, and a review submission form.
+ * Supports inline review editing, reply threads, watchlist toggle, and admin movie deletion.
+ */
 @Component({
   selector: 'app-movie',
   imports: [RouterLink, CommonModule, ReactiveFormsModule],
@@ -13,27 +18,46 @@ import { AuthService } from '../../services/auth-service';
   styleUrl: './movie.css',
 })
 export class Movie {
+  /** Full movie object returned by the backend. */
   movie: any = null;
+  /** List of reviews for the current movie. */
   reviews_list: any[] = [];
+  /** Reactive form for submitting a new review. */
   reviewForm: any;
+  /** Error message shown when review submission fails. */
   submitError = '';
+  /** True after a review is successfully submitted. */
   submitSuccess = false;
+  /** Star rating index currently hovered in the star picker (0 = none). */
   hoveredStar = 0;
+  /** Error message shown when movie deletion fails. */
   deleteMovieError = '';
+  /** True when the admin movie-delete confirmation prompt is visible. */
   confirmDeleteMovie = false;
 
+  /** True when the current movie is in the user's watchlist. */
   isInWatchlist = false;
 
+  /** Review ID currently being edited inline, or null if none. */
   editingReviewId: string | null = null;
+  /** Reactive form for editing an existing review. */
   editForm: any;
+  /** Error message shown when a review edit fails. */
   editError = '';
+  /** Error message shown when a review deletion fails. */
   deleteReviewError = '';
+  /** Review ID awaiting delete confirmation, or null if none. */
   confirmDeleteReviewId: string | null = null;
 
+  /** Review ID for which the reply compose box is open, or null if none. */
   replyingToReviewId: string | null = null;
+  /** Draft text for a reply being composed. */
   replyText = '';
+  /** Error message shown when posting a reply fails. */
   replyError = '';
+  /** Reply ID awaiting delete confirmation, or null if none. */
   confirmDeleteReplyId: string | null = null;
+  /** Review ID that owns the reply awaiting delete confirmation. */
   confirmDeleteReplyReviewId: string | null = null;
 
   constructor(
@@ -70,6 +94,7 @@ export class Movie {
     }
   }
 
+  /** Fetches and refreshes the review list for the current movie. */
   loadReviews() {
     const id = this.route.snapshot.paramMap.get('id');
     this.webService.getReviews(id).subscribe((response) => {
@@ -77,16 +102,19 @@ export class Movie {
     });
   }
 
+  /** Average star rating from all user reviews, rounded to 1 decimal. Null if no reviews. */
   get communityRating(): number | null {
     if (!this.reviews_list.length) return null;
     const avg = this.reviews_list.reduce((s: number, r: any) => s + r.star, 0) / this.reviews_list.length;
     return Math.round(avg * 10) / 10;
   }
 
+  /** Official TMDb rating converted from a 0–10 scale to a 0–5 star scale. */
   get officialRating5(): number {
     return this.movie ? Math.round((this.movie.vote_average / 2) * 10) / 10 : 0;
   }
 
+  /** Adds or removes this movie from the user's watchlist, updating local cache optimistically. */
   toggleWatchlist() {
     const id = this.route.snapshot.paramMap.get('id')!;
     if (this.isInWatchlist) {
@@ -102,6 +130,10 @@ export class Movie {
     }
   }
 
+  /**
+   * Opens the inline edit form pre-filled with the review's current values.
+   * @param review Review object to edit.
+   */
   startEdit(review: any) {
     this.editingReviewId = review._id;
     this.editError = '';
@@ -111,11 +143,16 @@ export class Movie {
     });
   }
 
+  /** Closes the inline edit form without saving. */
   cancelEdit() {
     this.editingReviewId = null;
     this.editError = '';
   }
 
+  /**
+   * Saves the edited review and reloads the review list on success.
+   * @param reviewId Review ID being updated.
+   */
   submitEdit(reviewId: string) {
     const movieId = this.route.snapshot.paramMap.get('id')!;
     this.webService.editReview(movieId, reviewId, this.editForm.value).subscribe({
@@ -127,6 +164,7 @@ export class Movie {
     });
   }
 
+  /** Submits the new review form and reloads reviews on success. */
   onSubmit() {
     this.submitError = '';
     this.submitSuccess = false;
@@ -144,14 +182,23 @@ export class Movie {
     });
   }
 
+  /**
+   * Shows the delete confirmation prompt for a review.
+   * @param reviewId Review ID to confirm deletion for.
+   */
   confirmDelete(reviewId: string) {
     this.confirmDeleteReviewId = reviewId;
   }
 
+  /** Dismisses the review delete confirmation prompt. */
   cancelDelete() {
     this.confirmDeleteReviewId = null;
   }
 
+  /**
+   * Deletes a review and refreshes the list.
+   * @param reviewId Review ID to delete.
+   */
   deleteReview(reviewId: string) {
     const movieId = this.route.snapshot.paramMap.get('id')!;
     this.deleteReviewError = '';
@@ -165,6 +212,7 @@ export class Movie {
     });
   }
 
+  /** Deletes the current movie (admin only) and navigates back to the movie list. */
   deleteMovie() {
     const id = this.route.snapshot.paramMap.get('id')!;
     this.webService.deleteMovie(id).subscribe({
@@ -173,12 +221,17 @@ export class Movie {
     });
   }
 
+  /**
+   * Opens the reply compose box for a specific review.
+   * @param reviewId Review ID to reply to.
+   */
   startReply(reviewId: string) {
     this.replyingToReviewId = reviewId;
     this.replyText = '';
     this.replyError = '';
   }
 
+  /** Closes the reply compose box without posting. */
   cancelReply() {
     this.replyingToReviewId = null;
     this.replyText = '';
@@ -198,16 +251,27 @@ export class Movie {
     });
   }
 
+  /**
+   * Shows the delete confirmation prompt for a reply.
+   * @param reviewId Review the reply belongs to.
+   * @param replyId Reply ID to confirm deletion for.
+   */
   confirmDeleteReply(reviewId: string, replyId: string) {
     this.confirmDeleteReplyReviewId = reviewId;
     this.confirmDeleteReplyId = replyId;
   }
 
+  /** Dismisses the reply delete confirmation prompt. */
   cancelDeleteReply() {
     this.confirmDeleteReplyId = null;
     this.confirmDeleteReplyReviewId = null;
   }
 
+  /**
+   * Deletes a reply and refreshes the review list.
+   * @param reviewId Review the reply belongs to.
+   * @param replyId Reply ID to delete.
+   */
   deleteReply(reviewId: string, replyId: string) {
     const movieId = this.route.snapshot.paramMap.get('id')!;
     this.webService.deleteReply(movieId, reviewId, replyId).subscribe({
@@ -220,6 +284,10 @@ export class Movie {
     });
   }
 
+  /**
+   * Returns true if a review form control is invalid and has been touched.
+   * @param control Form control name to check.
+   */
   isInvalid(control: string) {
     return (
       this.reviewForm.controls[control].invalid &&
@@ -227,22 +295,42 @@ export class Movie {
     );
   }
 
+  /**
+   * Builds the asset URL for a movie poster file.
+   * @param filename Poster filename stored in the database.
+   */
   posterUrl(filename: string): string {
     return `/assets/images/posters/${encodeURIComponent(filename)}`;
   }
 
+  /**
+   * Safely parses a JSON string into an array.
+   * @param jsonStr JSON string to parse.
+   */
   parseJson(jsonStr: string): any[] {
     try { return JSON.parse(jsonStr); } catch { return []; }
   }
 
+  /**
+   * Returns an array of genre name strings from a JSON genre array.
+   * @param jsonStr JSON string like `[{"name":"Action"},...]`.
+   */
   genreList(jsonStr: string): string[] {
     return this.parseJson(jsonStr).map((i: any) => i.name);
   }
 
+  /**
+   * Returns up to 15 keyword name strings from a JSON keyword array.
+   * @param jsonStr JSON string like `[{"name":"hero"},...]`.
+   */
   keywordList(jsonStr: string): string[] {
     return this.parseJson(jsonStr).map((i: any) => i.name).slice(0, 15);
   }
 
+  /**
+   * Converts a numeric rating to a filled/empty star string (e.g. `"★★★☆☆"`).
+   * @param n Rating value (0–5).
+   */
   starString(n: number): string {
     return '★'.repeat(Math.round(n)) + '☆'.repeat(5 - Math.round(n));
   }

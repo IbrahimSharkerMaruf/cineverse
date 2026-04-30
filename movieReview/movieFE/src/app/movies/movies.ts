@@ -5,6 +5,11 @@ import { ReactiveFormsModule, FormsModule, FormBuilder, Validators } from '@angu
 import { WebServices } from '../services/web-services';
 import { AuthService } from '../services/auth-service';
 
+/**
+ * Movie list page component.
+ * Displays a paginated, searchable, filterable grid of movies.
+ * Admins see an "Add Movie" form; authenticated users can toggle watchlist entries.
+ */
 @Component({
   selector: 'app-movies',
   imports: [RouterModule, CommonModule, ReactiveFormsModule, FormsModule],
@@ -13,22 +18,37 @@ import { AuthService } from '../services/auth-service';
   styleUrl: './movies.css',
 })
 export class Movies {
+  /** Currently loaded page of movies. */
   movie_list: any[] = [];
+  /** Current page number (1-based). */
   page = 1;
+  /** Total number of pages based on backend total count. */
   totalPages = 1;
+  /** True when the current page is the last available page. */
   isLastPage = false;
+  /** True while an API request is in flight. */
   isLoading = false;
+  /** Reactive form for search and filter controls. */
   filterForm: any;
 
+  /** Controls visibility of the admin Add Movie form. */
   showAddForm = false;
+  /** Controls visibility of the advanced filters panel. */
   showFilters = false;
+  /** Value typed into the page-jump input. */
   jumpPage: number | null = null;
+  /** Reactive form for the Add Movie fields. */
   addMovieForm: any;
+  /** True after a movie is successfully added. */
   addSuccess = false;
+  /** Error message from a failed add-movie request. */
   addError = '';
+  /** Poster image file chosen by the admin. */
   posterFile: File | null = null;
+  /** Data URL preview of the chosen poster file. */
   posterPreview: string | null = null;
 
+  /** Number of active (non-empty) filter values, shown as a badge. */
   get activeFilterCount(): number {
     const v = this.filterForm?.value || {};
     return [v.genre, v.year, v.min_rating, v.max_rating, v.sort].filter(x => x !== '' && x != null).length;
@@ -41,6 +61,7 @@ export class Movies {
     private route: ActivatedRoute
   ) {}
 
+  /** Initialises forms, reads page from sessionStorage, and loads the first page of movies. */
   ngOnInit() {
     if (this.authService.isLoggedIn() && !this.authService.watchlistLoaded) {
       this.webService.getWatchlistIds().subscribe(ids => {
@@ -81,6 +102,7 @@ export class Movies {
     this.loadMovies();
   }
 
+  /** Fetches the current page of movies from the backend using active filter values. */
   loadMovies() {
     this.isLoading = true;
     this.webService.getMovies(this.page, this.filterForm?.value || {}).subscribe({
@@ -96,6 +118,10 @@ export class Movies {
     });
   }
 
+  /**
+   * Handles poster file selection and generates a local preview URL.
+   * @param event File input change event.
+   */
   onPosterChange(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0] ?? null;
     this.posterFile = file;
@@ -108,6 +134,7 @@ export class Movies {
     }
   }
 
+  /** Submits the Add Movie form to the backend. Reloads the movie list on success. */
   submitAddMovie() {
     this.addSuccess = false;
     this.addError = '';
@@ -139,10 +166,18 @@ export class Movies {
     });
   }
 
+  /**
+   * Builds the asset URL for a movie poster file.
+   * @param filename Poster filename stored in the database.
+   */
   posterUrl(filename: string): string {
     return `/assets/images/posters/${encodeURIComponent(filename)}`;
   }
 
+  /**
+   * Parses a JSON array string and returns a comma-separated list of `name` values.
+   * @param jsonStr JSON string like `[{"name":"Action"},...]`.
+   */
   parseNames(jsonStr: string): string {
     try {
       return JSON.parse(jsonStr).map((item: any) => item.name).join(', ');
@@ -151,12 +186,21 @@ export class Movies {
     }
   }
 
+  /**
+   * Parses a JSON genre array and returns an array of genre name strings.
+   * @param jsonStr JSON string like `[{"name":"Action"},...]`.
+   */
   genreList(jsonStr: string): string[] {
     try {
       return JSON.parse(jsonStr).map((i: any) => i.name);
     } catch { return []; }
   }
 
+  /**
+   * Sets the genre filter to the clicked genre tag and reloads page 1.
+   * @param genre Genre name to filter by.
+   * @param event Click event (propagation stopped to avoid card navigation).
+   */
   filterByGenre(genre: string, event: Event) {
     event.stopPropagation();
     this.filterForm.patchValue({ genre });
@@ -165,6 +209,11 @@ export class Movies {
     this.loadMovies();
   }
 
+  /**
+   * Adds or removes a movie from the user's watchlist and updates the local cache.
+   * @param movieId Movie ID to toggle.
+   * @param event Click event (propagation stopped to avoid card navigation).
+   */
   toggleWatchlist(movieId: string, event: Event) {
     event.stopPropagation();
     if (!this.authService.isLoggedIn()) return;
@@ -179,6 +228,7 @@ export class Movies {
     }
   }
 
+  /** Resets all filters except title and reloads from page 1. */
   searchByTitle() {
     const title = this.filterForm.get('title')?.value || '';
     this.filterForm.reset({ title, genre: '', year: '', min_rating: '', max_rating: '', sort: '', order: 'desc' });
@@ -187,12 +237,14 @@ export class Movies {
     this.loadMovies();
   }
 
+  /** Applies the current filter panel values and reloads from page 1. */
   applyFilters() {
     this.page = 1;
     sessionStorage['page'] = 1;
     this.loadMovies();
   }
 
+  /** Resets all filter fields and reloads from page 1. */
   clearFilters() {
     this.filterForm.reset({ title: '', genre: '', year: '', min_rating: '', max_rating: '', sort: '', order: 'desc' });
     this.page = 1;
@@ -200,6 +252,7 @@ export class Movies {
     this.loadMovies();
   }
 
+  /** Navigates to the previous page if not already on page 1. */
   previousPage() {
     if (this.page > 1) {
       this.page--;
@@ -208,6 +261,7 @@ export class Movies {
     }
   }
 
+  /** Navigates to the next page if not already on the last page. */
   nextPage() {
     if (!this.isLastPage) {
       this.page++;
@@ -216,6 +270,7 @@ export class Movies {
     }
   }
 
+  /** Jumps directly to the page number entered in the page-jump input. */
   goToPage() {
     if (!this.jumpPage || this.jumpPage < 1) return;
     this.page = Math.min(Math.floor(this.jumpPage), this.totalPages);

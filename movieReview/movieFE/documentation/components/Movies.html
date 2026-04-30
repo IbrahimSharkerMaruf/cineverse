@@ -1,0 +1,2576 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>cineverse documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">cineverse documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  Movies</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/movies/movies.ts</code>
+</p>
+
+
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Movie list page component.
+Displays a paginated, searchable, filterable grid of movies.
+Admins see an &quot;Add Movie&quot; form; authenticated users can toggle watchlist entries.</p>
+
+    </p>
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">providers</td>
+                <td class="col-md-9">
+                                <code><a href="../injectables/WebServices.html" target="_self" >WebServices</a></code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-movies</code></td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="https://angular.io/api/router/RouterModule" target="_blank" >RouterModule</a></code>
+                                <code><a href="https://angular.io/api/common/CommonModule" target="_blank" >CommonModule</a></code>
+                                <code><a href="https://angular.io/api/forms/ReactiveFormsModule" target="_blank" >ReactiveFormsModule</a></code>
+                                <code><a href="https://angular.io/api/forms/FormsModule" target="_blank" >FormsModule</a></code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./movies.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./movies.css</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#addError" >addError</a>
+                            </li>
+                            <li>
+                                <a href="#addMovieForm" >addMovieForm</a>
+                            </li>
+                            <li>
+                                <a href="#addSuccess" >addSuccess</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#authService" >authService</a>
+                            </li>
+                            <li>
+                                <a href="#filterForm" >filterForm</a>
+                            </li>
+                            <li>
+                                <a href="#isLastPage" >isLastPage</a>
+                            </li>
+                            <li>
+                                <a href="#isLoading" >isLoading</a>
+                            </li>
+                            <li>
+                                <a href="#jumpPage" >jumpPage</a>
+                            </li>
+                            <li>
+                                <a href="#movie_list" >movie_list</a>
+                            </li>
+                            <li>
+                                <a href="#page" >page</a>
+                            </li>
+                            <li>
+                                <a href="#posterFile" >posterFile</a>
+                            </li>
+                            <li>
+                                <a href="#posterPreview" >posterPreview</a>
+                            </li>
+                            <li>
+                                <a href="#showAddForm" >showAddForm</a>
+                            </li>
+                            <li>
+                                <a href="#showFilters" >showFilters</a>
+                            </li>
+                            <li>
+                                <a href="#totalPages" >totalPages</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#webService" >webService</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#applyFilters" >applyFilters</a>
+                            </li>
+                            <li>
+                                <a href="#clearFilters" >clearFilters</a>
+                            </li>
+                            <li>
+                                <a href="#filterByGenre" >filterByGenre</a>
+                            </li>
+                            <li>
+                                <a href="#genreList" >genreList</a>
+                            </li>
+                            <li>
+                                <a href="#goToPage" >goToPage</a>
+                            </li>
+                            <li>
+                                <a href="#loadMovies" >loadMovies</a>
+                            </li>
+                            <li>
+                                <a href="#nextPage" >nextPage</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onPosterChange" >onPosterChange</a>
+                            </li>
+                            <li>
+                                <a href="#parseNames" >parseNames</a>
+                            </li>
+                            <li>
+                                <a href="#posterUrl" >posterUrl</a>
+                            </li>
+                            <li>
+                                <a href="#previousPage" >previousPage</a>
+                            </li>
+                            <li>
+                                <a href="#searchByTitle" >searchByTitle</a>
+                            </li>
+                            <li>
+                                <a href="#submitAddMovie" >submitAddMovie</a>
+                            </li>
+                            <li>
+                                <a href="#toggleWatchlist" >toggleWatchlist</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#activeFilterCount" >activeFilterCount</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(webService: <a href="../injectables/WebServices.html" target="_self">WebServices</a>, authService: <a href="../injectables/AuthService.html" target="_self">AuthService</a>, formBuilder: <a href="https://angular.io/api/forms/FormBuilder" target="_blank">FormBuilder</a>, route: <a href="https://angular.io/api/router/ActivatedRoute" target="_blank">ActivatedRoute</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/app/movies/movies.ts:55</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>webService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/WebServices.html" target="_self" >WebServices</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>authService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AuthService.html" target="_self" >AuthService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>formBuilder</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/forms/FormBuilder" target="_blank" >FormBuilder</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>route</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/ActivatedRoute" target="_blank" >ActivatedRoute</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="applyFilters"></a>
+                    <span class="name">
+                        <span ><b>applyFilters</b></span>
+                        <a href="#applyFilters"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>applyFilters()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="241"
+                                    class="link-to-prism">src/app/movies/movies.ts:241</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Applies the current filter panel values and reloads from page 1.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="clearFilters"></a>
+                    <span class="name">
+                        <span ><b>clearFilters</b></span>
+                        <a href="#clearFilters"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>clearFilters()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="248"
+                                    class="link-to-prism">src/app/movies/movies.ts:248</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Resets all filter fields and reloads from page 1.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="filterByGenre"></a>
+                    <span class="name">
+                        <span ><b>filterByGenre</b></span>
+                        <a href="#filterByGenre"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>filterByGenre(genre: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, event: <a href="https://angular.io/api/router/Event" target="_blank">Event</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="204"
+                                    class="link-to-prism">src/app/movies/movies.ts:204</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Sets the genre filter to the clicked genre tag and reloads page 1.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>genre</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Genre name to filter by.</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://angular.io/api/router/Event" target="_blank" >Event</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Click event (propagation stopped to avoid card navigation).</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="genreList"></a>
+                    <span class="name">
+                        <span ><b>genreList</b></span>
+                        <a href="#genreList"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>genreList(jsonStr: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="193"
+                                    class="link-to-prism">src/app/movies/movies.ts:193</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Parses a JSON genre array and returns an array of genre name strings.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>jsonStr</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>JSON string like <code>[{&quot;name&quot;:&quot;Action&quot;},...]</code>.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>string[]</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="goToPage"></a>
+                    <span class="name">
+                        <span ><b>goToPage</b></span>
+                        <a href="#goToPage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>goToPage()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="274"
+                                    class="link-to-prism">src/app/movies/movies.ts:274</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Jumps directly to the page number entered in the page-jump input.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadMovies"></a>
+                    <span class="name">
+                        <span ><b>loadMovies</b></span>
+                        <a href="#loadMovies"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>loadMovies()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="106"
+                                    class="link-to-prism">src/app/movies/movies.ts:106</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Fetches the current page of movies from the backend using active filter values.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="nextPage"></a>
+                    <span class="name">
+                        <span ><b>nextPage</b></span>
+                        <a href="#nextPage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>nextPage()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="265"
+                                    class="link-to-prism">src/app/movies/movies.ts:265</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Navigates to the next page if not already on the last page.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="65"
+                                    class="link-to-prism">src/app/movies/movies.ts:65</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Initialises forms, reads page from sessionStorage, and loads the first page of movies.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onPosterChange"></a>
+                    <span class="name">
+                        <span ><b>onPosterChange</b></span>
+                        <a href="#onPosterChange"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onPosterChange(event: <a href="https://angular.io/api/router/Event" target="_blank">Event</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="125"
+                                    class="link-to-prism">src/app/movies/movies.ts:125</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handles poster file selection and generates a local preview URL.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://angular.io/api/router/Event" target="_blank" >Event</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>File input change event.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="parseNames"></a>
+                    <span class="name">
+                        <span ><b>parseNames</b></span>
+                        <a href="#parseNames"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>parseNames(jsonStr: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="181"
+                                    class="link-to-prism">src/app/movies/movies.ts:181</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Parses a JSON array string and returns a comma-separated list of <code>name</code> values.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>jsonStr</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>JSON string like <code>[{&quot;name&quot;:&quot;Action&quot;},...]</code>.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="posterUrl"></a>
+                    <span class="name">
+                        <span ><b>posterUrl</b></span>
+                        <a href="#posterUrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>posterUrl(filename: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="173"
+                                    class="link-to-prism">src/app/movies/movies.ts:173</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Builds the asset URL for a movie poster file.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>filename</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Poster filename stored in the database.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="previousPage"></a>
+                    <span class="name">
+                        <span ><b>previousPage</b></span>
+                        <a href="#previousPage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>previousPage()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="256"
+                                    class="link-to-prism">src/app/movies/movies.ts:256</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Navigates to the previous page if not already on page 1.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="searchByTitle"></a>
+                    <span class="name">
+                        <span ><b>searchByTitle</b></span>
+                        <a href="#searchByTitle"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>searchByTitle()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="232"
+                                    class="link-to-prism">src/app/movies/movies.ts:232</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Resets all filters except title and reloads from page 1.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="submitAddMovie"></a>
+                    <span class="name">
+                        <span ><b>submitAddMovie</b></span>
+                        <a href="#submitAddMovie"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>submitAddMovie()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="138"
+                                    class="link-to-prism">src/app/movies/movies.ts:138</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Submits the Add Movie form to the backend. Reloads the movie list on success.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleWatchlist"></a>
+                    <span class="name">
+                        <span ><b>toggleWatchlist</b></span>
+                        <a href="#toggleWatchlist"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleWatchlist(movieId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, event: <a href="https://angular.io/api/router/Event" target="_blank">Event</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="217"
+                                    class="link-to-prism">src/app/movies/movies.ts:217</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Adds or removes a movie from the user&#39;s watchlist and updates the local cache.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>movieId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Movie ID to toggle.</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://angular.io/api/router/Event" target="_blank" >Event</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Click event (propagation stopped to avoid card navigation).</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="addError"></a>
+                    <span class="name">
+                        <span ><b>addError</b></span>
+                        <a href="#addError"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/movies/movies.ts:45</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Error message from a failed add-movie request.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="addMovieForm"></a>
+                    <span class="name">
+                        <span ><b>addMovieForm</b></span>
+                        <a href="#addMovieForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/app/movies/movies.ts:41</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Reactive form for the Add Movie fields.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="addSuccess"></a>
+                    <span class="name">
+                        <span ><b>addSuccess</b></span>
+                        <a href="#addSuccess"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/movies/movies.ts:43</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>True after a movie is successfully added.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="authService"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>authService</b></span>
+                        <a href="#authService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../injectables/AuthService.html" target="_self" >AuthService</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/app/movies/movies.ts:59</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="filterForm"></a>
+                    <span class="name">
+                        <span ><b>filterForm</b></span>
+                        <a href="#filterForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/app/movies/movies.ts:32</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Reactive form for search and filter controls.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isLastPage"></a>
+                    <span class="name">
+                        <span ><b>isLastPage</b></span>
+                        <a href="#isLastPage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/movies/movies.ts:28</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>True when the current page is the last available page.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isLoading"></a>
+                    <span class="name">
+                        <span ><b>isLoading</b></span>
+                        <a href="#isLoading"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/movies/movies.ts:30</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>True while an API request is in flight.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="jumpPage"></a>
+                    <span class="name">
+                        <span ><b>jumpPage</b></span>
+                        <a href="#jumpPage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>number | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/movies/movies.ts:39</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Value typed into the page-jump input.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="movie_list"></a>
+                    <span class="name">
+                        <span ><b>movie_list</b></span>
+                        <a href="#movie_list"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>any[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/app/movies/movies.ts:22</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Currently loaded page of movies.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="page"></a>
+                    <span class="name">
+                        <span ><b>page</b></span>
+                        <a href="#page"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>1</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/movies/movies.ts:24</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Current page number (1-based).</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="posterFile"></a>
+                    <span class="name">
+                        <span ><b>posterFile</b></span>
+                        <a href="#posterFile"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>File | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/movies/movies.ts:47</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Poster image file chosen by the admin.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="posterPreview"></a>
+                    <span class="name">
+                        <span ><b>posterPreview</b></span>
+                        <a href="#posterPreview"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/app/movies/movies.ts:49</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Data URL preview of the chosen poster file.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showAddForm"></a>
+                    <span class="name">
+                        <span ><b>showAddForm</b></span>
+                        <a href="#showAddForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/app/movies/movies.ts:35</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Controls visibility of the admin Add Movie form.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showFilters"></a>
+                    <span class="name">
+                        <span ><b>showFilters</b></span>
+                        <a href="#showFilters"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/app/movies/movies.ts:37</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Controls visibility of the advanced filters panel.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="totalPages"></a>
+                    <span class="name">
+                        <span ><b>totalPages</b></span>
+                        <a href="#totalPages"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>1</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/movies/movies.ts:26</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Total number of pages based on backend total count.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="webService"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>webService</b></span>
+                        <a href="#webService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../injectables/WebServices.html" target="_self" >WebServices</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">src/app/movies/movies.ts:58</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-accessors">
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="activeFilterCount"></a>
+                        <span class="name"><b>activeFilterCount</b><a href="#activeFilterCount"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>activeFilterCount()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/app/movies/movies.ts:52</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Number of active (non-empty) filter values, shown as a badge.</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component } from &#x27;@angular/core&#x27;;
+import { RouterModule, ActivatedRoute } from &#x27;@angular/router&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { ReactiveFormsModule, FormsModule, FormBuilder, Validators } from &#x27;@angular/forms&#x27;;
+import { WebServices } from &#x27;../services/web-services&#x27;;
+import { AuthService } from &#x27;../services/auth-service&#x27;;
+
+/**
+ * Movie list page component.
+ * Displays a paginated, searchable, filterable grid of movies.
+ * Admins see an &quot;Add Movie&quot; form; authenticated users can toggle watchlist entries.
+ */
+@Component({
+  selector: &#x27;app-movies&#x27;,
+  imports: [RouterModule, CommonModule, ReactiveFormsModule, FormsModule],
+  providers: [WebServices],
+  templateUrl: &#x27;./movies.html&#x27;,
+  styleUrl: &#x27;./movies.css&#x27;,
+})
+export class Movies {
+  /** Currently loaded page of movies. */
+  movie_list: any[] &#x3D; [];
+  /** Current page number (1-based). */
+  page &#x3D; 1;
+  /** Total number of pages based on backend total count. */
+  totalPages &#x3D; 1;
+  /** True when the current page is the last available page. */
+  isLastPage &#x3D; false;
+  /** True while an API request is in flight. */
+  isLoading &#x3D; false;
+  /** Reactive form for search and filter controls. */
+  filterForm: any;
+
+  /** Controls visibility of the admin Add Movie form. */
+  showAddForm &#x3D; false;
+  /** Controls visibility of the advanced filters panel. */
+  showFilters &#x3D; false;
+  /** Value typed into the page-jump input. */
+  jumpPage: number | null &#x3D; null;
+  /** Reactive form for the Add Movie fields. */
+  addMovieForm: any;
+  /** True after a movie is successfully added. */
+  addSuccess &#x3D; false;
+  /** Error message from a failed add-movie request. */
+  addError &#x3D; &#x27;&#x27;;
+  /** Poster image file chosen by the admin. */
+  posterFile: File | null &#x3D; null;
+  /** Data URL preview of the chosen poster file. */
+  posterPreview: string | null &#x3D; null;
+
+  /** Number of active (non-empty) filter values, shown as a badge. */
+  get activeFilterCount(): number {
+    const v &#x3D; this.filterForm?.value || {};
+    return [v.genre, v.year, v.min_rating, v.max_rating, v.sort].filter(x &#x3D;&gt; x !&#x3D;&#x3D; &#x27;&#x27; &amp;&amp; x !&#x3D; null).length;
+  }
+
+  constructor(
+    public webService: WebServices,
+    public authService: AuthService,
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute
+  ) {}
+
+  /** Initialises forms, reads page from sessionStorage, and loads the first page of movies. */
+  ngOnInit() {
+    if (this.authService.isLoggedIn() &amp;&amp; !this.authService.watchlistLoaded) {
+      this.webService.getWatchlistIds().subscribe(ids &#x3D;&gt; {
+        this.authService.setWatchlist(ids);
+      });
+    }
+
+    const genreParam &#x3D; this.route.snapshot.queryParamMap.get(&#x27;genre&#x27;) || &#x27;&#x27;;
+
+    if (sessionStorage[&#x27;page&#x27;]) {
+      this.page &#x3D; Number(sessionStorage[&#x27;page&#x27;]);
+    }
+
+    this.filterForm &#x3D; this.formBuilder.group({
+      title:      [&#x27;&#x27;],
+      genre:      [genreParam],
+      year:       [&#x27;&#x27;],
+      min_rating: [&#x27;&#x27;],
+      max_rating: [&#x27;&#x27;],
+      sort:       [&#x27;&#x27;],
+      order:      [&#x27;desc&#x27;],
+    });
+
+    this.addMovieForm &#x3D; this.formBuilder.group({
+      title:        [&#x27;&#x27;, Validators.required],
+      release_date: [&#x27;&#x27;, Validators.required],
+      overview:     [&#x27;&#x27;],
+      runtime:      [&#x27;&#x27;],
+      budget:       [&#x27;&#x27;],
+      revenue:      [&#x27;&#x27;],
+      vote_average: [&#x27;&#x27;],
+      vote_count:   [&#x27;&#x27;],
+      popularity:   [&#x27;&#x27;],
+      genres:       [&#x27;&#x27;],
+      keywords:     [&#x27;&#x27;],
+    });
+
+    this.loadMovies();
+  }
+
+  /** Fetches the current page of movies from the backend using active filter values. */
+  loadMovies() {
+    this.isLoading &#x3D; true;
+    this.webService.getMovies(this.page, this.filterForm?.value || {}).subscribe({
+      next: (response) &#x3D;&gt; {
+        this.movie_list &#x3D; response.movies;
+        this.totalPages &#x3D; Math.max(1, Math.ceil(response.total / this.webService.pageSize));
+        this.isLastPage &#x3D; this.page &gt;&#x3D; this.totalPages;
+        this.isLoading &#x3D; false;
+      },
+      error: () &#x3D;&gt; {
+        this.isLoading &#x3D; false;
+      },
+    });
+  }
+
+  /**
+   * Handles poster file selection and generates a local preview URL.
+   * @param event File input change event.
+   */
+  onPosterChange(event: Event) {
+    const file &#x3D; (event.target as HTMLInputElement).files?.[0] ?? null;
+    this.posterFile &#x3D; file;
+    if (file) {
+      const reader &#x3D; new FileReader();
+      reader.onload &#x3D; () &#x3D;&gt; { this.posterPreview &#x3D; reader.result as string; };
+      reader.readAsDataURL(file);
+    } else {
+      this.posterPreview &#x3D; null;
+    }
+  }
+
+  /** Submits the Add Movie form to the backend. Reloads the movie list on success. */
+  submitAddMovie() {
+    this.addSuccess &#x3D; false;
+    this.addError &#x3D; &#x27;&#x27;;
+    const formData &#x3D; new FormData();
+    Object.entries(this.addMovieForm.value).forEach(([key, val]) &#x3D;&gt; {
+      if (key &#x3D;&#x3D;&#x3D; &#x27;genres&#x27;) return;
+      if (val !&#x3D;&#x3D; &#x27;&#x27; &amp;&amp; val !&#x3D;&#x3D; null &amp;&amp; val !&#x3D;&#x3D; undefined) {
+        formData.append(key, val as string);
+      }
+    });
+    const selectedGenre: string &#x3D; this.addMovieForm.value.genres || &#x27;&#x27;;
+    if (selectedGenre) {
+      formData.append(&#x27;genres&#x27;, JSON.stringify([{ name: selectedGenre }]));
+    }
+    if (this.posterFile) {
+      formData.append(&#x27;poster&#x27;, this.posterFile);
+    }
+    this.webService.addMovie(formData).subscribe({
+      next: () &#x3D;&gt; {
+        this.addSuccess &#x3D; true;
+        this.addMovieForm.reset();
+        this.posterFile &#x3D; null;
+        this.posterPreview &#x3D; null;
+        this.loadMovies();
+      },
+      error: (err) &#x3D;&gt; {
+        this.addError &#x3D; err?.error?.error || &#x27;Failed to add movie. Make sure you are logged in as admin.&#x27;;
+      },
+    });
+  }
+
+  /**
+   * Builds the asset URL for a movie poster file.
+   * @param filename Poster filename stored in the database.
+   */
+  posterUrl(filename: string): string {
+    return &#x60;/assets/images/posters/${encodeURIComponent(filename)}&#x60;;
+  }
+
+  /**
+   * Parses a JSON array string and returns a comma-separated list of &#x60;name&#x60; values.
+   * @param jsonStr JSON string like &#x60;[{&quot;name&quot;:&quot;Action&quot;},...]&#x60;.
+   */
+  parseNames(jsonStr: string): string {
+    try {
+      return JSON.parse(jsonStr).map((item: any) &#x3D;&gt; item.name).join(&#x27;, &#x27;);
+    } catch {
+      return jsonStr || &#x27;&#x27;;
+    }
+  }
+
+  /**
+   * Parses a JSON genre array and returns an array of genre name strings.
+   * @param jsonStr JSON string like &#x60;[{&quot;name&quot;:&quot;Action&quot;},...]&#x60;.
+   */
+  genreList(jsonStr: string): string[] {
+    try {
+      return JSON.parse(jsonStr).map((i: any) &#x3D;&gt; i.name);
+    } catch { return []; }
+  }
+
+  /**
+   * Sets the genre filter to the clicked genre tag and reloads page 1.
+   * @param genre Genre name to filter by.
+   * @param event Click event (propagation stopped to avoid card navigation).
+   */
+  filterByGenre(genre: string, event: Event) {
+    event.stopPropagation();
+    this.filterForm.patchValue({ genre });
+    this.page &#x3D; 1;
+    sessionStorage[&#x27;page&#x27;] &#x3D; 1;
+    this.loadMovies();
+  }
+
+  /**
+   * Adds or removes a movie from the user&#x27;s watchlist and updates the local cache.
+   * @param movieId Movie ID to toggle.
+   * @param event Click event (propagation stopped to avoid card navigation).
+   */
+  toggleWatchlist(movieId: string, event: Event) {
+    event.stopPropagation();
+    if (!this.authService.isLoggedIn()) return;
+    if (this.authService.isInWatchlist(movieId)) {
+      this.webService.removeFromWatchlist(movieId).subscribe(() &#x3D;&gt; {
+        this.authService.removeFromWatchlistLocal(movieId);
+      });
+    } else {
+      this.webService.addToWatchlist(movieId).subscribe(() &#x3D;&gt; {
+        this.authService.addToWatchlistLocal(movieId);
+      });
+    }
+  }
+
+  /** Resets all filters except title and reloads from page 1. */
+  searchByTitle() {
+    const title &#x3D; this.filterForm.get(&#x27;title&#x27;)?.value || &#x27;&#x27;;
+    this.filterForm.reset({ title, genre: &#x27;&#x27;, year: &#x27;&#x27;, min_rating: &#x27;&#x27;, max_rating: &#x27;&#x27;, sort: &#x27;&#x27;, order: &#x27;desc&#x27; });
+    this.page &#x3D; 1;
+    sessionStorage[&#x27;page&#x27;] &#x3D; 1;
+    this.loadMovies();
+  }
+
+  /** Applies the current filter panel values and reloads from page 1. */
+  applyFilters() {
+    this.page &#x3D; 1;
+    sessionStorage[&#x27;page&#x27;] &#x3D; 1;
+    this.loadMovies();
+  }
+
+  /** Resets all filter fields and reloads from page 1. */
+  clearFilters() {
+    this.filterForm.reset({ title: &#x27;&#x27;, genre: &#x27;&#x27;, year: &#x27;&#x27;, min_rating: &#x27;&#x27;, max_rating: &#x27;&#x27;, sort: &#x27;&#x27;, order: &#x27;desc&#x27; });
+    this.page &#x3D; 1;
+    sessionStorage[&#x27;page&#x27;] &#x3D; 1;
+    this.loadMovies();
+  }
+
+  /** Navigates to the previous page if not already on page 1. */
+  previousPage() {
+    if (this.page &gt; 1) {
+      this.page--;
+      sessionStorage[&#x27;page&#x27;] &#x3D; this.page;
+      this.loadMovies();
+    }
+  }
+
+  /** Navigates to the next page if not already on the last page. */
+  nextPage() {
+    if (!this.isLastPage) {
+      this.page++;
+      sessionStorage[&#x27;page&#x27;] &#x3D; this.page;
+      this.loadMovies();
+    }
+  }
+
+  /** Jumps directly to the page number entered in the page-jump input. */
+  goToPage() {
+    if (!this.jumpPage || this.jumpPage &lt; 1) return;
+    this.page &#x3D; Math.min(Math.floor(this.jumpPage), this.totalPages);
+    this.jumpPage &#x3D; null;
+    sessionStorage[&#x27;page&#x27;] &#x3D; this.page;
+    this.loadMovies();
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;page-wrapper&quot;&gt;
+  &lt;div class&#x3D;&quot;container-xl px-4&quot;&gt;
+
+    &lt;!-- Admin: Add Movie --&gt;
+    @if (authService.isAdmin()) {
+      &lt;div class&#x3D;&quot;admin-bar mb-3&quot;&gt;
+        &lt;button class&#x3D;&quot;btn-add-movie&quot; (click)&#x3D;&quot;showAddForm &#x3D; !showAddForm&quot;&gt;
+          {{ showAddForm ? &#x27;✕ Cancel&#x27; : &#x27;+ Add Movie&#x27; }}
+        &lt;/button&gt;
+      &lt;/div&gt;
+
+      @if (showAddForm) {
+        &lt;div class&#x3D;&quot;add-movie-card mb-4&quot;&gt;
+          &lt;div class&#x3D;&quot;add-movie-title&quot;&gt;Add New Movie&lt;/div&gt;
+
+          @if (addSuccess) {
+            &lt;div class&#x3D;&quot;alert-dark-success mb-3&quot;&gt;&amp;#10003; Movie added successfully!&lt;/div&gt;
+          }
+          @if (addError) {
+            &lt;div class&#x3D;&quot;alert-dark-danger mb-3&quot;&gt;{{ addError }}&lt;/div&gt;
+          }
+
+          &lt;form [formGroup]&#x3D;&quot;addMovieForm&quot; (ngSubmit)&#x3D;&quot;submitAddMovie()&quot;&gt;
+            &lt;div class&#x3D;&quot;row g-3&quot;&gt;
+              &lt;div class&#x3D;&quot;col-md-6&quot;&gt;
+                &lt;label class&#x3D;&quot;form-label&quot;&gt;Title *&lt;/label&gt;
+                &lt;input type&#x3D;&quot;text&quot; class&#x3D;&quot;form-control&quot; formControlName&#x3D;&quot;title&quot; placeholder&#x3D;&quot;Movie title&quot; /&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;col-md-6&quot;&gt;
+                &lt;label class&#x3D;&quot;form-label&quot;&gt;Release Date *&lt;/label&gt;
+                &lt;input type&#x3D;&quot;date&quot; class&#x3D;&quot;form-control&quot; formControlName&#x3D;&quot;release_date&quot; /&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;col-12&quot;&gt;
+                &lt;label class&#x3D;&quot;form-label&quot;&gt;Overview&lt;/label&gt;
+                &lt;textarea class&#x3D;&quot;form-control&quot; rows&#x3D;&quot;3&quot; formControlName&#x3D;&quot;overview&quot; placeholder&#x3D;&quot;Movie description...&quot;&gt;&lt;/textarea&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;col-md-4&quot;&gt;
+                &lt;label class&#x3D;&quot;form-label&quot;&gt;Runtime (min)&lt;/label&gt;
+                &lt;input type&#x3D;&quot;number&quot; class&#x3D;&quot;form-control&quot; formControlName&#x3D;&quot;runtime&quot; placeholder&#x3D;&quot;120&quot; min&#x3D;&quot;0&quot; /&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;col-md-4&quot;&gt;
+                &lt;label class&#x3D;&quot;form-label&quot;&gt;Rating (0–10)&lt;/label&gt;
+                &lt;input type&#x3D;&quot;number&quot; class&#x3D;&quot;form-control&quot; formControlName&#x3D;&quot;vote_average&quot; placeholder&#x3D;&quot;7.5&quot; step&#x3D;&quot;0.1&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;10&quot; /&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;col-md-4&quot;&gt;
+                &lt;label class&#x3D;&quot;form-label&quot;&gt;Vote Count&lt;/label&gt;
+                &lt;input type&#x3D;&quot;number&quot; class&#x3D;&quot;form-control&quot; formControlName&#x3D;&quot;vote_count&quot; placeholder&#x3D;&quot;1000&quot; min&#x3D;&quot;0&quot; /&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;col-md-6&quot;&gt;
+                &lt;label class&#x3D;&quot;form-label&quot;&gt;Budget ($)&lt;/label&gt;
+                &lt;input type&#x3D;&quot;number&quot; class&#x3D;&quot;form-control&quot; formControlName&#x3D;&quot;budget&quot; placeholder&#x3D;&quot;50000000&quot; min&#x3D;&quot;0&quot; /&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;col-md-6&quot;&gt;
+                &lt;label class&#x3D;&quot;form-label&quot;&gt;Revenue ($)&lt;/label&gt;
+                &lt;input type&#x3D;&quot;number&quot; class&#x3D;&quot;form-control&quot; formControlName&#x3D;&quot;revenue&quot; placeholder&#x3D;&quot;100000000&quot; min&#x3D;&quot;0&quot; /&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;col-md-6&quot;&gt;
+                &lt;label class&#x3D;&quot;form-label&quot;&gt;Genres&lt;/label&gt;
+                &lt;select class&#x3D;&quot;form-select&quot; formControlName&#x3D;&quot;genres&quot;&gt;
+                  &lt;option value&#x3D;&quot;&quot;&gt;— Select genre —&lt;/option&gt;
+                  &lt;option value&#x3D;&quot;Action&quot;&gt;Action&lt;/option&gt;
+                  &lt;option value&#x3D;&quot;Adventure&quot;&gt;Adventure&lt;/option&gt;
+                  &lt;option value&#x3D;&quot;Animation&quot;&gt;Animation&lt;/option&gt;
+                  &lt;option value&#x3D;&quot;Comedy&quot;&gt;Comedy&lt;/option&gt;
+                  &lt;option value&#x3D;&quot;Crime&quot;&gt;Crime&lt;/option&gt;
+                  &lt;option value&#x3D;&quot;Documentary&quot;&gt;Documentary&lt;/option&gt;
+                  &lt;option value&#x3D;&quot;Drama&quot;&gt;Drama&lt;/option&gt;
+                  &lt;option value&#x3D;&quot;Family&quot;&gt;Family&lt;/option&gt;
+                  &lt;option value&#x3D;&quot;Fantasy&quot;&gt;Fantasy&lt;/option&gt;
+                  &lt;option value&#x3D;&quot;Foreign&quot;&gt;Foreign&lt;/option&gt;
+                  &lt;option value&#x3D;&quot;History&quot;&gt;History&lt;/option&gt;
+                  &lt;option value&#x3D;&quot;Horror&quot;&gt;Horror&lt;/option&gt;
+                  &lt;option value&#x3D;&quot;Music&quot;&gt;Music&lt;/option&gt;
+                  &lt;option value&#x3D;&quot;Mystery&quot;&gt;Mystery&lt;/option&gt;
+                  &lt;option value&#x3D;&quot;Romance&quot;&gt;Romance&lt;/option&gt;
+                  &lt;option value&#x3D;&quot;Science Fiction&quot;&gt;Science Fiction&lt;/option&gt;
+                  &lt;option value&#x3D;&quot;Thriller&quot;&gt;Thriller&lt;/option&gt;
+                  &lt;option value&#x3D;&quot;TV Movie&quot;&gt;TV Movie&lt;/option&gt;
+                  &lt;option value&#x3D;&quot;War&quot;&gt;War&lt;/option&gt;
+                  &lt;option value&#x3D;&quot;Western&quot;&gt;Western&lt;/option&gt;
+                &lt;/select&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;col-md-6&quot;&gt;
+                &lt;label class&#x3D;&quot;form-label&quot;&gt;Keywords&lt;/label&gt;
+                &lt;input type&#x3D;&quot;text&quot; class&#x3D;&quot;form-control&quot; formControlName&#x3D;&quot;keywords&quot; placeholder&#x3D;&quot;e.g. hero, space, adventure&quot; /&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;col-12&quot;&gt;
+                &lt;label class&#x3D;&quot;form-label&quot;&gt;Poster Image &lt;span style&#x3D;&quot;color:var(--text-dim); font-weight:400;&quot;&gt;(optional)&lt;/span&gt;&lt;/label&gt;
+                &lt;div class&#x3D;&quot;poster-upload-row&quot;&gt;
+                  @if (posterPreview) {
+                    &lt;img [src]&#x3D;&quot;posterPreview&quot; class&#x3D;&quot;poster-preview-thumb&quot; alt&#x3D;&quot;preview&quot; /&gt;
+                  }
+                  &lt;label class&#x3D;&quot;poster-upload-label&quot;&gt;
+                    {{ posterFile ? posterFile.name : &#x27;Choose image...&#x27; }}
+                    &lt;input type&#x3D;&quot;file&quot; accept&#x3D;&quot;image/*&quot; (change)&#x3D;&quot;onPosterChange($event)&quot; style&#x3D;&quot;display:none;&quot; /&gt;
+                  &lt;/label&gt;
+                  @if (posterFile) {
+                    &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn-cancel-edit&quot; style&#x3D;&quot;font-size:0.8rem; padding:0.3rem 0.7rem;&quot;
+                      (click)&#x3D;&quot;posterFile &#x3D; null; posterPreview &#x3D; null&quot;&gt;Remove&lt;/button&gt;
+                  }
+                &lt;/div&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;col-12 d-flex gap-2 mt-2&quot;&gt;
+                &lt;button type&#x3D;&quot;submit&quot; class&#x3D;&quot;btn-submit-add&quot; [disabled]&#x3D;&quot;addMovieForm.invalid&quot;&gt;Add Movie&lt;/button&gt;
+                &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn-cancel-add&quot; (click)&#x3D;&quot;showAddForm &#x3D; false; addSuccess &#x3D; false; addError &#x3D; &#x27;&#x27;; posterFile &#x3D; null; posterPreview &#x3D; null&quot;&gt;Cancel&lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/form&gt;
+        &lt;/div&gt;
+      }
+    }
+
+    &lt;!-- Search Bar --&gt;
+    &lt;form [formGroup]&#x3D;&quot;filterForm&quot; (ngSubmit)&#x3D;&quot;searchByTitle()&quot;&gt;
+      &lt;div class&#x3D;&quot;search-hero&quot;&gt;
+        &lt;div class&#x3D;&quot;search-hero-inner&quot;&gt;
+          &lt;span class&#x3D;&quot;search-icon&quot;&gt;&amp;#128269;&lt;/span&gt;
+          &lt;input type&#x3D;&quot;text&quot; class&#x3D;&quot;search-hero-input&quot; formControlName&#x3D;&quot;title&quot; placeholder&#x3D;&quot;Search movies...&quot; (keydown.enter)&#x3D;&quot;searchByTitle()&quot; /&gt;
+          @if (filterForm.get(&#x27;title&#x27;)?.value) {
+            &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;search-clear-x&quot; (click)&#x3D;&quot;filterForm.patchValue({title:&#x27;&#x27;}); searchByTitle()&quot;&gt;&amp;#10005;&lt;/button&gt;
+          }
+          &lt;button type&#x3D;&quot;submit&quot; class&#x3D;&quot;search-hero-btn&quot;&gt;Search&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn-filters-toggle&quot; (click)&#x3D;&quot;showFilters &#x3D; !showFilters&quot;&gt;
+          &amp;#9776; Filters {{ activeFilterCount &gt; 0 ? &#x27;(&#x27; + activeFilterCount + &#x27;)&#x27; : &#x27;&#x27; }}
+        &lt;/button&gt;
+      &lt;/div&gt;
+
+      @if (showFilters) {
+        &lt;div class&#x3D;&quot;filters-panel&quot;&gt;
+          &lt;div class&#x3D;&quot;row g-3&quot;&gt;
+            &lt;div class&#x3D;&quot;col-md-4 col-6&quot;&gt;
+              &lt;label class&#x3D;&quot;filter-label&quot;&gt;Genre&lt;/label&gt;
+              &lt;input type&#x3D;&quot;text&quot; class&#x3D;&quot;form-control&quot; formControlName&#x3D;&quot;genre&quot; placeholder&#x3D;&quot;e.g. Action, Drama...&quot; /&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;col-md-4 col-6&quot;&gt;
+              &lt;label class&#x3D;&quot;filter-label&quot;&gt;Release Year&lt;/label&gt;
+              &lt;input type&#x3D;&quot;number&quot; class&#x3D;&quot;form-control&quot; formControlName&#x3D;&quot;year&quot; placeholder&#x3D;&quot;e.g. 2020&quot; /&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;col-md-4 col-6&quot;&gt;
+              &lt;label class&#x3D;&quot;filter-label&quot;&gt;Sort By&lt;/label&gt;
+              &lt;select class&#x3D;&quot;form-select&quot; formControlName&#x3D;&quot;sort&quot;&gt;
+                &lt;option value&#x3D;&quot;&quot;&gt;— None —&lt;/option&gt;
+                &lt;option value&#x3D;&quot;vote_average&quot;&gt;Rating&lt;/option&gt;
+                &lt;option value&#x3D;&quot;popularity&quot;&gt;Popularity&lt;/option&gt;
+                &lt;option value&#x3D;&quot;revenue&quot;&gt;Revenue&lt;/option&gt;
+                &lt;option value&#x3D;&quot;runtime&quot;&gt;Runtime&lt;/option&gt;
+                &lt;option value&#x3D;&quot;release_date&quot;&gt;Release Date&lt;/option&gt;
+                &lt;option value&#x3D;&quot;vote_count&quot;&gt;Vote Count&lt;/option&gt;
+                &lt;option value&#x3D;&quot;budget&quot;&gt;Budget&lt;/option&gt;
+              &lt;/select&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;col-md-3 col-6&quot;&gt;
+              &lt;label class&#x3D;&quot;filter-label&quot;&gt;Min Rating&lt;/label&gt;
+              &lt;input type&#x3D;&quot;number&quot; class&#x3D;&quot;form-control&quot; formControlName&#x3D;&quot;min_rating&quot; placeholder&#x3D;&quot;0&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;10&quot; step&#x3D;&quot;0.1&quot; /&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;col-md-3 col-6&quot;&gt;
+              &lt;label class&#x3D;&quot;filter-label&quot;&gt;Max Rating&lt;/label&gt;
+              &lt;input type&#x3D;&quot;number&quot; class&#x3D;&quot;form-control&quot; formControlName&#x3D;&quot;max_rating&quot; placeholder&#x3D;&quot;10&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;10&quot; step&#x3D;&quot;0.1&quot; /&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;col-md-3 col-6&quot;&gt;
+              &lt;label class&#x3D;&quot;filter-label&quot;&gt;Order&lt;/label&gt;
+              &lt;select class&#x3D;&quot;form-select&quot; formControlName&#x3D;&quot;order&quot;&gt;
+                &lt;option value&#x3D;&quot;desc&quot;&gt;Descending&lt;/option&gt;
+                &lt;option value&#x3D;&quot;asc&quot;&gt;Ascending&lt;/option&gt;
+              &lt;/select&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;col-12 d-flex gap-2 pt-1&quot;&gt;
+              &lt;button type&#x3D;&quot;submit&quot; class&#x3D;&quot;btn-search&quot;&gt;Apply&lt;/button&gt;
+              &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn-clear&quot; (click)&#x3D;&quot;clearFilters()&quot;&gt;Reset&lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      }
+    &lt;/form&gt;
+
+    &lt;!-- Loading --&gt;
+    @if (isLoading) {
+      &lt;div class&#x3D;&quot;text-center py-5&quot;&gt;
+        &lt;div class&#x3D;&quot;spinner-border&quot; style&#x3D;&quot;width:3rem;height:3rem;&quot; role&#x3D;&quot;status&quot;&gt;&lt;/div&gt;
+        &lt;p class&#x3D;&quot;mt-3&quot; style&#x3D;&quot;color:#666;&quot;&gt;Loading movies...&lt;/p&gt;
+      &lt;/div&gt;
+    }
+
+    &lt;!-- Grid --&gt;
+    @if (!isLoading) {
+      @if (movie_list.length &#x3D;&#x3D;&#x3D; 0) {
+        &lt;div class&#x3D;&quot;empty-state&quot;&gt;
+          &lt;div class&#x3D;&quot;empty-icon&quot;&gt;&amp;#127916;&lt;/div&gt;
+          &lt;h4 style&#x3D;&quot;color:#555;&quot;&gt;No movies found&lt;/h4&gt;
+          &lt;p style&#x3D;&quot;color:#444; font-size:0.9rem;&quot;&gt;Try adjusting your search filters.&lt;/p&gt;
+        &lt;/div&gt;
+      }
+
+      &lt;div class&#x3D;&quot;row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4&quot;&gt;
+        @for (movie of movie_list; track movie._id) {
+          &lt;div class&#x3D;&quot;col&quot;&gt;
+            &lt;div class&#x3D;&quot;movie-card&quot; [routerLink]&#x3D;&quot;[&#x27;./&#x27;, movie._id]&quot;&gt;
+
+              @if (authService.isLoggedIn()) {
+                &lt;button class&#x3D;&quot;btn-bookmark&quot;
+                  [class.bookmarked]&#x3D;&quot;authService.isInWatchlist(movie._id)&quot;
+                  (click)&#x3D;&quot;toggleWatchlist(movie._id, $event)&quot;
+                  [title]&#x3D;&quot;authService.isInWatchlist(movie._id) ? &#x27;Remove from watchlist&#x27; : &#x27;Add to watchlist&#x27;&quot;&gt;
+                  {{ authService.isInWatchlist(movie._id) ? &#x27;&amp;#9733;&#x27; : &#x27;&amp;#9734;&#x27; }}
+                &lt;/button&gt;
+              }
+
+              @if (movie.poster) {
+                &lt;div class&#x3D;&quot;mc-poster&quot;&gt;
+                  &lt;img [src]&#x3D;&quot;posterUrl(movie.poster)&quot; [alt]&#x3D;&quot;movie.title&quot; loading&#x3D;&quot;lazy&quot; /&gt;
+                  &lt;div class&#x3D;&quot;mc-info&quot;&gt;
+                    &lt;div class&#x3D;&quot;mc-genre&quot;&gt;
+                      @for (g of genreList(movie.genres).slice(0,2); track g; let last &#x3D; $last) {
+                        &lt;span class&#x3D;&quot;mc-genre-tag&quot; (click)&#x3D;&quot;filterByGenre(g, $event)&quot;&gt;{{ g }}&lt;/span&gt;{{ !last ? &#x27; · &#x27; : &#x27;&#x27; }}
+                      }
+                    &lt;/div&gt;
+                    &lt;div class&#x3D;&quot;mc-title&quot;&gt;{{ movie.title }}&lt;/div&gt;
+                    &lt;div class&#x3D;&quot;mc-meta&quot;&gt;
+                      &lt;span class&#x3D;&quot;mc-year&quot;&gt;{{ movie.release_date?.slice(0,4) }}&lt;/span&gt;
+                      &lt;span class&#x3D;&quot;mc-rating&quot;&gt;&amp;#9733; {{ movie.vote_average }}&lt;/span&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              } @else {
+                &lt;div class&#x3D;&quot;mc-blank&quot;&gt;
+                  &lt;span class&#x3D;&quot;mc-blank-letter&quot;&gt;{{ movie.title?.charAt(0) }}&lt;/span&gt;
+                  &lt;div class&#x3D;&quot;mc-info&quot;&gt;
+                    &lt;div class&#x3D;&quot;mc-genre&quot;&gt;
+                      @for (g of genreList(movie.genres).slice(0,2); track g; let last &#x3D; $last) {
+                        &lt;span class&#x3D;&quot;mc-genre-tag&quot; (click)&#x3D;&quot;filterByGenre(g, $event)&quot;&gt;{{ g }}&lt;/span&gt;{{ !last ? &#x27; · &#x27; : &#x27;&#x27; }}
+                      }
+                    &lt;/div&gt;
+                    &lt;div class&#x3D;&quot;mc-title&quot;&gt;{{ movie.title }}&lt;/div&gt;
+                    &lt;div class&#x3D;&quot;mc-meta&quot;&gt;
+                      &lt;span class&#x3D;&quot;mc-year&quot;&gt;{{ movie.release_date?.slice(0,4) }}&lt;/span&gt;
+                      &lt;span class&#x3D;&quot;mc-rating&quot;&gt;&amp;#9733; {{ movie.vote_average }}&lt;/span&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              }
+            &lt;/div&gt;
+          &lt;/div&gt;
+        }
+      &lt;/div&gt;
+
+      &lt;!-- Pagination --&gt;
+      @if (movie_list.length &gt; 0 || page &gt; 1) {
+        &lt;div class&#x3D;&quot;pagination-wrapper&quot;&gt;
+          &lt;button class&#x3D;&quot;btn-page&quot; (click)&#x3D;&quot;previousPage()&quot; [disabled]&#x3D;&quot;page &#x3D;&#x3D;&#x3D; 1&quot;&gt;
+            &amp;laquo; Previous
+          &lt;/button&gt;
+          &lt;span class&#x3D;&quot;page-indicator&quot;&gt;Page {{ page }} of {{ totalPages }}&lt;/span&gt;
+          &lt;button class&#x3D;&quot;btn-page&quot; (click)&#x3D;&quot;nextPage()&quot; [disabled]&#x3D;&quot;isLastPage&quot;&gt;
+            Next &amp;raquo;
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;page-jump-wrapper&quot;&gt;
+          &lt;span class&#x3D;&quot;page-jump-label&quot;&gt;Jump to page&lt;/span&gt;
+          &lt;input
+            type&#x3D;&quot;number&quot;
+            class&#x3D;&quot;page-jump-input&quot;
+            [(ngModel)]&#x3D;&quot;jumpPage&quot;
+            [ngModelOptions]&#x3D;&quot;{standalone: true}&quot;
+            min&#x3D;&quot;1&quot;
+            [max]&#x3D;&quot;totalPages&quot;
+            placeholder&#x3D;&quot;{{ page }}&quot;
+            (keydown.enter)&#x3D;&quot;goToPage()&quot;
+          /&gt;
+          &lt;button class&#x3D;&quot;page-jump-btn&quot; (click)&#x3D;&quot;goToPage()&quot;&gt;Go&lt;/button&gt;
+        &lt;/div&gt;
+      }
+    }
+
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="page-wrapper">  <div class="container-xl px-4">    <!-- Admin: Add Movie -->    @if (authService.isAdmin()) {      <div class="admin-bar mb-3">        <button class="btn-add-movie" (click)="showAddForm = !showAddForm">          {{ showAddForm ? \'✕ Cancel\' : \'+ Add Movie\' }}        </button>      </div>      @if (showAddForm) {        <div class="add-movie-card mb-4">          <div class="add-movie-title">Add New Movie</div>          @if (addSuccess) {            <div class="alert-dark-success mb-3">&#10003; Movie added successfully!</div>          }          @if (addError) {            <div class="alert-dark-danger mb-3">{{ addError }}</div>          }          <form [formGroup]="addMovieForm" (ngSubmit)="submitAddMovie()">            <div class="row g-3">              <div class="col-md-6">                <label class="form-label">Title *</label>                <input type="text" class="form-control" formControlName="title" placeholder="Movie title" />              </div>              <div class="col-md-6">                <label class="form-label">Release Date *</label>                <input type="date" class="form-control" formControlName="release_date" />              </div>              <div class="col-12">                <label class="form-label">Overview</label>                <textarea class="form-control" rows="3" formControlName="overview" placeholder="Movie description..."></textarea>              </div>              <div class="col-md-4">                <label class="form-label">Runtime (min)</label>                <input type="number" class="form-control" formControlName="runtime" placeholder="120" min="0" />              </div>              <div class="col-md-4">                <label class="form-label">Rating (0–10)</label>                <input type="number" class="form-control" formControlName="vote_average" placeholder="7.5" step="0.1" min="0" max="10" />              </div>              <div class="col-md-4">                <label class="form-label">Vote Count</label>                <input type="number" class="form-control" formControlName="vote_count" placeholder="1000" min="0" />              </div>              <div class="col-md-6">                <label class="form-label">Budget ($)</label>                <input type="number" class="form-control" formControlName="budget" placeholder="50000000" min="0" />              </div>              <div class="col-md-6">                <label class="form-label">Revenue ($)</label>                <input type="number" class="form-control" formControlName="revenue" placeholder="100000000" min="0" />              </div>              <div class="col-md-6">                <label class="form-label">Genres</label>                <select class="form-select" formControlName="genres">                  <option value="">— Select genre —</option>                  <option value="Action">Action</option>                  <option value="Adventure">Adventure</option>                  <option value="Animation">Animation</option>                  <option value="Comedy">Comedy</option>                  <option value="Crime">Crime</option>                  <option value="Documentary">Documentary</option>                  <option value="Drama">Drama</option>                  <option value="Family">Family</option>                  <option value="Fantasy">Fantasy</option>                  <option value="Foreign">Foreign</option>                  <option value="History">History</option>                  <option value="Horror">Horror</option>                  <option value="Music">Music</option>                  <option value="Mystery">Mystery</option>                  <option value="Romance">Romance</option>                  <option value="Science Fiction">Science Fiction</option>                  <option value="Thriller">Thriller</option>                  <option value="TV Movie">TV Movie</option>                  <option value="War">War</option>                  <option value="Western">Western</option>                </select>              </div>              <div class="col-md-6">                <label class="form-label">Keywords</label>                <input type="text" class="form-control" formControlName="keywords" placeholder="e.g. hero, space, adventure" />              </div>              <div class="col-12">                <label class="form-label">Poster Image <span style="color:var(--text-dim); font-weight:400;">(optional)</span></label>                <div class="poster-upload-row">                  @if (posterPreview) {                    <img [src]="posterPreview" class="poster-preview-thumb" alt="preview" />                  }                  <label class="poster-upload-label">                    {{ posterFile ? posterFile.name : \'Choose image...\' }}                    <input type="file" accept="image/*" (change)="onPosterChange($event)" style="display:none;" />                  </label>                  @if (posterFile) {                    <button type="button" class="btn-cancel-edit" style="font-size:0.8rem; padding:0.3rem 0.7rem;"                      (click)="posterFile = null; posterPreview = null">Remove</button>                  }                </div>              </div>              <div class="col-12 d-flex gap-2 mt-2">                <button type="submit" class="btn-submit-add" [disabled]="addMovieForm.invalid">Add Movie</button>                <button type="button" class="btn-cancel-add" (click)="showAddForm = false; addSuccess = false; addError = \'\'; posterFile = null; posterPreview = null">Cancel</button>              </div>            </div>          </form>        </div>      }    }    <!-- Search Bar -->    <form [formGroup]="filterForm" (ngSubmit)="searchByTitle()">      <div class="search-hero">        <div class="search-hero-inner">          <span class="search-icon">&#128269;</span>          <input type="text" class="search-hero-input" formControlName="title" placeholder="Search movies..." (keydown.enter)="searchByTitle()" />          @if (filterForm.get(\'title\')?.value) {            <button type="button" class="search-clear-x" (click)="filterForm.patchValue({title:\'\'}); searchByTitle()">&#10005;</button>          }          <button type="submit" class="search-hero-btn">Search</button>        </div>        <button type="button" class="btn-filters-toggle" (click)="showFilters = !showFilters">          &#9776; Filters {{ activeFilterCount > 0 ? \'(\' + activeFilterCount + \')\' : \'\' }}        </button>      </div>      @if (showFilters) {        <div class="filters-panel">          <div class="row g-3">            <div class="col-md-4 col-6">              <label class="filter-label">Genre</label>              <input type="text" class="form-control" formControlName="genre" placeholder="e.g. Action, Drama..." />            </div>            <div class="col-md-4 col-6">              <label class="filter-label">Release Year</label>              <input type="number" class="form-control" formControlName="year" placeholder="e.g. 2020" />            </div>            <div class="col-md-4 col-6">              <label class="filter-label">Sort By</label>              <select class="form-select" formControlName="sort">                <option value="">— None —</option>                <option value="vote_average">Rating</option>                <option value="popularity">Popularity</option>                <option value="revenue">Revenue</option>                <option value="runtime">Runtime</option>                <option value="release_date">Release Date</option>                <option value="vote_count">Vote Count</option>                <option value="budget">Budget</option>              </select>            </div>            <div class="col-md-3 col-6">              <label class="filter-label">Min Rating</label>              <input type="number" class="form-control" formControlName="min_rating" placeholder="0" min="0" max="10" step="0.1" />            </div>            <div class="col-md-3 col-6">              <label class="filter-label">Max Rating</label>              <input type="number" class="form-control" formControlName="max_rating" placeholder="10" min="0" max="10" step="0.1" />            </div>            <div class="col-md-3 col-6">              <label class="filter-label">Order</label>              <select class="form-select" formControlName="order">                <option value="desc">Descending</option>                <option value="asc">Ascending</option>              </select>            </div>            <div class="col-12 d-flex gap-2 pt-1">              <button type="submit" class="btn-search">Apply</button>              <button type="button" class="btn-clear" (click)="clearFilters()">Reset</button>            </div>          </div>        </div>      }    </form>    <!-- Loading -->    @if (isLoading) {      <div class="text-center py-5">        <div class="spinner-border" style="width:3rem;height:3rem;" role="status"></div>        <p class="mt-3" style="color:#666;">Loading movies...</p>      </div>    }    <!-- Grid -->    @if (!isLoading) {      @if (movie_list.length === 0) {        <div class="empty-state">          <div class="empty-icon">&#127916;</div>          <h4 style="color:#555;">No movies found</h4>          <p style="color:#444; font-size:0.9rem;">Try adjusting your search filters.</p>        </div>      }      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">        @for (movie of movie_list; track movie._id) {          <div class="col">            <div class="movie-card" [routerLink]="[\'./\', movie._id]">              @if (authService.isLoggedIn()) {                <button class="btn-bookmark"                  [class.bookmarked]="authService.isInWatchlist(movie._id)"                  (click)="toggleWatchlist(movie._id, $event)"                  [title]="authService.isInWatchlist(movie._id) ? \'Remove from watchlist\' : \'Add to watchlist\'">                  {{ authService.isInWatchlist(movie._id) ? \'&#9733;\' : \'&#9734;\' }}                </button>              }              @if (movie.poster) {                <div class="mc-poster">                  <img [src]="posterUrl(movie.poster)" [alt]="movie.title" loading="lazy" />                  <div class="mc-info">                    <div class="mc-genre">                      @for (g of genreList(movie.genres).slice(0,2); track g; let last = $last) {                        <span class="mc-genre-tag" (click)="filterByGenre(g, $event)">{{ g }}</span>{{ !last ? \' · \' : \'\' }}                      }                    </div>                    <div class="mc-title">{{ movie.title }}</div>                    <div class="mc-meta">                      <span class="mc-year">{{ movie.release_date?.slice(0,4) }}</span>                      <span class="mc-rating">&#9733; {{ movie.vote_average }}</span>                    </div>                  </div>                </div>              } @else {                <div class="mc-blank">                  <span class="mc-blank-letter">{{ movie.title?.charAt(0) }}</span>                  <div class="mc-info">                    <div class="mc-genre">                      @for (g of genreList(movie.genres).slice(0,2); track g; let last = $last) {                        <span class="mc-genre-tag" (click)="filterByGenre(g, $event)">{{ g }}</span>{{ !last ? \' · \' : \'\' }}                      }                    </div>                    <div class="mc-title">{{ movie.title }}</div>                    <div class="mc-meta">                      <span class="mc-year">{{ movie.release_date?.slice(0,4) }}</span>                      <span class="mc-rating">&#9733; {{ movie.vote_average }}</span>                    </div>                  </div>                </div>              }            </div>          </div>        }      </div>      <!-- Pagination -->      @if (movie_list.length > 0 || page > 1) {        <div class="pagination-wrapper">          <button class="btn-page" (click)="previousPage()" [disabled]="page === 1">            &laquo; Previous          </button>          <span class="page-indicator">Page {{ page }} of {{ totalPages }}</span>          <button class="btn-page" (click)="nextPage()" [disabled]="isLastPage">            Next &raquo;          </button>        </div>        <div class="page-jump-wrapper">          <span class="page-jump-label">Jump to page</span>          <input            type="number"            class="page-jump-input"            [(ngModel)]="jumpPage"            [ngModelOptions]="{standalone: true}"            min="1"            [max]="totalPages"            placeholder="{{ page }}"            (keydown.enter)="goToPage()"          />          <button class="page-jump-btn" (click)="goToPage()">Go</button>        </div>      }    }  </div></div></div>'
+    var COMPONENTS = [{'name': 'App', 'selector': 'app-root'},{'name': 'Home', 'selector': 'app-home'},{'name': 'Login', 'selector': 'app-login'},{'name': 'Movie', 'selector': 'app-movie'},{'name': 'Movies', 'selector': 'app-movies'},{'name': 'Navigation', 'selector': 'app-navigation'},{'name': 'Profile', 'selector': 'app-profile'},{'name': 'Register', 'selector': 'app-register'},{'name': 'Watchlist', 'selector': 'app-watchlist'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'Movies'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'Movies.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

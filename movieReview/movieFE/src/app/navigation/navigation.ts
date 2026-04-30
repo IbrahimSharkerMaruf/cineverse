@@ -5,6 +5,10 @@ import { AuthService as Auth0Service } from '@auth0/auth0-angular';
 import { AuthService } from '../services/auth-service';
 import { WebServices } from '../services/web-services';
 
+/**
+ * Top navigation bar component.
+ * Handles theme toggling (dark/light mode), Auth0 login/logout, and nav link display.
+ */
 @Component({
   selector: 'app-navigation',
   imports: [RouterModule, CommonModule],
@@ -12,6 +16,7 @@ import { WebServices } from '../services/web-services';
   styleUrl: './navigation.css',
 })
 export class Navigation implements OnInit {
+  /** True when the app is in dark mode (default). */
   isDarkMode = true;
 
   constructor(
@@ -20,6 +25,7 @@ export class Navigation implements OnInit {
     private webService: WebServices,
   ) {}
 
+  /** Reads saved theme from localStorage and applies it on load. */
   ngOnInit() {
     const saved = localStorage.getItem('theme');
     this.isDarkMode = saved !== 'light';
@@ -44,6 +50,7 @@ export class Navigation implements OnInit {
     }
   }
 
+  /** Toggles between dark and light mode and persists the preference. */
   toggleTheme() {
     this.isDarkMode = !this.isDarkMode;
     localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
@@ -54,10 +61,12 @@ export class Navigation implements OnInit {
     document.body.classList.toggle('light-mode', !this.isDarkMode);
   }
 
+  /** Triggers Auth0 login redirect. */
   login() {
     this.auth0.loginWithRedirect();
   }
 
+  /** Clears the local session and triggers Auth0 logout. */
   logout() {
     this.authService.clearSession();
   }

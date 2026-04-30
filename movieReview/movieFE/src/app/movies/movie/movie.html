@@ -70,6 +70,30 @@
                   <div class="stat-label">Votes</div>
                 </div>
               </div>
+              @if (movie.budget > 0) {
+                <div class="col-6">
+                  <div class="stat-box">
+                    <div class="stat-value" style="font-size:0.9rem;">${{ movie.budget | number }}</div>
+                    <div class="stat-label">Budget</div>
+                  </div>
+                </div>
+              }
+              @if (movie.revenue > 0) {
+                <div class="col-6">
+                  <div class="stat-box">
+                    <div class="stat-value" style="font-size:0.9rem;">${{ movie.revenue | number }}</div>
+                    <div class="stat-label">Revenue</div>
+                  </div>
+                </div>
+              }
+              @if (movie.popularity) {
+                <div class="col-6">
+                  <div class="stat-box">
+                    <div class="stat-value">{{ movie.popularity | number:'1.0-1' }}</div>
+                    <div class="stat-label">Popularity</div>
+                  </div>
+                </div>
+              }
             </div>
 
             <!-- Community vs Official Rating -->
@@ -167,12 +191,44 @@
                           <input type="number" step="0.01" min="0" class="form-control edit-movie-input" formControlName="popularity">
                         </div>
                         <div class="col-6">
-                          <label class="edit-movie-label">Genres (JSON)</label>
-                          <input type="text" class="form-control edit-movie-input" formControlName="genres" placeholder='[{"name":"Action"}]'>
+                          <label class="edit-movie-label">Genres</label>
+                          <select class="form-select edit-movie-input" formControlName="genres">
+                            <option value="">— Select genre —</option>
+                            <option value="Action">Action</option>
+                            <option value="Adventure">Adventure</option>
+                            <option value="Animation">Animation</option>
+                            <option value="Comedy">Comedy</option>
+                            <option value="Crime">Crime</option>
+                            <option value="Documentary">Documentary</option>
+                            <option value="Drama">Drama</option>
+                            <option value="Family">Family</option>
+                            <option value="Fantasy">Fantasy</option>
+                            <option value="Foreign">Foreign</option>
+                            <option value="History">History</option>
+                            <option value="Horror">Horror</option>
+                            <option value="Music">Music</option>
+                            <option value="Mystery">Mystery</option>
+                            <option value="Romance">Romance</option>
+                            <option value="Science Fiction">Science Fiction</option>
+                            <option value="Thriller">Thriller</option>
+                            <option value="TV Movie">TV Movie</option>
+                            <option value="War">War</option>
+                            <option value="Western">Western</option>
+                          </select>
                         </div>
                         <div class="col-12">
-                          <label class="edit-movie-label">Keywords (JSON)</label>
-                          <input type="text" class="form-control edit-movie-input" formControlName="keywords" placeholder='[{"name":"hero"}]'>
+                          <label class="edit-movie-label">Keywords</label>
+                          <input type="text" class="form-control edit-movie-input" formControlName="keywords" placeholder="e.g. hero, space, adventure">
+                        </div>
+                        <div class="col-12">
+                          <label class="edit-movie-label">Poster Image</label>
+                          @if (movie.poster) {
+                            <div class="mb-2">
+                              <img [src]="posterUrl(movie.poster)" style="height:80px; border-radius:4px; object-fit:cover;" alt="current poster" />
+                              <small style="display:block; color:#888; margin-top:0.3rem;">Current poster</small>
+                            </div>
+                          }
+                          <input type="file" class="form-control edit-movie-input" accept="image/*" (change)="onPosterSelected($event)">
                         </div>
                       </div>
                       @if (editMovieError) {

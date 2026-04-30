@@ -336,6 +336,10 @@ def updateMovie(movie_id):
         except (ValueError, TypeError):
             return make_response(jsonify({"error": "popularity must be a number"}), 422)
 
+    poster_filename = _save_poster(request.files.get('poster'))
+    if poster_filename:
+        update_field["poster"] = poster_filename
+
     if not update_field:
         return make_response(jsonify({"error": "No valid fields to update"}), 400)
 
@@ -343,9 +347,11 @@ def updateMovie(movie_id):
 
     if result.matched_count == 0:
         return make_response(jsonify({"error": "Movie not found"}), 404)
-    if result.modified_count == 1:
-        return make_response(jsonify({"url": f"http://127.0.0.1:5001/movies/{movie_id}"}), 200)
-    return make_response(jsonify({"message": "No changes made"}), 200)
+
+    response_body = {"url": f"http://127.0.0.1:5001/movies/{movie_id}"}
+    if poster_filename:
+        response_body["poster"] = poster_filename
+    return make_response(jsonify(response_body), 200)
 
 
 # ─── DELETE ───────────────────────────────────────────────────────────────────

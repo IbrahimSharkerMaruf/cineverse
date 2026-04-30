@@ -73,6 +73,8 @@ export class Movie {
   editMovieError = '';
   /** True briefly after a successful movie update to show a success banner. */
   editMovieSuccess = false;
+  /** Poster file selected by admin for upload, or null if unchanged. */
+  posterFile: File | null = null;
 
   /*
    * Dependency injection — route gives the movie ID from the URL,
@@ -301,12 +303,25 @@ export class Movie {
     this.editingMovie = true;
     this.editMovieError = '';
     this.editMovieSuccess = false;
+
+    let genreValue = '';
+    try {
+      const parsed = JSON.parse(this.movie.genres);
+      genreValue = parsed[0]?.name || '';
+    } catch { genreValue = this.movie.genres || ''; }
+
+    let keywordsValue = '';
+    try {
+      const parsed = JSON.parse(this.movie.keywords);
+      keywordsValue = parsed.map((k: any) => k.name).join(', ');
+    } catch { keywordsValue = this.movie.keywords || ''; }
+
     this.editMovieForm = this.formBuilder.group({
       title:        [this.movie.title],
       release_date: [this.movie.release_date],
       overview:     [this.movie.overview],
-      genres:       [this.movie.genres],
-      keywords:     [this.movie.keywords],
+      genres:       [genreValue],
+      keywords:     [keywordsValue],
       runtime:      [this.movie.runtime],
       vote_average: [this.movie.vote_average],
       vote_count:   [this.movie.vote_count],
@@ -316,11 +331,20 @@ export class Movie {
     });
   }
 
+  /** Stores the poster file chosen by the admin in the edit form. */
+  onPosterSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      this.posterFile = input.files[0];
+    }
+  }
+
   /** Closes the admin edit panel without saving. */
   cancelEditMovie() {
     this.editingMovie = false;
     this.editMovieError = '';
     this.editMovieSuccess = false;
+    this.posterFile = null;
   }
 
   /** Sends the edited movie fields to the PUT endpoint and reflects changes locally on success. */
@@ -331,18 +355,34 @@ export class Movie {
     if (v.title        != null) fd.append('title',        v.title);
     if (v.release_date != null) fd.append('release_date', v.release_date);
     if (v.overview     != null) fd.append('overview',     v.overview);
-    if (v.genres       != null) fd.append('genres',       v.genres);
-    if (v.keywords     != null) fd.append('keywords',     v.keywords);
+    if (v.genres) fd.append('genres', JSON.stringify([{ name: v.genres }]));
+    if (v.keywords) {
+      const kwArray = v.keywords.split(',')
+        .map((k: string) => k.trim()).filter((k: string) => k)
+        .map((k: string) => ({ name: k }));
+      fd.append('keywords', JSON.stringify(kwArray));
+    }
     if (v.runtime      != null) fd.append('runtime',      String(v.runtime));
     if (v.vote_average != null) fd.append('vote_average', String(v.vote_average));
     if (v.vote_count   != null) fd.append('vote_count',   String(v.vote_count));
     if (v.budget       != null) fd.append('budget',       String(v.budget));
     if (v.revenue      != null) fd.append('revenue',      String(v.revenue));
     if (v.popularity   != null) fd.append('popularity',   String(v.popularity));
+    if (this.posterFile)        fd.append('poster',       this.posterFile, this.posterFile.name);
     this.webService.updateMovie(id, fd).subscribe({
-      next: () => {
-        Object.assign(this.movie, v);
+      next: (res: any) => {
+        const simple = ['title', 'release_date', 'overview', 'runtime', 'vote_average', 'vote_count', 'budget', 'revenue', 'popularity'];
+        simple.forEach(f => { if (v[f] != null) this.movie[f] = v[f]; });
+        if (v.genres) this.movie.genres = JSON.stringify([{ name: v.genres }]);
+        if (v.keywords) {
+          const kwArray = v.keywords.split(',')
+            .map((k: string) => k.trim()).filter((k: string) => k)
+            .map((k: string) => ({ name: k }));
+          this.movie.keywords = JSON.stringify(kwArray);
+        }
+        if (res?.poster) this.movie.poster = res.poster;
         this.editingMovie = false;
+        this.posterFile = null;
         this.editMovieSuccess = true;
         setTimeout(() => this.editMovieSuccess = false, 3000);
       },

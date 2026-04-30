@@ -242,14 +242,28 @@
   { path: &#x27;register&#x27;, component: Register },
   { path: &#x27;profile&#x27;, component: Profile, canActivate: [authGuardFn] },
   { path: &#x27;watchlist&#x27;, component: Watchlist, canActivate: [authGuardFn] },
-  { path: &#x27;**&#x27;, redirectTo: &#x27;&#x27; },
+  { path: &#x27;**&#x27;, redirectTo: &#x27;&#x27; }, // catch-all fallback
 ]</code>
                     </td>
                 </tr>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Application route definitions. <code>/profile</code> and <code>/watchlist</code> require Auth0 authentication via <code>authGuardFn</code>.</p>
+                    <div class="io-description"><p>Application route definitions.</p>
+<p>Public routes (no login required):</p>
+<ul>
+<li><code>/</code>            → Home landing page</li>
+<li><code>/movies</code>      → Paginated, filterable movie catalogue</li>
+<li><code>/movies/:id</code>  → Individual movie detail page</li>
+<li><code>/login</code>       → Auth0 login entry point</li>
+<li><code>/register</code>    → Auth0 sign-up entry point</li>
+</ul>
+<p>Protected routes (Auth0 login required via <code>authGuardFn</code>):</p>
+<ul>
+<li><code>/profile</code>     → Logged-in user&#39;s profile, reviews, and admin panel</li>
+<li><code>/watchlist</code>   → Logged-in user&#39;s saved movie watchlist</li>
+</ul>
+<p>Any unknown path redirects to the home page (<code>**</code> → <code>&#39;&#39;</code>).</p>
 </div>
                 </td>
             </tr>

@@ -35,6 +35,15 @@ export class Movie {
   /** True when the admin movie-delete confirmation prompt is visible. */
   confirmDeleteMovie = false;
 
+  /** True when the admin edit-movie panel is open. */
+  editingMovie = false;
+  /** Reactive form for editing movie metadata (admin only). */
+  editMovieForm: any;
+  /** Error message shown when movie update fails. */
+  editMovieError = '';
+  /** True for 3 seconds after a successful movie update. */
+  editMovieSuccess = false;
+
   /** True when the current movie is in the user's watchlist. */
   isInWatchlist = false;
 
@@ -209,6 +218,60 @@ export class Movie {
         this.deleteReviewError = err?.error?.error || 'Failed to delete review.';
         setTimeout(() => this.deleteReviewError = '', 4000);
       }
+    });
+  }
+
+  /** Opens the admin edit-movie panel pre-filled with the current movie's values. */
+  startEditMovie() {
+    this.editingMovie = true;
+    this.editMovieError = '';
+    this.editMovieSuccess = false;
+    this.editMovieForm = this.formBuilder.group({
+      title:        [this.movie.title],
+      release_date: [this.movie.release_date],
+      overview:     [this.movie.overview],
+      genres:       [this.movie.genres],
+      keywords:     [this.movie.keywords],
+      runtime:      [this.movie.runtime],
+      vote_average: [this.movie.vote_average],
+      vote_count:   [this.movie.vote_count],
+      budget:       [this.movie.budget],
+      revenue:      [this.movie.revenue],
+      popularity:   [this.movie.popularity],
+    });
+  }
+
+  /** Closes the admin edit-movie panel without saving. */
+  cancelEditMovie() {
+    this.editingMovie = false;
+    this.editMovieError = '';
+    this.editMovieSuccess = false;
+  }
+
+  /** Saves the edited movie info and updates the local movie object on success. */
+  submitEditMovie() {
+    const id = this.route.snapshot.paramMap.get('id')!;
+    const fd = new FormData();
+    const v = this.editMovieForm.value;
+    if (v.title        != null) fd.append('title',        v.title);
+    if (v.release_date != null) fd.append('release_date', v.release_date);
+    if (v.overview     != null) fd.append('overview',     v.overview);
+    if (v.genres       != null) fd.append('genres',       v.genres);
+    if (v.keywords     != null) fd.append('keywords',     v.keywords);
+    if (v.runtime      != null) fd.append('runtime',      String(v.runtime));
+    if (v.vote_average != null) fd.append('vote_average', String(v.vote_average));
+    if (v.vote_count   != null) fd.append('vote_count',   String(v.vote_count));
+    if (v.budget       != null) fd.append('budget',       String(v.budget));
+    if (v.revenue      != null) fd.append('revenue',      String(v.revenue));
+    if (v.popularity   != null) fd.append('popularity',   String(v.popularity));
+    this.webService.updateMovie(id, fd).subscribe({
+      next: () => {
+        Object.assign(this.movie, v);
+        this.editingMovie = false;
+        this.editMovieSuccess = true;
+        setTimeout(() => this.editMovieSuccess = false, 3000);
+      },
+      error: (err) => { this.editMovieError = err?.error?.error || 'Failed to update movie.'; }
     });
   }
 

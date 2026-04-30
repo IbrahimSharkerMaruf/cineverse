@@ -118,6 +118,73 @@
                 @if (deleteMovieError) {
                   <div style="color:#e74c3c; font-size:0.8rem; margin-top:0.4rem;">{{ deleteMovieError }}</div>
                 }
+
+                @if (editMovieSuccess) {
+                  <div style="color:#27ae60; font-size:0.82rem; margin-top:0.4rem;">&#10003; Movie updated successfully.</div>
+                }
+
+                @if (!editingMovie) {
+                  <button class="btn-edit-movie mt-2" (click)="startEditMovie()">&#9998; Edit Movie Info</button>
+                } @else {
+                  <div class="edit-movie-panel mt-2">
+                    <div class="edit-movie-header">Edit Movie Info</div>
+                    <form [formGroup]="editMovieForm" (ngSubmit)="submitEditMovie()">
+                      <div class="row g-2">
+                        <div class="col-12">
+                          <label class="edit-movie-label">Title</label>
+                          <input type="text" class="form-control edit-movie-input" formControlName="title">
+                        </div>
+                        <div class="col-6">
+                          <label class="edit-movie-label">Release Date</label>
+                          <input type="date" class="form-control edit-movie-input" formControlName="release_date">
+                        </div>
+                        <div class="col-6">
+                          <label class="edit-movie-label">Runtime (min)</label>
+                          <input type="number" class="form-control edit-movie-input" formControlName="runtime">
+                        </div>
+                        <div class="col-12">
+                          <label class="edit-movie-label">Overview</label>
+                          <textarea class="form-control edit-movie-input" rows="3" formControlName="overview"></textarea>
+                        </div>
+                        <div class="col-6">
+                          <label class="edit-movie-label">Vote Average (0–10)</label>
+                          <input type="number" step="0.1" min="0" max="10" class="form-control edit-movie-input" formControlName="vote_average">
+                        </div>
+                        <div class="col-6">
+                          <label class="edit-movie-label">Vote Count</label>
+                          <input type="number" min="0" class="form-control edit-movie-input" formControlName="vote_count">
+                        </div>
+                        <div class="col-6">
+                          <label class="edit-movie-label">Budget ($)</label>
+                          <input type="number" min="0" class="form-control edit-movie-input" formControlName="budget">
+                        </div>
+                        <div class="col-6">
+                          <label class="edit-movie-label">Revenue ($)</label>
+                          <input type="number" min="0" class="form-control edit-movie-input" formControlName="revenue">
+                        </div>
+                        <div class="col-6">
+                          <label class="edit-movie-label">Popularity</label>
+                          <input type="number" step="0.01" min="0" class="form-control edit-movie-input" formControlName="popularity">
+                        </div>
+                        <div class="col-6">
+                          <label class="edit-movie-label">Genres (JSON)</label>
+                          <input type="text" class="form-control edit-movie-input" formControlName="genres" placeholder='[{"name":"Action"}]'>
+                        </div>
+                        <div class="col-12">
+                          <label class="edit-movie-label">Keywords (JSON)</label>
+                          <input type="text" class="form-control edit-movie-input" formControlName="keywords" placeholder='[{"name":"hero"}]'>
+                        </div>
+                      </div>
+                      @if (editMovieError) {
+                        <div style="color:#e74c3c; font-size:0.82rem; margin-top:0.5rem;">{{ editMovieError }}</div>
+                      }
+                      <div class="d-flex gap-2 mt-3">
+                        <button type="submit" class="btn-edit-movie-save">Save Changes</button>
+                        <button type="button" class="btn-cancel-edit" (click)="cancelEditMovie()">Cancel</button>
+                      </div>
+                    </form>
+                  </div>
+                }
               </div>
             }
           </div>

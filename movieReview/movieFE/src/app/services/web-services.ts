@@ -123,6 +123,15 @@ export class WebServices {
     return this.withAuth(headers => this.http.delete<any>(`${this.baseUrl}/movies/${id}`, { headers }));
   }
 
+  /**
+   * Updates movie metadata fields. Requires admin authentication.
+   * @param id Movie ID to update.
+   * @param formData FormData containing the fields to update.
+   */
+  updateMovie(id: string, formData: FormData) {
+    return this.withAuth(headers => this.http.put<any>(`${this.baseUrl}/movies/${id}`, formData, { headers }));
+  }
+
   /** Fetches the current user's profile. Requires authentication. */
   getProfile() {
     return this.withAuth(headers => this.http.get<any>(`${this.baseUrl}/profile`, { headers }));

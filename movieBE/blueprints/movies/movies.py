@@ -56,9 +56,16 @@ def getAllMovies():
     query = {}
 
     # ── Text filters ──────────────────────────────────────────────────────────
+    q = request.args.get('q')       # general cross-field search
     title = request.args.get('title')
     genre = request.args.get('genre')
-    if title:
+    if q:
+        query["$or"] = [
+            {"title":    {"$regex": q, "$options": "i"}},
+            {"genres":   {"$regex": q, "$options": "i"}},
+            {"keywords": {"$regex": q, "$options": "i"}},
+        ]
+    elif title:
         words = [w.strip() for w in title.strip().split() if w.strip()]
         word_patterns = [{"title": {"$regex": w, "$options": "i"}} for w in words]
         query["$or"] = [{"title": {"$regex": title, "$options": "i"}}] + word_patterns
@@ -116,15 +123,18 @@ def getAllMovies():
     try:
         total = movies.count_documents(query)
 
-        if title and not sort_field:
+        search_term = q or title
+        if search_term and not sort_field:
+            t = search_term.lower()
             pipeline = [
                 {"$match": query},
                 {"$addFields": {
                     "_score": {"$switch": {"branches": [
-                        {"case": {"$eq": [{"$toLower": "$title"}, title.lower()]}, "then": 0},
-                        {"case": {"$eq": [{"$indexOfCP": [{"$toLower": "$title"}, title.lower()]}, 0]}, "then": 1},
-                        {"case": {"$gte": [{"$indexOfCP": [{"$toLower": "$title"}, title.lower()]}, 0]}, "then": 2},
-                    ], "default": 3}}
+                        {"case": {"$eq": [{"$toLower": "$title"}, t]}, "then": 0},
+                        {"case": {"$eq": [{"$indexOfCP": [{"$toLower": "$title"}, t]}, 0]}, "then": 1},
+                        {"case": {"$gte": [{"$indexOfCP": [{"$toLower": "$title"}, t]}, 0]}, "then": 2},
+                        {"case": {"$gte": [{"$indexOfCP": [{"$toLower": {"$ifNull": ["$genres", ""]}}, t]}, 0]}, "then": 3},
+                    ], "default": 4}}
                 }},
                 {"$sort": {"_score": 1, "title": 1}},
                 {"$skip": page_start},

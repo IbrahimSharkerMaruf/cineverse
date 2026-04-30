@@ -46,7 +46,7 @@ export class WebServices {
    */
   getMovies(page: number, filters: any = {}) {
     let url = `${this.baseUrl}/movies?pn=${page}&ps=${this.pageSize}`;
-    if (filters.title)      url += `&title=${encodeURIComponent(filters.title)}`;
+    if (filters.title)      url += `&q=${encodeURIComponent(filters.title)}`;
     if (filters.genre)      url += `&genre=${encodeURIComponent(filters.genre)}`;
     if (filters.year)       url += `&year=${filters.year}`;
     if (filters.min_rating) url += `&min_rating=${filters.min_rating}`;

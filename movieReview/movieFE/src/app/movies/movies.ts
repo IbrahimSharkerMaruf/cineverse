@@ -25,32 +25,18 @@ export class Movies {
 
   /** Loaded movie records for the current page. */
   movie_list: any[] = [];
-  /** Current 1-based page number, persisted in sessionStorage. */
   page = 1;
-  /** Total number of pages for the active query. */
   totalPages = 1;
-  /** True when the current page is the last available page. */
   isLastPage = false;
-  /** True while an HTTP request is in flight. */
   isLoading = false;
-  /** Reactive form group holding all active filter values. */
   filterForm: any;
-
-  /** Controls visibility of the admin add-movie panel. */
   showAddForm = false;
-  /** Controls visibility of the filters panel. */
   showFilters = false;
-  /** Target page number typed into the jump-to-page input. */
   jumpPage: number | null = null;
-  /** Reactive form group for the admin add-movie inputs. */
   addMovieForm: any;
-  /** True after a movie is successfully added. */
   addSuccess = false;
-  /** Error message shown when the add-movie request fails. */
   addError = '';
-  /** Poster image file selected for upload. */
   posterFile: File | null = null;
-  /** Object URL used to preview the selected poster before upload. */
   posterPreview: string | null = null;
 
   /**

@@ -17,48 +17,34 @@ import { AuthService } from '../services/auth-service';
   templateUrl: './profile.html',
 })
 export class Profile {
-  /** Current user's profile data returned by the backend. */
+  
   user: any = null;
-  /** Reviews written by the current user. */
   myReviews: any[] = [];
-  /** Replies written by the current user. */
   myReplies: any[] = [];
-  /** True while the initial profile fetch is in progress. */
   isLoading = true;
 
-  /** Controls visibility of the avatar selection grid. */
+  
   showAvatarPicker = false;
-  /** Available avatar filenames the user can choose from. */
   avatarOptions = ['profile.png','rabbit.png','panda.png','man.png','cat.png','woman.png','hacker.png','boy.png'];
-
-  /** Controls visibility of the account deletion confirmation prompt. */
   showDeleteConfirm = false;
-  /** Error message shown when account deletion fails. */
   deleteAccountError = '';
 
-  /** Currently active tab: `'reviews'`, `'replies'`, or `'users'` (admin only). */
+  
   activeTab: 'reviews' | 'replies' | 'users' = 'reviews';
 
-  /** Review ID currently being edited inline from the My Reviews tab, or null if none. */
+  
   editingReviewId: string | null = null;
-  /** Reactive form for editing a review inline. */
   editReviewForm: any;
-  /** Error message shown when an inline review edit fails. */
   editReviewError = '';
 
   /** All users loaded for the admin management panel. */
   allUsers: any[] = [];
-  /** True while the admin user list is loading. */
   usersLoading = false;
-  /** Search string for filtering the admin user list. */
   userSearch = '';
   /** Username whose review list is currently expanded in the admin panel, or null. */
   expandedUsername: string | null = null;
-  /** Reviews for the currently expanded user in the admin panel. */
   expandedReviews: any[] = [];
-  /** True while the expanded user's reviews are loading. */
   expandedReviewsLoading = false;
-  /** Error message shown when an admin user deletion fails. */
   deleteUserError = '';
   /** Username awaiting admin delete confirmation, or null. */
   confirmDeleteUsername: string | null = null;
